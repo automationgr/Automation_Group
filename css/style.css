@@ -246,10 +246,6 @@ ul { list-style: none; }
   transform: translateY(-1px);
   box-shadow: var(--shadow-gold) !important;
 }
-.nav-links a.active {
-    color: var(--gold) !important;
-    border-bottom: 2px solid var(--gold);
-}
 
 /* Hamburger */
 .nav-toggle {
