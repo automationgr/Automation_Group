@@ -244,17 +244,19 @@ window.addEventListener('load', () => {
 
 /* --- Smooth active nav highlighting --- */
 function highlightNav() {
-  const links = document.querySelectorAll('.nav-links a');
-  const path = window.location.pathname.split('/').pop() || 'index.html';
-  links.forEach(link => {
-    const href = link.getAttribute('href');
-    if (href === path || (path === '' && href === 'index.html')) {
-      link.style.color = 'var(--gold)';
-    }
-  });
-}
-highlightNav();
+    const currentPath = window.location.pathname.toLowerCase();
 
+    document.querySelectorAll('.nav-links a').forEach(link => {
+        const href = link.getAttribute('href').toLowerCase();
+
+        if (
+            currentPath.endsWith(href) ||
+            currentPath.includes(href.replace('.html', ''))
+        ) {
+            link.classList.add('active');
+        }
+    });
+}
 /* --- Leaflet Map Init (Projects / Contact) --- */
 function initMap(containerId, lat, lng, zoom) {
   if (typeof L === 'undefined' || !document.getElementById(containerId)) return;
