@@ -238,8 +238,7 @@ tbody tr:hover td{background:var(--bg-hover)}
 .platform-badge{display:inline-flex;align-items:center;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:600;background:var(--primary-light);color:var(--primary)}
 .badge-facebook{background:rgba(24,119,242,.15);color:#1877f2}.badge-instagram{background:rgba(228,64,95,.15);color:#e4405f}
 .badge-twitter{background:rgba(200,200,200,.12);color:#94a3b8}.badge-linkedin{background:rgba(0,119,181,.15);color:#0077b5}
-.badge-youtube{background:rgba(255,0,0,.12);color:#ff4444}.badge-tiktok{background:rgba(200,200,200,.1);color:#94a3b8}
-.badge-pinterest{background:rgba(230,0,35,.12);color:#e60023}.badge-threads{background:rgba(200,200,200,.1);color:#94a3b8}
+.badge-threads{background:rgba(200,200,200,.1);color:#94a3b8}
 .badge-telegram{background:rgba(34,158,217,.15);color:#229ed9}.badge-whatsapp{background:rgba(37,211,102,.15);color:#25d366}
 
 /* CALENDAR */
@@ -558,9 +557,11 @@ const DB = {
 
   // Notifications
   getNotifs(userId) { return this.get('notifs_'+userId, []); },
-  addNotif(userId, title, message, type='info') {
+  addNotif(userId, title, message, type='info', meta=null) {
     const notifs = this.getNotifs(userId);
-    notifs.unshift({ id:nanoid(), title, message, type, read:false, created_at:Date.now() });
+    const entry = { id:nanoid(), title, message, type, read:false, created_at:Date.now() };
+    if(meta) entry.meta = meta;
+    notifs.unshift(entry);
     if (notifs.length > 100) notifs.length = 100;
     this.set('notifs_'+userId, notifs);
   },
@@ -743,9 +744,9 @@ function initials(name) { return (name||'U').split(' ').map(n=>n[0]).join('').to
 function setLoading(btn, on) { if(!btn) return; btn.disabled=on; btn.classList.toggle('loading',on); }
 function setContent(html) { document.getElementById('page-content').innerHTML=html; }
 
-const platformColor = {facebook:'#1877f2',instagram:'#e4405f',twitter:'#000',linkedin:'#0077b5',youtube:'#ff0000',tiktok:'#010101',pinterest:'#e60023',threads:'#000',telegram:'#229ed9',whatsapp:'#25d366'};
-const platformName = {facebook:'Facebook',instagram:'Instagram',twitter:'X (Twitter)',linkedin:'LinkedIn',youtube:'YouTube',tiktok:'TikTok',pinterest:'Pinterest',threads:'Threads',telegram:'Telegram',whatsapp:'WhatsApp'};
-const platformEmoji = {facebook:'📘',instagram:'📷',twitter:'🐦',linkedin:'💼',youtube:'▶️',tiktok:'🎵',pinterest:'📌',threads:'🔁',telegram:'✈️',whatsapp:'💬'};
+const platformColor = {facebook:'#1877f2',instagram:'#e4405f',twitter:'#000000',linkedin:'#0077b5',threads:'#000000',telegram:'#229ed9',whatsapp:'#25d366'};
+const platformName = {facebook:'Facebook',instagram:'Instagram',twitter:'X (Twitter)',linkedin:'LinkedIn',threads:'Threads',telegram:'Telegram',whatsapp:'WhatsApp'};
+const platformEmoji = {facebook:'📘',instagram:'📷',twitter:'🐦',linkedin:'💼',threads:'🔁',telegram:'✈️',whatsapp:'💬'};
 
 function platformBadge(p) { return `<span class="platform-badge badge-${p}">${platformName[p]||p}</span>`; }
 function statusPill(s) {
@@ -890,6 +891,8 @@ function renderLogin() {
     user = DB.getUserById(user.id);
     State.set(user); Shell.showApp(); Router.go('dashboard');
     Toast.success(`Welcome back, ${user.full_name}!`);
+    // Seed the pending-count baseline so the interval doesn't false-trigger on first tick
+    if(user.role === 'superadmin') sessionStorage.setItem('sh_prev_pending', DB.getPendingUsers().length);
   };
 }
 
@@ -935,9 +938,27 @@ function renderRegister() {
     } else {
       // Everyone else waits for SA approval
       DB.addNotif(user.id,'Access Request Submitted','Your request has been received. Wait for the Super Admin to approve your account.','info');
-      // Notify the SA
-      const sa = DB.getUsers().find(u => u.role === 'superadmin');
-      if(sa) DB.addNotif(sa.id,'New Access Request',`${user.full_name} (${user.email}) has submitted an access request.`,'warning');
+      // Notify ALL superadmins — attach meta so the notification shows inline Approve/Reject buttons
+      DB.getUsers().filter(u => u.role === 'superadmin').forEach(sa => {
+        DB.addNotif(
+          sa.id,
+          '🔔 New Access Request',
+          `${user.full_name} (${user.email})${user.company_name?' from '+user.company_name:''} is waiting for your approval.`,
+          'warning',
+          {
+            type: 'access_request',
+            pending_user_id:      user.id,
+            pending_user_name:    user.full_name,
+            pending_user_email:   user.email,
+            pending_user_company: user.company_name || ''
+          }
+        );
+      });
+      // If SA is already logged in this session/tab, refresh their badge immediately
+      if(State.isAuth() && State.isSuperAdmin()) {
+        Shell.refreshNotifCount();
+        Toast.warning(`New access request from ${escHtml(user.full_name)}! Check Admin Panel.`);
+      }
       Shell.showPending(user);
       Toast.info('Request submitted! You will be notified once the Super Admin approves your account.');
     }
@@ -1061,30 +1082,17 @@ const PLATFORM_FIELDS = {
     ['video_url','Public Video URL (for videos)','text','Direct public HTTPS URL of your video file — required for Reel/video posts (host on your server or Cloudinary)'],
   ],
   twitter: [
-    ['api_key','API Key (Consumer Key)','password','From developer.twitter.com → Projects & Apps → Your App → Keys and Tokens'],
-    ['api_secret','API Secret (Consumer Secret)','password','From developer.twitter.com → Projects & Apps → Your App → Keys and Tokens'],
-    ['access_token','Access Token','password','From developer.twitter.com → Projects & Apps → Your App → Keys and Tokens'],
-    ['access_token_secret','Access Token Secret','password','From developer.twitter.com → Projects & Apps → Your App → Keys and Tokens'],
-    ['bearer_token','Bearer Token','password','From developer.twitter.com → Projects & Apps → Your App → Keys and Tokens'],
+    ['oauth2_token','OAuth 2.0 User Access Token','password','PRIMARY field for browser posting — get from developer.twitter.com → Your App → Keys & Tokens → OAuth 2.0 → "Generate User Token" (needs tweet.write + users.read scopes)'],
+    ['api_key','API Key (server-side use)','password','developer.twitter.com → Keys and Tokens (for OAuth 1.0a server posting)'],
+    ['api_secret','API Secret (server-side use)','password','developer.twitter.com → Keys and Tokens'],
+    ['access_token','Access Token (server-side use)','password','developer.twitter.com → Keys and Tokens'],
+    ['access_token_secret','Access Token Secret (server-side use)','password','developer.twitter.com → Keys and Tokens'],
+    ['bearer_token','App Bearer Token (server-side use)','password','developer.twitter.com → Bearer Token (read-only)'],
   ],
   linkedin: [
-    ['organization_id','Organization ID','text','LinkedIn Company Page numeric ID — from URL: linkedin.com/company/XXXXXXXX/admin/'],
-    ['access_token','Access Token','password','LinkedIn OAuth 2.0 token with w_member_social, r_organization_social scopes'],
-  ],
-  youtube: [
-    ['channel_id','Channel ID','text','From YouTube Studio → Customization → Basic info → Channel URL (starts with UC…)'],
-    ['client_id','OAuth Client ID','text','From Google Cloud Console → APIs & Services → Credentials → OAuth 2.0 Client IDs'],
-    ['client_secret','OAuth Client Secret','password','From Google Cloud Console → APIs & Services → Credentials → OAuth 2.0 Client IDs'],
-    ['refresh_token','Refresh Token','password','Long-lived token from OAuth consent — use Google OAuth 2.0 Playground (oauth2.googleapis.com/tokeninfo)'],
-  ],
-  tiktok: [
-    ['client_key','Client Key','text','From TikTok Developer Portal → Manage Apps → Your App → App info'],
-    ['client_secret','Client Secret','password','From TikTok Developer Portal → Manage Apps → Your App → App info'],
-    ['access_token','Access Token','password','User access token from TikTok Login Kit OAuth flow (has expiry — refresh periodically)'],
-  ],
-  pinterest: [
-    ['app_id','App ID','text','From Pinterest Developer Portal → My Apps → App info'],
-    ['access_token','Access Token','password','Pinterest OAuth token with boards:write, pins:write, pins:read scopes'],
+    ['access_token','Access Token','password','LinkedIn OAuth 2.0 token with w_member_social scope — generate at developer.linkedin.com using OAuth 2.0 flow'],
+    ['person_urn','Person URN (personal posts)','text','Your LinkedIn user URN — format: urn:li:person:XXXXXXXX — get it by calling GET api.linkedin.com/v2/me after OAuth'],
+    ['organization_id','Organization ID (company posts)','text','LinkedIn Company Page ID from URL: linkedin.com/company/XXXXXXXX/ — leave blank to post as yourself'],
   ],
   threads: [
     ['account_id','Threads User ID','text','Your numeric Threads/Instagram User ID — same as Instagram Business Account ID'],
@@ -1106,11 +1114,8 @@ const PLATFORM_FIELDS = {
 const PLATFORM_BROWSER = {
   facebook:  {ok:true,  note:'✅ Posts directly from browser via Graph API'},
   instagram: {ok:true,  note:'✅ Posts from browser (image needs ImgBB key, video needs public URL)'},
-  twitter:   {ok:false, note:'⚠️ Cannot post from browser — Twitter requires server-side OAuth 1.0a'},
-  linkedin:  {ok:false, note:'⚠️ Cannot post from browser — LinkedIn blocks cross-origin requests'},
-  youtube:   {ok:false, note:'⚠️ Cannot post from browser — YouTube requires server-side OAuth 2.0'},
-  tiktok:    {ok:false, note:'⚠️ Cannot post from browser — TikTok requires server-side OAuth 2.0'},
-  pinterest: {ok:false, note:'⚠️ Cannot post from browser — Pinterest requires server-side OAuth 2.0'},
+  twitter:   {ok:true,  note:'✅ Posts via OAuth 2.0 token — add your OAuth 2.0 User Token above (falls back to Tweet popup if blocked)'},
+  linkedin:  {ok:true,  note:'✅ Opens LinkedIn share popup — you click Post. Add token + URN for direct API attempt'},
   threads:   {ok:true,  note:'✅ Posts directly from browser via Meta Graph API'},
   telegram:  {ok:true,  note:'✅ Posts directly from browser via Telegram Bot API'},
   whatsapp:  {ok:true,  note:'✅ Posts directly from browser via WhatsApp Cloud API'},
@@ -1463,9 +1468,6 @@ async function publishToAllPlatforms(platforms, post, accounts, files) {
         case 'telegram':  r = await publishTelegram(creds, text, files);  break;
         case 'whatsapp':  r = await publishWhatsApp(creds, text, files);  break;
         case 'threads':   r = await publishThreads(creds, text, files);   break;
-        case 'youtube':   r = {success:false, message:'YouTube: Cannot upload videos from a browser — requires server-side OAuth 2.0. Credentials are saved for when you use the server version.'}; break;
-        case 'tiktok':    r = {success:false, message:'TikTok: Cannot post from a browser — requires server-side OAuth 2.0. Credentials are saved for when you use the server version.'}; break;
-        case 'pinterest': r = {success:false, message:'Pinterest: Cannot post from a browser — requires server-side OAuth 2.0. Credentials are saved for when you use the server version.'}; break;
         default:          r = {success:false, message:`${platformName[pid]}: Not supported from browser directly. Credentials saved for server-side use.`};
       }
     } catch(e) {
@@ -1583,12 +1585,98 @@ async function publishInstagram(creds, text, files) {
   }
 }
 
+// ── Twitter/X — OAuth 2.0 direct API attempt + Web Intent fallback ──────────
 async function publishTwitter(creds, text) {
-  return {success:false, message:'Twitter/X: Cannot post from a browser — OAuth 1.0a requires server-side request signing. Credentials are saved and ready when you use the server version.'};
+  const tweet = text.slice(0, 280);
+  const intentUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(tweet)}`;
+  const { oauth2_token } = creds;
+
+  if(!oauth2_token) {
+    // No token — open Web Intent popup so user can post manually
+    window.open(intentUrl, 'twitter_share', 'width=600,height=450,scrollbars=yes');
+    return {success:true, message:'X (Twitter) compose window opened — review and click Tweet to post. Add your OAuth 2.0 User Token in Connect Accounts for direct API posting.'};
+  }
+
+  // Attempt direct API post with OAuth 2.0 user token
+  try {
+    const res = await fetch('https://api.twitter.com/2/tweets', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${oauth2_token.trim()}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ text: tweet })
+    });
+    const d = await res.json();
+    if(d.errors && d.errors.length) {
+      // API returned error — fall back to Web Intent
+      window.open(intentUrl, 'twitter_share', 'width=600,height=450,scrollbars=yes');
+      return {success:true, message:`X API: ${d.errors[0].message} — compose window opened as fallback. Check token scopes (tweet.write required).`};
+    }
+    if(d.data && d.data.id) return {success:true, message:`Posted to X (Twitter)! Tweet ID: ${d.data.id}`};
+    // Unexpected — open popup anyway
+    window.open(intentUrl, 'twitter_share', 'width=600,height=450,scrollbars=yes');
+    return {success:true, message:'X (Twitter) compose window opened — review and click Tweet to post.'};
+  } catch(e) {
+    // CORS or network error — fall back to Web Intent
+    window.open(intentUrl, 'twitter_share', 'width=600,height=450,scrollbars=yes');
+    return {success:true, message:'X (Twitter) compose window opened — review and click Tweet to post. (API blocked by CORS — token saved for server use.)'};
+  }
 }
 
+// ── LinkedIn — API attempt + Share dialog fallback ───────────────────────────
 async function publishLinkedIn(creds, text) {
-  return {success:false, message:'LinkedIn: Cannot post from a browser — LinkedIn blocks cross-origin API requests. Credentials are saved and ready when you use the server version.'};
+  const shareText = text.slice(0, 3000);
+  const shareUrl  = `https://www.linkedin.com/feed/?shareActive=true&text=${encodeURIComponent(shareText)}`;
+  const { access_token, person_urn, organization_id } = creds;
+
+  // Build the author URN
+  let author = null;
+  if(organization_id) {
+    const orgId = organization_id.replace(/\D/g,'');
+    if(orgId) author = `urn:li:organization:${orgId}`;
+  }
+  if(!author && person_urn) {
+    author = person_urn.startsWith('urn:') ? person_urn.trim() : `urn:li:person:${person_urn.trim()}`;
+  }
+
+  if(!access_token || !author) {
+    // No credentials — open share popup (always works)
+    window.open(shareUrl, 'linkedin_share', 'width=600,height=600,scrollbars=yes');
+    return {success:true, message:'LinkedIn share popup opened — review and click Post to publish. Add Access Token + Person URN in Connect Accounts for direct API posting.'};
+  }
+
+  // Attempt direct API post
+  try {
+    const res = await fetch('https://api.linkedin.com/v2/ugcPosts', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${access_token.trim()}`,
+        'Content-Type': 'application/json',
+        'X-Restli-Protocol-Version': '2.0.0'
+      },
+      body: JSON.stringify({
+        author,
+        lifecycleState: 'PUBLISHED',
+        specificContent: {
+          'com.linkedin.ugc.ShareContent': {
+            shareCommentary: { text: shareText },
+            shareMediaCategory: 'NONE'
+          }
+        },
+        visibility: { 'com.linkedin.ugc.MemberNetworkVisibility': 'PUBLIC' }
+      })
+    });
+    const d = await res.json();
+    if(res.ok && d.id) return {success:true, message:'Published to LinkedIn via API!'};
+    // API error — fall back to share popup
+    window.open(shareUrl, 'linkedin_share', 'width=600,height=600,scrollbars=yes');
+    return {success:true, message:`LinkedIn API: ${d.message||'error'} — share popup opened as fallback. Verify token scopes (w_member_social required) and Person URN format.`};
+  } catch(e) {
+    // CORS blocked — open share popup
+    window.open(shareUrl, 'linkedin_share', 'width=600,height=600,scrollbars=yes');
+    return {success:true, message:'LinkedIn share popup opened — review and click Post to publish. (Direct API blocked by CORS — credentials saved for server use.)'};
+  }
 }
 
 async function publishThreads(creds, text, files) {
@@ -1949,7 +2037,7 @@ function renderAnalytics() {
       <ul style="list-style:none;display:flex;flex-direction:column;gap:10px">
         <li style="display:flex;gap:10px;font-size:14px"><span>✅</span><span><strong>Telegram</strong> works directly — credentials saved locally, posts sent via bot API.</span></li>
         <li style="display:flex;gap:10px;font-size:14px"><span>✅</span><span><strong>Facebook</strong> text posts work via the Graph API.</span></li>
-        <li style="display:flex;gap:10px;font-size:14px"><span>⚠️</span><span><strong>Twitter/X, LinkedIn, Instagram, YouTube</strong> require OAuth or have CORS restrictions — use the server version for these.</span></li>
+        <li style="display:flex;gap:10px;font-size:14px"><span>⚡</span><span><strong>Twitter/X and LinkedIn</strong> open a share popup as fallback — add your OAuth tokens in Connect Accounts for direct API posting.</span></li>
         <li style="display:flex;gap:10px;font-size:14px"><span>💾</span><span>All data (credentials, posts, history) is stored in your browser's localStorage — it stays on your device.</span></li>
         <li style="display:flex;gap:10px;font-size:14px"><span>📅</span><span>Scheduled posts only auto-publish if the app is open in your browser at that time.</span></li>
       </ul>
@@ -1968,7 +2056,64 @@ function renderNotifications() {
       <div class="empty-state"><div class="empty-state-icon">🔔</div><h3>No notifications</h3><p>You're all caught up!</p></div>`);
     return;
   }
-  const icons={success:'✅',error:'❌',warning:'⚠️',info:'ℹ️'};
+  const icons = {success:'✅', error:'❌', warning:'⚠️', info:'ℹ️'};
+
+  const notifRows = notifs.map(n => {
+    const isAccessReq = State.isSuperAdmin() && n.meta && n.meta.type === 'access_request' && n.meta.pending_user_id;
+
+    if(isAccessReq) {
+      // ── Special access-request card — only visible to Super Admin ──
+      const uid  = n.meta.pending_user_id;
+      const name = escHtml(n.meta.pending_user_name  || '');
+      const email= escHtml(n.meta.pending_user_email || '');
+      const co   = n.meta.pending_user_company ? ` · ${escHtml(n.meta.pending_user_company)}` : '';
+      return `
+        <div class="notif-item ${!n.read?'unread':''}" id="notif-${n.id}"
+          style="border-left:4px solid var(--warning);background:${!n.read?'rgba(245,158,11,.05)':''}">
+          <div class="notif-icon-wrap warning" style="font-size:20px">👤</div>
+          <div style="flex:1;min-width:0">
+            <div class="notif-title" style="color:var(--warning);margin-bottom:8px">${escHtml(n.title)}</div>
+            <div style="background:var(--warning-bg);border:1px solid rgba(245,158,11,.3);border-radius:8px;padding:12px 14px;margin-bottom:10px">
+              <div style="font-size:13.5px;font-weight:700;color:var(--text-primary)">${name}</div>
+              <div style="font-size:12.5px;color:var(--text-muted);margin-top:2px">${email}${co}</div>
+              <div style="font-size:11.5px;color:var(--text-hint);margin-top:4px">⏳ Applied ${timeAgo(n.created_at)}</div>
+            </div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap">
+              <button class="btn btn-success btn-sm"
+                data-nid="${n.id}" data-uid="${uid}" data-name="${name}"
+                onclick="approveFromNotif(this.dataset.nid,this.dataset.uid,this.dataset.name)">
+                ✅ Approve
+              </button>
+              <button class="btn btn-danger btn-sm"
+                data-nid="${n.id}" data-uid="${uid}" data-name="${name}"
+                onclick="rejectFromNotif(this.dataset.nid,this.dataset.uid,this.dataset.name)">
+                ✕ Reject
+              </button>
+              <button class="btn btn-ghost btn-sm" onclick="Router.go('admin')">🛡️ Admin Panel</button>
+            </div>
+          </div>
+          <div class="notif-actions" style="align-self:flex-start;margin-top:4px">
+            <button class="btn btn-ghost btn-xs" onclick="deleteOneNotif('${n.id}')" title="Dismiss">✕</button>
+          </div>
+        </div>`;
+    }
+
+    // ── Standard notification ──
+    return `
+      <div class="notif-item ${!n.read?'unread':''}" id="notif-${n.id}">
+        <div class="notif-icon-wrap ${n.type}">${icons[n.type]||'ℹ️'}</div>
+        <div style="flex:1">
+          <div class="notif-title">${escHtml(n.title)}</div>
+          <div class="notif-msg">${escHtml(n.message)}</div>
+          <div class="notif-time">${timeAgo(n.created_at)}</div>
+        </div>
+        <div class="notif-actions">
+          ${!n.read?`<button class="btn btn-ghost btn-xs" onclick="markOneRead('${n.id}')">✓</button>`:''}
+          <button class="btn btn-ghost btn-xs" onclick="deleteOneNotif('${n.id}')">✕</button>
+        </div>
+      </div>`;
+  }).join('');
+
   setContent(`
     <div class="page-header">
       <div><h2>Notifications</h2><p>${unreadCount} unread</p></div>
@@ -1977,21 +2122,7 @@ function renderNotifications() {
         <button class="btn btn-ghost btn-sm" onclick="clearAllNotifs()">Clear all</button>
       </div>
     </div>
-    <div class="notif-card">
-      ${notifs.map(n=>`
-        <div class="notif-item ${!n.read?'unread':''}" id="notif-${n.id}">
-          <div class="notif-icon-wrap ${n.type}">${icons[n.type]||'ℹ️'}</div>
-          <div style="flex:1">
-            <div class="notif-title">${escHtml(n.title)}</div>
-            <div class="notif-msg">${escHtml(n.message)}</div>
-            <div class="notif-time">${timeAgo(n.created_at)}</div>
-          </div>
-          <div class="notif-actions">
-            ${!n.read?`<button class="btn btn-ghost btn-xs" onclick="markOneRead('${n.id}')">✓</button>`:''}
-            <button class="btn btn-ghost btn-xs" onclick="deleteOneNotif('${n.id}')">✕</button>
-          </div>
-        </div>`).join('')}
-    </div>`);
+    <div class="notif-card">${notifRows}</div>`);
   Shell.refreshNotifCount();
 }
 window.markOneRead = function(id) {
@@ -2005,6 +2136,69 @@ window.deleteOneNotif = function(id) { DB.deleteNotif(State.user.id,id); documen
 window.clearAllNotifs = async function() {
   if(!await Modal.confirm('Clear Notifications','Delete all notifications?')) return;
   DB.clearNotifs(State.user.id); renderNotifications(); Toast.success('Notifications cleared.');
+};
+
+// ── Approve access request directly from notification card ─────────────────
+window.approveFromNotif = async function(notifId, pendingUserId, displayName) {
+  if(!State.isSuperAdmin()) return;
+  const u = DB.getUserById(pendingUserId);
+  if(!u || u.status !== 'pending') {
+    DB.deleteNotif(State.user.id, notifId);
+    Toast.info('This request has already been processed.');
+    Shell.refreshNotifCount(); renderNotifications(); return;
+  }
+  // Show role picker — reuse the same modal pattern as Admin Panel
+  const roleChoice = await new Promise(resolve => {
+    document.getElementById('modal-title').textContent = `Approve: ${displayName}`;
+    document.getElementById('modal-body').innerHTML = `
+      <p style="margin-bottom:16px;color:var(--text-secondary)">Choose the access level to grant <strong>${escHtml(displayName)}</strong>:</p>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <button class="btn btn-warning btn-block" id="gn-sa" style="justify-content:flex-start;gap:10px;color:#1a1a1a">
+          🛡️ <span><strong>Super Admin</strong><br/><span style="font-size:12px;font-weight:400">Full system control</span></span>
+        </button>
+        <button class="btn btn-primary btn-block" id="gn-ad" style="justify-content:flex-start;gap:10px">
+          🔑 <span><strong>Admin</strong><br/><span style="font-size:12px;font-weight:400;color:rgba(255,255,255,.75)">Can view Admin Panel and promote users</span></span>
+        </button>
+        <button class="btn btn-ghost btn-block" id="gn-us" style="justify-content:flex-start;gap:10px">
+          👤 <span><strong>User</strong><br/><span style="font-size:12px;font-weight:400">Standard access — posts, history, analytics</span></span>
+        </button>
+        <button class="btn btn-ghost btn-sm" id="gn-cancel">Cancel</button>
+      </div>`;
+    document.getElementById('modal-footer').innerHTML = '';
+    const ov = document.getElementById('modal-overlay');
+    ov.classList.remove('hidden');
+    document.getElementById('gn-sa').onclick     = () => { ov.classList.add('hidden'); resolve('superadmin'); };
+    document.getElementById('gn-ad').onclick     = () => { ov.classList.add('hidden'); resolve('admin'); };
+    document.getElementById('gn-us').onclick     = () => { ov.classList.add('hidden'); resolve('user'); };
+    document.getElementById('gn-cancel').onclick = () => { ov.classList.add('hidden'); resolve(null); };
+    document.getElementById('modal-close').onclick = () => { ov.classList.add('hidden'); resolve(null); };
+  });
+  if(!roleChoice) return;
+  DB.approveUser(pendingUserId);
+  DB.setUserRole(pendingUserId, roleChoice);
+  DB.addNotif(pendingUserId, '🎉 Access Approved!',
+    `Your access to ApexRM Social Media Automation has been approved. You have been granted ${roleChoice} access. You can now sign in.`, 'success');
+  DB.deleteNotif(State.user.id, notifId);
+  Toast.success(`${displayName} approved as ${roleChoice}. They can now log in.`);
+  Shell.refreshNotifCount();
+  renderNotifications();
+};
+
+// ── Reject access request directly from notification card ──────────────────
+window.rejectFromNotif = async function(notifId, pendingUserId, displayName) {
+  if(!State.isSuperAdmin()) return;
+  const u = DB.getUserById(pendingUserId);
+  if(!u || u.status !== 'pending') {
+    DB.deleteNotif(State.user.id, notifId);
+    Toast.info('This request has already been processed.');
+    Shell.refreshNotifCount(); renderNotifications(); return;
+  }
+  if(!await Modal.confirm('Reject Request', `Reject and delete ${displayName}'s access request? This cannot be undone.`)) return;
+  DB.hardDeleteUser(pendingUserId);
+  DB.deleteNotif(State.user.id, notifId);
+  Toast.success(`${displayName}'s access request has been rejected.`);
+  Shell.refreshNotifCount();
+  renderNotifications();
 };
 
 // ══════════════════════════════════════════════════════════════
@@ -2528,6 +2722,17 @@ function initEventListeners() {
   document.getElementById('modal-overlay')?.addEventListener('click', e => {
     if(e.target===document.getElementById('modal-overlay')) document.getElementById('modal-overlay').classList.add('hidden');
   });
+
+  // Cross-tab real-time sync: when another tab/page changes localStorage (e.g. new user registers),
+  // update the notification badge and pending count for the SA immediately
+  window.addEventListener('storage', e => {
+    if(!State.isAuth() || !e.key) return;
+    if(e.key === 'sh_users' || e.key.startsWith('sh_notifs_')) {
+      Shell.refreshNotifCount();
+      // If SA is on the admin page, refresh it to show new pending user
+      if(State.isSuperAdmin() && Router._current === 'admin') renderAdmin();
+    }
+  });
 }
 
 function registerRoutes() {
@@ -2555,15 +2760,28 @@ document.addEventListener('DOMContentLoaded', () => {
   registerRoutes();
   if(State.isAuth()) { Shell.showApp(); Shell.updateUser(); }
   Router.init();
-  // Check for overdue scheduled posts every minute
+  // Poll every 30 seconds: refresh badges + check overdue scheduled posts
   setInterval(() => {
     if(!State.isAuth()) return;
-    const now=Date.now();
-    DB.getPosts(State.user.id).filter(p=>p.status==='scheduled'&&p.scheduled_at<=now).forEach(p=>{
+    // Always refresh notification & pending-user counts
+    Shell.refreshNotifCount();
+    // Check for overdue scheduled posts
+    const now = Date.now();
+    DB.getPosts(State.user.id).filter(p => p.status==='scheduled' && p.scheduled_at<=now).forEach(p => {
       DB.addNotif(State.user.id,'Scheduled Post Due',`"${p.title||'Your post'}" is ready to publish. Open Scheduled Posts to publish now.`,'warning');
       Shell.refreshNotifCount();
     });
-  }, 60000);
+    // SA: check for new pending access requests and show a toast if count increased
+    if(State.isSuperAdmin()) {
+      const pending = DB.getPendingUsers().length;
+      const prev = parseInt(sessionStorage.getItem('sh_prev_pending')||'0',10);
+      if(pending > prev) {
+        const diff = pending - prev;
+        Toast.warning(`${diff} new access request${diff>1?'s':''} pending your approval! Go to Admin Panel.`);
+      }
+      sessionStorage.setItem('sh_prev_pending', pending);
+    }
+  }, 30000);
 });
 </script>
 </body>
