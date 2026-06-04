@@ -255,24 +255,100 @@ body{font-family:'Montserrat',sans-serif;background:var(--navy);color:var(--ww);
 </head>
 <body>
 
-<!-- LOGIN -->
+<!-- LOGIN / REGISTER / FORGOT — single container, content swapped by JS -->
 <div id="login-screen">
-  <div class="lcard">
-    <div class="llogo">
-      <div class="ld">◆</div>
-      <h1>APEX R&M GROUP</h1>
-      <p>Management Portal — Admin Access</p>
+  <div class="lcard" id="auth-card">
+
+    <!-- ── LOGIN ─────────────────────────────────────── -->
+    <div id="auth-login">
+      <div class="llogo">
+        <div class="ld">◆</div>
+        <h1>APEX R&M GROUP</h1>
+        <p>Management Portal — Admin Access</p>
+      </div>
+      <div class="ldiv"></div>
+      <p style="font-size:.74rem;color:var(--gray);text-align:center;margin-bottom:1.25rem;">Enter your credentials to access the CMS</p>
+      <div class="fg"><label>Username</label><input type="text" id="lu" placeholder="apex" autocomplete="username"></div>
+      <div class="fg">
+        <label>Password</label>
+        <div style="position:relative;display:flex;align-items:center;">
+          <input type="password" id="lp" placeholder="••••••••" autocomplete="current-password" style="width:100%;padding-right:2.6rem;">
+          <button type="button" onclick="toggleEye('lp',this)" title="Show / hide password"
+            style="position:absolute;right:.7rem;background:none;border:none;color:var(--gray);cursor:pointer;font-size:1rem;line-height:1;padding:0;">👁</button>
+        </div>
+      </div>
+      <div class="rem"><input type="checkbox" id="rem"><label for="rem">Remember my username</label></div>
+      <button class="btn-login" onclick="doLogin()">Access Dashboard</button>
+      <div id="lerr">Invalid username or password. Please try again.</div>
+      <div style="margin-top:1rem;display:flex;justify-content:space-between;align-items:center;">
+        <button type="button" onclick="showAuth('forgot')" style="background:none;border:none;font-size:.72rem;color:var(--gray);cursor:pointer;text-decoration:underline;padding:0;">Forgot password?</button>
+        <button type="button" onclick="showAuth('register')" style="background:none;border:none;font-size:.72rem;color:var(--gold);cursor:pointer;font-weight:600;padding:0;">Request Access →</button>
+      </div>
+      <div style="margin-top:.9rem;text-align:center;">
+        <a href="index.html" style="font-size:.72rem;color:var(--gray);text-decoration:none;">← Back to Website</a>
+      </div>
     </div>
-    <div class="ldiv"></div>
-    <p style="font-size:.74rem;color:var(--gray);text-align:center;margin-bottom:1.25rem;">Enter your credentials to access the CMS</p>
-    <div class="fg"><label>Username</label><input type="text" id="lu" placeholder="apex" autocomplete="username"></div>
-    <div class="fg"><label>Password</label><input type="password" id="lp" placeholder="••••••••" autocomplete="current-password"></div>
-    <div class="rem"><input type="checkbox" id="rem"><label for="rem">Remember my username</label></div>
-    <button class="btn-login" onclick="doLogin()">Access Dashboard</button>
-    <div id="lerr">Invalid username or password. Please try again.</div>
-    <div style="margin-top:1.25rem;text-align:center;">
-      <a href="index.html" style="font-size:.72rem;color:var(--gray);text-decoration:none;">← Back to Website</a>
+
+    <!-- ── REGISTER ───────────────────────────────────── -->
+    <div id="auth-register" style="display:none;">
+      <div class="llogo">
+        <div class="ld" style="font-size:1.5rem;">📋</div>
+        <h1>Request Access</h1>
+        <p>Super admin will review and approve your request</p>
+      </div>
+      <div class="ldiv"></div>
+      <div class="fg"><label>Full Name</label><input type="text" id="rg-name" placeholder="Your full name"></div>
+      <div class="fg"><label>Username</label><input type="text" id="rg-user" placeholder="Choose a username"></div>
+      <div class="fg"><label>Email</label><input type="email" id="rg-email" placeholder="your@email.com"></div>
+      <div class="fg">
+        <label>Password</label>
+        <div style="position:relative;display:flex;align-items:center;">
+          <input type="password" id="rg-pw" placeholder="Min 6 characters" style="width:100%;padding-right:2.6rem;">
+          <button type="button" onclick="toggleEye('rg-pw',this)" style="position:absolute;right:.7rem;background:none;border:none;color:var(--gray);cursor:pointer;font-size:1rem;line-height:1;padding:0;">👁</button>
+        </div>
+      </div>
+      <div id="rg-err" style="display:none;color:var(--danger);font-size:.78rem;text-align:center;margin-bottom:.75rem;padding:.5rem;background:rgba(231,76,60,.1);border-radius:4px;border:1px solid rgba(231,76,60,.3);"></div>
+      <button class="btn-login" onclick="doRegister()">📋 Submit Request</button>
+      <div style="margin-top:1rem;text-align:center;">
+        <button type="button" onclick="showAuth('login')" style="background:none;border:none;font-size:.72rem;color:var(--gray);cursor:pointer;text-decoration:underline;padding:0;">← Back to login</button>
+      </div>
     </div>
+
+    <!-- ── FORGOT PASSWORD ────────────────────────────── -->
+    <div id="auth-forgot" style="display:none;">
+      <div class="llogo">
+        <div class="ld" style="font-size:1.5rem;">🔑</div>
+        <h1>Reset Password</h1>
+        <p>Enter your email to receive a new password</p>
+      </div>
+      <div class="ldiv"></div>
+      <div class="fg"><label>Email Address</label><input type="email" id="fp-email" placeholder="your@email.com"></div>
+      <div id="fp-err" style="display:none;font-size:.78rem;text-align:center;margin-bottom:.75rem;padding:.5rem;border-radius:4px;border:1px solid;"></div>
+      <button class="btn-login" onclick="doForgotPassword()">📧 Send New Password</button>
+      <div style="margin-top:.5rem;font-size:.72rem;color:var(--gray);text-align:center;line-height:1.5;">
+        A temporary password will be sent to your email.<br>Works only for accounts registered via "Request Access".
+      </div>
+      <div style="margin-top:1rem;text-align:center;">
+        <button type="button" onclick="showAuth('login')" style="background:none;border:none;font-size:.72rem;color:var(--gray);cursor:pointer;text-decoration:underline;padding:0;">← Back to login</button>
+      </div>
+    </div>
+
+    <!-- ── PENDING APPROVAL ───────────────────────────── -->
+    <div id="auth-pending" style="display:none;">
+      <div class="llogo">
+        <div class="ld" style="font-size:1.5rem;">⏳</div>
+        <h1>Awaiting Approval</h1>
+        <p>Your request is pending review</p>
+      </div>
+      <div class="ldiv"></div>
+      <p style="font-size:.83rem;color:var(--gray);text-align:center;line-height:1.7;margin-bottom:1.25rem;">
+        Your registration was submitted successfully.<br>
+        The <strong style="color:var(--gold)">Super Admin</strong> will review your request and send an email once approved.<br><br>
+        You can try logging in after approval.
+      </p>
+      <button type="button" onclick="showAuth('login')" class="btn-login">← Back to Login</button>
+    </div>
+
   </div>
 </div>
 
@@ -298,6 +374,7 @@ body{font-family:'Montserrat',sans-serif;background:var(--navy);color:var(--ww);
     <div class="ni" onclick="showP('contact',this)"><span class="nic">📞</span> Contact</div>
     <div class="snl">System</div>
     <div class="ni" onclick="showP('messages',this)"><span class="nic">✉️</span> Messages Inbox <span class="nbadge" id="mbadge">0</span></div>
+    <div class="ni" id="ni-admins" onclick="showP('admins',this)" style="display:none;"><span class="nic">👥</span> Admin Users <span class="nbadge" id="adminbadge" style="background:var(--warn);display:none;">0</span></div>
     <div class="ni" onclick="showP('global',this)"><span class="nic">⚙️</span> Global Settings</div>
   </div>
   <div class="sfooter">
@@ -614,6 +691,16 @@ body{font-family:'Montserrat',sans-serif;background:var(--navy);color:var(--ww);
       <div class="ml" id="msg-list"></div>
     </div>
 
+    <!-- ═══ ADMIN USERS ═══ -->
+    <div id="ps-admins" class="ps">
+      <div class="ph">
+        <div class="bc">System · <span>Admin Users</span></div>
+        <h2>Admin Users</h2>
+        <p>Manage who has access to this admin portal. Approve registrations, change roles, or suspend accounts. Changes take effect immediately — accessible from any device.</p>
+      </div>
+      <div id="admin-users-content"><p style="color:var(--gray);font-size:.83rem;">Loading admin users…</p></div>
+    </div>
+
     <!-- ═══ GLOBAL SETTINGS ═══ -->
     <div id="ps-global" class="ps">
       <div class="ph"><div class="bc">System · <span>Global Settings</span></div>
@@ -677,40 +764,162 @@ body{font-family:'Montserrat',sans-serif;background:var(--navy);color:var(--ww);
 let saveCount=0, currentMsgId=null;
 const D = APEX_DEFAULTS; // reference to defaults from cms.js
 
-/* ── AUTH ── */
-function doLogin(){
-  const u=document.getElementById('lu').value.trim();
-  const p=document.getElementById('lp').value;
-  if(u==='apex'&&p==='APEX'){ // hardcoded credentials for demo
-    sessionStorage.setItem('apex','1');
-    if(document.getElementById('rem').checked) localStorage.setItem('apex_rem_u',u);
-    const last=localStorage.getItem('apex_last_login')||'First login';
-    localStorage.setItem('apex_last_login',new Date().toLocaleString());
-    document.getElementById('tuname').textContent=u;
-    document.getElementById('login-screen').style.display='none';
-    document.getElementById('dashboard').style.display='block';
-    initDash();
-  } else {
-    document.getElementById('lerr').style.display='block';
-  }
+/* ── AUTH HELPERS ── */
+function toggleEye(inputId, btn) {
+  const inp = document.getElementById(inputId); if (!inp) return;
+  const show = inp.type === 'password';
+  inp.type = show ? 'text' : 'password';
+  btn.textContent = show ? '🙈' : '👁';
 }
-document.getElementById('lp').addEventListener('keypress',e=>{ if(e.key==='Enter') doLogin(); });
-window.addEventListener('load',()=>{
-  const rem=localStorage.getItem('apex_rem_u');
-  if(rem){ document.getElementById('lu').value=rem; document.getElementById('rem').checked=true; }
-  // Check if already logged in
-  if(sessionStorage.getItem('apex_admin')==='1'){
-    document.getElementById('login-screen').style.display='none';
-    document.getElementById('dashboard').style.display='block';
+function showAuth(screen) {
+  ['login','register','forgot','pending'].forEach(s => {
+    document.getElementById('auth-'+s).style.display = s===screen ? '' : 'none';
+  });
+  // Clear error states
+  ['lerr','rg-err','fp-err'].forEach(id => {
+    const el = document.getElementById(id); if (el) el.style.display = 'none';
+  });
+}
+function _getSession() {
+  try { return JSON.parse(sessionStorage.getItem('apex_session') || 'null'); } catch { return null; }
+}
+function _setSession(obj) { sessionStorage.setItem('apex_session', JSON.stringify(obj)); }
+function _clearSession() { sessionStorage.removeItem('apex_session'); }
+function _isSuperAdmin() { return (_getSession()||{}).role === 'superadmin'; }
+
+/* ── LOGIN ── */
+async function doLogin() {
+  const u = document.getElementById('lu').value.trim();
+  const p = document.getElementById('lp').value;
+  document.getElementById('lerr').style.display = 'none';
+
+  // Hardcoded super admin (always works, even without Supabase)
+  if (u === 'apex' && p === 'APEX') {
+    if (document.getElementById('rem').checked) localStorage.setItem('apex_rem_u', u);
+    localStorage.setItem('apex_last_login', new Date().toLocaleString());
+    _setSession({ username: 'apex', role: 'superadmin', id: null });
+    document.getElementById('tuname').textContent = 'apex (Super Admin)';
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('dashboard').style.display = 'block';
+    initDash(); return;
+  }
+
+  // Try Supabase admin accounts
+  if (typeof apexFindAdmin === 'function') {
+    const admin = await apexFindAdmin(u, p);
+    if (admin) {
+      if (admin.status === 'pending') {
+        showAuth('pending'); return;
+      }
+      if (admin.status === 'suspended') {
+        document.getElementById('lerr').textContent = 'Your account has been suspended. Contact the super admin.';
+        document.getElementById('lerr').style.display = 'block'; return;
+      }
+      if (document.getElementById('rem').checked) localStorage.setItem('apex_rem_u', u);
+      _setSession({ username: admin.username, role: admin.role, id: admin.id });
+      document.getElementById('tuname').textContent = admin.full_name || admin.username;
+      document.getElementById('login-screen').style.display = 'none';
+      document.getElementById('dashboard').style.display = 'block';
+      initDash(); return;
+    }
+  }
+
+  document.getElementById('lerr').style.display = 'block';
+  document.getElementById('lerr').textContent = 'Invalid username or password. Please try again.';
+}
+document.getElementById('lp').addEventListener('keypress', e => { if (e.key === 'Enter') doLogin(); });
+
+/* ── REGISTER ── */
+async function doRegister() {
+  const name  = document.getElementById('rg-name').value.trim();
+  const user  = document.getElementById('rg-user').value.trim();
+  const email = document.getElementById('rg-email').value.trim();
+  const pw    = document.getElementById('rg-pw').value;
+  const errEl = document.getElementById('rg-err');
+
+  const showErr = msg => { errEl.textContent = msg; errEl.style.display = 'block'; };
+
+  if (!name || !user || !email || !pw) { showErr('All fields are required.'); return; }
+  if (pw.length < 6) { showErr('Password must be at least 6 characters.'); return; }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showErr('Please enter a valid email address.'); return; }
+  if (typeof apexRegisterAdmin !== 'function') {
+    showErr('Server storage not yet configured. Ask the super admin to add you manually via "Admin Users".'); return;
+  }
+
+  const btn = document.querySelector('#auth-register .btn-login');
+  if (btn) { btn.disabled = true; btn.textContent = 'Submitting…'; }
+
+  const result = await apexRegisterAdmin(user, email, pw, name);
+
+  if (btn) { btn.disabled = false; btn.textContent = '📋 Submit Request'; }
+
+  if (!result.ok) { showErr(result.error); return; }
+
+  // Notify super admin via email
+  if (typeof apexNotifyAdminRegistration === 'function') {
+    apexNotifyAdminRegistration(result.user);
+  }
+  showAuth('pending');
+}
+
+/* ── FORGOT PASSWORD ── */
+async function doForgotPassword() {
+  const email = document.getElementById('fp-email').value.trim();
+  const errEl = document.getElementById('fp-err');
+  const show  = (msg, ok) => {
+    errEl.textContent = msg;
+    errEl.style.cssText = `display:block;background:${ok?'rgba(39,174,96,.1)':'rgba(231,76,60,.1)'};border-color:${ok?'rgba(39,174,96,.35)':'rgba(231,76,60,.35)'};color:${ok?'#1e8449':'#c0392b'};`;
+  };
+
+  if (!email) { show('Please enter your email address.', false); return; }
+
+  if (typeof apexFindAdminByEmail !== 'function') {
+    show('Server storage not configured — contact the super admin to reset your password.', false); return;
+  }
+
+  const btn = document.querySelector('#auth-forgot .btn-login');
+  if (btn) { btn.disabled = true; btn.textContent = 'Sending…'; }
+
+  const admin = await apexFindAdminByEmail(email);
+  if (!admin) {
+    if (btn) { btn.disabled = false; btn.textContent = '📧 Send New Password'; }
+    show('No account found with that email address.', false); return;
+  }
+
+  // Generate a random temp password
+  const tempPw = Math.random().toString(36).slice(2, 10).toUpperCase() + Math.floor(Math.random()*100);
+  const updated = await apexUpdateAdminPassword(admin.id, tempPw);
+
+  if (btn) { btn.disabled = false; btn.textContent = '📧 Send New Password'; }
+
+  if (!updated) { show('Failed to reset password. Please try again.', false); return; }
+
+  if (typeof apexSendForgotPassword === 'function') apexSendForgotPassword(email, tempPw);
+  show('✅ A new temporary password has been sent to your email.', true);
+}
+
+/* ── LOGOUT ── */
+function doLogout() {
+  _clearSession();
+  document.getElementById('dashboard').style.display = 'none';
+  document.getElementById('login-screen').style.display = 'flex';
+  showAuth('login');
+  document.getElementById('lp').value = '';
+}
+
+window.addEventListener('load', () => {
+  const rem = localStorage.getItem('apex_rem_u');
+  if (rem) { document.getElementById('lu').value = rem; document.getElementById('rem').checked = true; }
+  // Restore session if still active
+  const sess = _getSession();
+  if (sess) {
+    document.getElementById('tuname').textContent =
+      sess.role === 'superadmin' ? (sess.username + ' (Super Admin)') : sess.username;
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('dashboard').style.display = 'block';
     initDash();
   }
 });
-function doLogout(){
-  sessionStorage.removeItem('apex_admin');
-  document.getElementById('dashboard').style.display='none';
-  document.getElementById('login-screen').style.display='flex';
-  document.getElementById('lp').value='';
-}
 
 /* ── SIDEBAR ── */
 function showP(id,el){
@@ -720,9 +929,11 @@ function showP(id,el){
   if(el) el.classList.add('active');
   const titles={overview:'Dashboard',home:'Home Page Editor',about:'About Page Editor',
     services:'Services Editor',projects:'Projects Editor',sectors:'Sectors Editor',
-    contact:'Contact Editor',messages:'Messages Inbox',global:'Global Settings'};
+    contact:'Contact Editor',messages:'Messages Inbox',admins:'Admin Users',
+    global:'Global Settings'};
   document.getElementById('ptxt').textContent=titles[id]||id;
   if(window.innerWidth<768) document.getElementById('sidebar').classList.remove('open');
+  if(id==='admins') renderAdminUsers();
 }
 function toggleSB(){ document.getElementById('sidebar').classList.toggle('open'); }
 
@@ -747,7 +958,14 @@ function initDash(){
   renderMsgs();
   updateMsgBadge();
   updatePV();
-  // Load fresh messages from Supabase (async, updates inbox after local render)
+  // Show Admin Users nav for super admins
+  if (_isSuperAdmin()) {
+    const nav = document.getElementById('ni-admins');
+    if (nav) nav.style.display = '';
+    // Load pending count badge async
+    refreshAdminBadge();
+  }
+  // Load fresh messages from Supabase (async — replaces localStorage data with server data)
   if (typeof apexLoadMessages === 'function') apexLoadMessages();
 }
 
@@ -1316,6 +1534,194 @@ function showToast(msg,type){
 document.getElementById('msgModal').addEventListener('click',function(e){
   if(e.target===this) closeModal();
 });
+
+/* ═══════════════════════════════════════════════════════════
+   ADMIN USERS MANAGEMENT
+   Requires Supabase to be configured in messages.js.
+   Changes are stored on the server — visible from any device.
+   ═══════════════════════════════════════════════════════════ */
+
+async function refreshAdminBadge() {
+  if (typeof apexGetPendingAdmins !== 'function') return;
+  const pending = await apexGetPendingAdmins();
+  const badge = document.getElementById('adminbadge');
+  if (!badge) return;
+  if (pending.length > 0) {
+    badge.textContent = pending.length;
+    badge.style.display = 'inline-flex';
+  } else {
+    badge.style.display = 'none';
+  }
+}
+
+async function renderAdminUsers() {
+  const el = document.getElementById('admin-users-content');
+  if (!el) return;
+
+  if (typeof apexGetAllAdmins !== 'function') {
+    el.innerHTML = `<div class="ep" style="text-align:center;padding:2rem;">
+      <div style="font-size:2.5rem;margin-bottom:1rem;">⚙️</div>
+      <h3 style="font-family:'Playfair Display',serif;color:var(--navy);margin-bottom:.75rem;">Supabase Not Configured</h3>
+      <p style="font-size:.83rem;color:var(--gray);line-height:1.6;max-width:480px;margin:0 auto;">
+        To enable multi-admin access and cross-device data storage:<br><br>
+        1. Create a free account at <strong>supabase.com</strong><br>
+        2. Run <strong>SUPABASE_SCHEMA.sql</strong> in your project's SQL Editor<br>
+        3. Paste your Project URL and anon key into <strong>js/messages.js</strong><br>
+        4. Upload and the admin user system will be ready.
+      </p>
+    </div>`;
+    return;
+  }
+
+  el.innerHTML = '<p style="color:var(--gray);font-size:.83rem;">Loading…</p>';
+
+  const [allAdmins, pending] = await Promise.all([
+    apexGetAllAdmins(),
+    apexGetPendingAdmins()
+  ]);
+
+  refreshAdminBadge();
+
+  const me = _getSession() || {};
+
+  const rolePill = (role, status) => {
+    if (status === 'suspended') return '<span style="background:rgba(231,76,60,.12);color:var(--danger);font-size:.65rem;font-weight:700;padding:.1rem .4rem;border-radius:10px;">Suspended</span>';
+    const colors = { superadmin:'rgba(201,168,76,.2)', admin:'rgba(26,107,138,.15)', pending:'rgba(243,156,18,.15)' };
+    const texts  = { superadmin:'var(--gold)', admin:'var(--teal)', pending:'var(--warn)' };
+    return `<span style="background:${colors[role]||'#f0f0f0'};color:${texts[role]||'#666'};font-size:.65rem;font-weight:700;padding:.1rem .4rem;border-radius:10px;">${role}</span>`;
+  };
+
+  const pendingSection = pending.length ? `
+    <div class="ep" style="margin-bottom:1.25rem;border-left:3px solid var(--warn);">
+      <h3 style="font-family:'Playfair Display',serif;font-size:1rem;color:var(--navy);margin-bottom:.75rem;padding-bottom:.5rem;border-bottom:2px solid var(--warn);">
+        ⏳ Pending Access Requests (${pending.length})
+      </h3>
+      ${pending.map(u => `
+        <div class="mi" style="margin-bottom:.5rem;border-left:3px solid var(--warn);cursor:default;">
+          <div class="mav" style="background:linear-gradient(135deg,var(--warn),#d97706);">${(u.full_name||'?')[0].toUpperCase()}</div>
+          <div class="mb">
+            <div class="mhdr">
+              <div class="msnd">${_escAdmin(u.full_name)} <span style="color:var(--gray);font-weight:400;font-size:.73rem;">— @${_escAdmin(u.username)}</span></div>
+              <div class="mtm">${new Date(u.created_at).toLocaleDateString('en-GB')}</div>
+            </div>
+            <div class="msbj" style="color:var(--gray);">${_escAdmin(u.email)}</div>
+          </div>
+          <div class="mact">
+            <button class="bi" style="background:var(--success);color:#fff;border-color:var(--success);" onclick="adminApprove('${u.id}','${_escAdmin(u.username)}')">✅ Approve</button>
+            <button class="bi del" onclick="adminReject('${u.id}','${_escAdmin(u.username)}')">✕ Reject</button>
+          </div>
+        </div>`).join('')}
+    </div>` : '';
+
+  const activeAdmins = allAdmins.filter(u => u.status !== 'pending');
+  const rows = activeAdmins.map(u => {
+    const isMe = u.username === me.username;
+    const canEdit = !isMe;
+    const sus = u.status === 'suspended';
+    return `<tr>
+      <td>
+        <div style="display:flex;align-items:center;gap:.75rem;">
+          <div class="mav" style="width:32px;height:32px;font-size:.7rem;">${(u.full_name||u.username)[0].toUpperCase()}</div>
+          <div>
+            <div style="font-size:.82rem;font-weight:600;color:var(--navy);">${_escAdmin(u.full_name||u.username)}${isMe?'<span style="font-size:.6rem;background:rgba(26,107,138,.15);color:var(--teal);padding:.05rem .3rem;border-radius:8px;margin-left:.4rem;">you</span>':''}</div>
+            <div style="font-size:.72rem;color:var(--gray);">@${_escAdmin(u.username)} · ${_escAdmin(u.email)}</div>
+          </div>
+        </div>
+      </td>
+      <td>${rolePill(u.role, u.status)}</td>
+      <td><span class="pill ${sus?'rd':'pa'}" style="font-size:.65rem;">${sus?'Suspended':'Active'}</span></td>
+      <td style="font-size:.72rem;color:var(--gray);">${new Date(u.created_at).toLocaleDateString('en-GB')}</td>
+      <td>
+        ${canEdit ? `
+          <select class="fs" style="font-size:.72rem;padding:.25rem .4rem;" onchange="adminChangeRole('${u.id}',this.value,this)">
+            ${['admin','superadmin'].map(r=>`<option value="${r}"${u.role===r?' selected':''}>${r}</option>`).join('')}
+          </select>
+          <button class="bi ${sus?'':'del'}" style="margin-left:.25rem;" onclick="adminToggleSuspend('${u.id}','${u.status}','${_escAdmin(u.username)}')">${sus?'✅ Restore':'⏸ Suspend'}</button>
+          <button class="bi del" style="margin-left:.25rem;" onclick="adminHardDelete('${u.id}','${_escAdmin(u.username)}')">🗑</button>
+        ` : '<span style="font-size:.72rem;color:var(--gray);">(current session)</span>'}
+      </td>
+    </tr>`;
+  }).join('');
+
+  el.innerHTML = `
+    ${pendingSection}
+    <div class="ep" style="padding:0;overflow:hidden;">
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:.9rem 1.1rem;border-bottom:1px solid #e1e5ec;">
+        <h3 style="font-family:'Playfair Display',serif;font-size:1rem;color:var(--navy);margin:0;">👥 Active Admin Users (${activeAdmins.length})</h3>
+        <div style="font-size:.72rem;color:var(--gray);">Stored on server — visible from any device</div>
+      </div>
+      ${activeAdmins.length ? `
+      <div style="overflow-x:auto;">
+        <table style="width:100%;border-collapse:collapse;font-size:.8rem;">
+          <thead style="background:#f8f9fc;">
+            <tr>
+              <th style="padding:.65rem 1rem;text-align:left;font-size:.65rem;font-weight:700;color:var(--gray);border-bottom:1px solid #e1e5ec;">User</th>
+              <th style="padding:.65rem 1rem;text-align:left;font-size:.65rem;font-weight:700;color:var(--gray);border-bottom:1px solid #e1e5ec;">Role</th>
+              <th style="padding:.65rem 1rem;text-align:left;font-size:.65rem;font-weight:700;color:var(--gray);border-bottom:1px solid #e1e5ec;">Status</th>
+              <th style="padding:.65rem 1rem;text-align:left;font-size:.65rem;font-weight:700;color:var(--gray);border-bottom:1px solid #e1e5ec;">Joined</th>
+              <th style="padding:.65rem 1rem;text-align:left;font-size:.65rem;font-weight:700;color:var(--gray);border-bottom:1px solid #e1e5ec;">Actions</th>
+            </tr>
+          </thead>
+          <tbody>${rows}</tbody>
+        </table>
+      </div>` : '<p style="padding:1.5rem;color:var(--gray);font-size:.83rem;text-align:center;">No active admin users yet. Approve a pending request or register one.</p>'}
+    </div>
+    <div class="ep" style="margin-top:1.25rem;background:rgba(201,168,76,.05);border:1px solid rgba(201,168,76,.2);">
+      <h3 style="font-family:'Playfair Display',serif;font-size:.95rem;color:var(--navy);margin-bottom:.5rem;">ℹ️ Role Guide</h3>
+      <div style="font-size:.78rem;color:var(--gray);line-height:1.7;">
+        <strong style="color:var(--gold);">superadmin</strong> — Full access: approve users, change roles, suspend, delete. Can manage all data.<br>
+        <strong style="color:var(--teal);">admin</strong> — Can edit all CMS content and view messages. Cannot manage users.
+      </div>
+    </div>`;
+}
+
+function _escAdmin(s) {
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+async function adminApprove(id, username) {
+  if (!confirm(`Approve "${username}"?\n\nChoose role:\n\nPress OK for "admin"\nPress Cancel to choose "superadmin" manually`)) {
+    // Let super admin choose via a simple prompt
+    const role = prompt(`Approve "${username}" — enter role:\n  admin\n  superadmin`, 'admin');
+    if (!role) return;
+    const r = role.trim().toLowerCase();
+    if (!['admin','superadmin'].includes(r)) { alert('Invalid role. Use "admin" or "superadmin".'); return; }
+    await apexApproveAdmin(id, r);
+    showToast(`✅ ${username} approved as ${r}.`, 'ok');
+  } else {
+    await apexApproveAdmin(id, 'admin');
+    showToast(`✅ ${username} approved as admin.`, 'ok');
+  }
+  renderAdminUsers();
+}
+
+async function adminReject(id, username) {
+  if (!confirm(`Reject and delete the access request from "${username}"? This cannot be undone.`)) return;
+  await apexDeleteAdmin(id);
+  showToast(`${username}'s request rejected.`, '');
+  renderAdminUsers();
+}
+
+async function adminChangeRole(id, newRole, selectEl) {
+  const ok = await apexChangeAdminRole(id, newRole);
+  if (ok) showToast(`Role updated to ${newRole}.`, 'ok');
+  else { showToast('Failed to update role.', 'err'); renderAdminUsers(); }
+}
+
+async function adminToggleSuspend(id, currentStatus, username) {
+  const suspend = currentStatus !== 'suspended';
+  if (!confirm(`${suspend?'Suspend':'Restore'} "${username}"?`)) { renderAdminUsers(); return; }
+  await apexSetAdminStatus(id, suspend ? 'suspended' : 'active');
+  showToast(`${username} ${suspend?'suspended':'restored'}.`, suspend?'err':'ok');
+  renderAdminUsers();
+}
+
+async function adminHardDelete(id, username) {
+  if (!confirm(`Permanently delete "${username}" and all their data? This cannot be undone.`)) return;
+  await apexDeleteAdmin(id);
+  showToast(`${username} deleted.`, '');
+  renderAdminUsers();
+}
 </script>
 </body>
 </html>
