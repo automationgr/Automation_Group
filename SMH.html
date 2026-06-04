@@ -599,7 +599,7 @@ const DB = {
     const users = this.getUsers();
     const existing = users.find(u => u.email === SUPER_ADMIN_EMAIL);
     if (!existing) {
-      // First-ever load: create the SA account with the hardcoded password
+      // First-ever load: create the SA account
       users.push({
         id: nanoid(), full_name: 'Super Admin', email: SUPER_ADMIN_EMAIL,
         password: SUPER_ADMIN_PASSWORD, company_name: '', phone: '',
@@ -607,10 +607,11 @@ const DB = {
       });
       this.saveUsers(users);
     } else {
-      // Always keep the SA email locked to superadmin/active
+      // Always lock SA account to correct role, status, and password
       let changed = false;
-      if (existing.role !== 'superadmin') { existing.role = 'superadmin'; changed = true; }
-      if (existing.status !== 'active')   { existing.status = 'active';   changed = true; }
+      if (existing.role     !== 'superadmin')      { existing.role     = 'superadmin';      changed = true; }
+      if (existing.status   !== 'active')           { existing.status   = 'active';           changed = true; }
+      if (existing.password !== SUPER_ADMIN_PASSWORD) { existing.password = SUPER_ADMIN_PASSWORD; changed = true; }
       if (changed) this.saveUsers(users);
     }
   },
