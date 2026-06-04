@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>ApexRM Social Hub — Social Media Manager</title>
+<title>ApexRM Social Media Automation</title>
+<link rel="icon" type="image/png" href="Img/favicon.png"/>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{font-size:15px;scroll-behavior:smooth}
@@ -29,7 +30,7 @@ body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:#0f111
 #auth-wrapper{min-height:100vh;display:flex;align-items:center;justify-content:center;background:radial-gradient(ellipse at 20% 50%,rgba(99,102,241,.08),transparent 60%),radial-gradient(ellipse at 80% 20%,rgba(16,185,129,.05),transparent 60%),var(--bg-base);padding:24px}
 #auth-card{background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:40px;width:100%;max-width:460px;box-shadow:var(--shadow)}
 .auth-logo{text-align:center;margin-bottom:32px}
-.logo-icon{width:52px;height:52px;background:linear-gradient(135deg,var(--primary),#8b5cf6);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:800;color:#fff;margin:0 auto 14px}
+.logo-icon{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;overflow:hidden;margin:0 auto 14px}
 .auth-logo h1{font-size:22px;font-weight:700;color:var(--text-primary)}
 .auth-logo p{color:var(--text-secondary);font-size:14px;margin-top:4px}
 
@@ -38,7 +39,7 @@ body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:#0f111
 #sidebar{width:var(--sidebar-w);background:var(--bg-surface);border-right:1px solid var(--border);display:flex;flex-direction:column;position:fixed;top:0;left:0;height:100vh;z-index:200;transition:transform .25s ease;overflow-y:auto;overflow-x:hidden}
 .sidebar-head{padding:18px 16px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);flex-shrink:0}
 .sidebar-brand{display:flex;align-items:center;gap:10px;text-decoration:none;cursor:pointer;border:none;background:none}
-.sidebar-logo{width:36px;height:36px;background:linear-gradient(135deg,var(--primary),#8b5cf6);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;color:#fff;flex-shrink:0}
+.sidebar-logo{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;overflow:hidden;flex-shrink:0}
 .sidebar-app-name{font-size:13px;font-weight:700;color:var(--text-primary);line-height:1.2}
 #sidebar-close{display:none;background:none;border:none;color:var(--text-secondary);cursor:pointer;font-size:18px;padding:4px}
 .sidebar-user{padding:14px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;flex-shrink:0}
@@ -386,8 +387,8 @@ tbody tr:hover td{background:var(--bg-hover)}
   <aside id="sidebar">
     <div class="sidebar-head">
       <button class="sidebar-brand" onclick="Router.go('dashboard')">
-        <div class="sidebar-logo">A</div>
-        <span class="sidebar-app-name">ApexRM Social Hub</span>
+        <div class="sidebar-logo"><img src="Img/favicon.png" style="width:100%;height:100%;object-fit:cover"/></div>
+        <span class="sidebar-app-name">ApexRM Social Media<br/>Automation</span>
       </button>
       <button id="sidebar-close">✕</button>
     </div>
@@ -458,8 +459,9 @@ tbody tr:hover td{background:var(--bg-hover)}
 <script>
 'use strict';
 
-// ── Hardcoded Super Admin — only this email can ever be superadmin ──────────
-const SUPER_ADMIN_EMAIL = 'info.apexrmgroup@gmail.com';
+// ── Hardcoded Super Admin credentials — never change these constants ─────────
+const SUPER_ADMIN_EMAIL    = 'info.apexrmgroup@gmail.com';
+const SUPER_ADMIN_PASSWORD = 'apexapex';
 
 // ══════════════════════════════════════════════════════════════
 // DB — All data stored in localStorage (no server needed)
@@ -581,21 +583,29 @@ const DB = {
     return media[0];
   },
 
+  // Profile avatars (stored as base64 data URLs)
+  getAvatar(userId) { return this.get('avatar_'+userId, null); },
+  saveAvatar(userId, dataUrl) { this.set('avatar_'+userId, dataUrl); },
+  deleteAvatar(userId) { this.del('avatar_'+userId); },
+
   // Admin helpers
   ensureSuperAdmin() {
     const users = this.getUsers();
     const existing = users.find(u => u.email === SUPER_ADMIN_EMAIL);
     if (!existing) {
-      // Auto-create the SA account with default password on first load
+      // First-ever load: create the SA account with the hardcoded password
       users.push({
         id: nanoid(), full_name: 'Super Admin', email: SUPER_ADMIN_EMAIL,
-        password: 'apexapex', company_name: '', phone: '',
+        password: SUPER_ADMIN_PASSWORD, company_name: '', phone: '',
         role: 'superadmin', status: 'active', created_at: Date.now()
       });
       this.saveUsers(users);
-    } else if (existing.role !== 'superadmin') {
-      existing.role = 'superadmin'; existing.status = 'active';
-      this.saveUsers(users);
+    } else {
+      // Always keep the SA email locked to superadmin/active
+      let changed = false;
+      if (existing.role !== 'superadmin') { existing.role = 'superadmin'; changed = true; }
+      if (existing.status !== 'active')   { existing.status = 'active';   changed = true; }
+      if (changed) this.saveUsers(users);
     }
   },
   setUserRole(id, role) {
@@ -738,8 +748,19 @@ const Shell = {
   updateUser() {
     const u = State.user; if(!u) return;
     const ini = initials(u.full_name);
-    document.getElementById('sidebar-avatar').textContent = ini;
-    document.getElementById('topbar-avatar').textContent = ini;
+    const avatar = DB.getAvatar(u.id);
+    ['sidebar-avatar','topbar-avatar'].forEach(id => {
+      const el = document.getElementById(id); if(!el) return;
+      if(avatar) {
+        el.textContent = '';
+        el.style.backgroundImage = `url(${avatar})`;
+        el.style.backgroundSize = 'cover';
+        el.style.backgroundPosition = 'center';
+      } else {
+        el.textContent = ini;
+        el.style.backgroundImage = '';
+      }
+    });
     document.getElementById('sidebar-name').textContent = u.full_name||u.email;
     document.getElementById('sidebar-role').textContent = u.role === 'superadmin' ? '🛡️ Super Admin' : u.role === 'admin' ? '🔑 Admin' : 'User';
     // Admin Panel nav: visible to admins and superadmins
@@ -810,8 +831,8 @@ const Shell = {
 function renderLogin() {
   Shell.showAuth(`
     <div class="auth-logo">
-      <div class="logo-icon">A</div>
-      <h1>ApexRM Social Hub</h1>
+      <div class="logo-icon"><img src="Img/favicon.png" style="width:100%;height:100%;object-fit:cover"/></div>
+      <h1>ApexRM Social Media Automation</h1>
       <p>Sign in to your account</p>
     </div>
     <form id="login-form">
@@ -855,7 +876,7 @@ function renderLogin() {
 function renderRegister() {
   Shell.showAuth(`
     <div class="auth-logo">
-      <div class="logo-icon">A</div>
+      <div class="logo-icon"><img src="Img/favicon.png" style="width:100%;height:100%;object-fit:cover"/></div>
       <h1>Request Access</h1>
       <p>Submit your details — the Super Admin will review your request</p>
     </div>
@@ -888,7 +909,7 @@ function renderRegister() {
     const user = DB.createUser({full_name:document.getElementById('rn').value, company_name:document.getElementById('rc').value, email, phone:document.getElementById('rph').value, password:pw});
     if(user.role === 'superadmin') {
       // The SA email registered — go straight in
-      DB.addNotif(user.id,'Welcome, Super Admin!','You have full administrator access to ApexRM Social Hub.','success');
+      DB.addNotif(user.id,'Welcome, Super Admin!','You have full administrator access to ApexRM Social Media Automation.','success');
       State.set(user); Shell.showApp(); Router.go('dashboard');
       Toast.success('Welcome! You are logged in as Super Admin.');
     } else {
@@ -906,7 +927,7 @@ function renderRegister() {
 function renderForgot() {
   Shell.showAuth(`
     <div class="auth-logo">
-      <div class="logo-icon">A</div>
+      <div class="logo-icon"><img src="Img/favicon.png" style="width:100%;height:100%;object-fit:cover"/></div>
       <h1>Reset Password</h1>
       <p>Enter your new password below</p>
     </div>
@@ -1872,6 +1893,22 @@ function renderSettings() {
 
     <div class="settings-section active" id="s-profile">
       <div class="settings-card">
+        <h3>Profile Picture</h3>
+        <div style="display:flex;align-items:center;gap:20px;flex-wrap:wrap">
+          <div id="avatar-preview-wrap" style="width:88px;height:88px;border-radius:50%;background:linear-gradient(135deg,var(--primary),#8b5cf6);display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:700;color:#fff;overflow:hidden;flex-shrink:0;border:3px solid var(--border)">
+            ${DB.getAvatar(u.id) ? `<img src="${DB.getAvatar(u.id)}" style="width:100%;height:100%;object-fit:cover"/>` : `<span>${escHtml(initials(u.full_name))}</span>`}
+          </div>
+          <div>
+            <input type="file" id="avatar-file" accept="image/*" style="display:none" onchange="handleAvatarUpload()"/>
+            <div style="display:flex;gap:8px;flex-wrap:wrap">
+              <button type="button" class="btn btn-primary btn-sm" onclick="document.getElementById('avatar-file').click()">📷 Upload Photo</button>
+              ${DB.getAvatar(u.id) ? `<button type="button" class="btn btn-danger btn-sm" onclick="removeAvatar()">🗑 Remove</button>` : ''}
+            </div>
+            <div class="form-hint" style="margin-top:8px">JPG or PNG · Max 2 MB · Recommended 200×200 px</div>
+          </div>
+        </div>
+      </div>
+      <div class="settings-card">
         <h3>Profile Information</h3>
         <form id="profile-form">
           <div class="form-row">
@@ -1993,6 +2030,28 @@ window.saveNotifSettings = function() {
 window.saveGeneralSettings = function() {
   DB.saveSettings(State.user.id, { timezone:document.getElementById('g-timezone')?.value, language:document.getElementById('g-language')?.value });
   Toast.success('Settings saved.');
+};
+
+window.handleAvatarUpload = function() {
+  const file = document.getElementById('avatar-file')?.files[0];
+  if(!file) return;
+  if(file.size > 2 * 1024 * 1024) { Toast.error('Image must be under 2 MB.'); return; }
+  const reader = new FileReader();
+  reader.onload = e => {
+    DB.saveAvatar(State.user.id, e.target.result);
+    Shell.updateUser();
+    renderSettings();
+    Toast.success('Profile picture updated.');
+  };
+  reader.readAsDataURL(file);
+};
+
+window.removeAvatar = async function() {
+  if(!await Modal.confirm('Remove Photo', 'Remove your profile picture?')) return;
+  DB.deleteAvatar(State.user.id);
+  Shell.updateUser();
+  renderSettings();
+  Toast.success('Profile picture removed.');
 };
 
 window.exportData = function() {
@@ -2198,7 +2257,7 @@ window.adminApproveUser = async function(userId, displayName) {
   DB.approveUser(userId);
   DB.setUserRole(userId, roleChoice);
   DB.addNotif(userId, '🎉 Access Approved!',
-    `Your access to ApexRM Social Hub has been approved. You have been granted ${roleChoice} access. You can now sign in.`,
+    `Your access to ApexRM Social Media Automation has been approved. You have been granted ${roleChoice} access. You can now sign in.`,
     'success');
   Toast.success(`${displayName} approved as ${roleChoice}. They can now log in.`);
   Shell.refreshNotifCount();
@@ -2330,6 +2389,7 @@ function registerRoutes() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+  DB.ensureSuperAdmin(); // always runs first — creates SA account if it doesn't exist
   State.load();
   initEventListeners();
   registerRoutes();
