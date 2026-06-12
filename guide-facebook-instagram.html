@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Facebook & Instagram Developer App Setup Guide</title>
+<style>
+  :root { --navy:#1B2B5E; --fb:#1877F2; --ig-start:#833ab4; --ig-end:#fcb045; --green:#22c55e; --border:#e5e7eb; --bg:#f9fafb; --text:#1f2937; --muted:#6b7280; }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Segoe UI',system-ui,sans-serif;color:var(--text);background:#fff;line-height:1.8;font-size:15px}
+  .header{background:linear-gradient(135deg,#1877F2,#E1306C);color:white;padding:0}
+  .header-inner{max-width:960px;margin:0 auto;padding:48px 28px 36px}
+  .header h1{font-size:1.9rem;font-weight:800;margin-bottom:8px}
+  .header p{opacity:.9;font-size:1rem;max-width:620px}
+  .header .tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
+  .header .tag{background:rgba(255,255,255,.2);padding:4px 14px;border-radius:20px;font-size:.78rem;font-weight:700}
+  .toc-wrap{background:var(--bg);border-bottom:2px solid var(--border)}
+  .toc{max-width:960px;margin:0 auto;padding:20px 28px}
+  .toc h2{font-size:.78rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;margin-bottom:12px}
+  .toc-links{display:flex;flex-wrap:wrap;gap:8px}
+  .toc-links a{background:white;border:1px solid var(--border);color:var(--navy);padding:6px 16px;border-radius:20px;font-size:.83rem;text-decoration:none;font-weight:600}
+  .toc-links a:hover{background:var(--navy);color:white}
+  .content{max-width:960px;margin:0 auto;padding:44px 28px 80px}
+  .section{margin-bottom:60px}
+  h2.section-title{font-size:1.45rem;font-weight:800;color:var(--navy);padding-bottom:12px;border-bottom:3px solid var(--fb);margin-bottom:28px;display:flex;align-items:center;gap:10px}
+  h2.section-title.ig{border-color:#E1306C}
+  h3.step-group{font-size:1.05rem;font-weight:800;color:white;padding:13px 20px;border-radius:10px 10px 0 0;margin-top:32px}
+  h3.step-group.fb{background:var(--fb)}
+  h3.step-group.ig{background:linear-gradient(90deg,#833ab4,#E1306C)}
+  .step-body-wrap{border:2px solid var(--border);border-top:none;border-radius:0 0 10px 10px;padding:28px}
+  .step{display:flex;gap:18px;margin-bottom:26px;padding-bottom:26px;border-bottom:1px solid var(--border);align-items:flex-start}
+  .step:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
+  .num{width:36px;height:36px;border-radius:50%;color:white;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.88rem;flex-shrink:0;margin-top:2px}
+  .num.fb{background:var(--fb)}
+  .num.ig{background:#E1306C}
+  .step-content h4{font-size:.98rem;font-weight:700;color:var(--navy);margin-bottom:8px}
+  .step-content p{margin-bottom:8px;color:var(--text)}
+  .step-content p:last-child{margin-bottom:0}
+  .step-content ul,.step-content ol{padding-left:20px;margin:8px 0}
+  .step-content li{margin-bottom:6px}
+  .callout{border-radius:10px;padding:15px 20px;margin:18px 0;font-size:.91rem}
+  .callout.info{background:#eff6ff;border-left:4px solid #3b82f6}
+  .callout.warn{background:#fffbeb;border-left:4px solid #f59e0b}
+  .callout.success{background:#f0fdf4;border-left:4px solid var(--green)}
+  .callout.danger{background:#fef2f2;border-left:4px solid #ef4444}
+  .callout strong{display:block;font-weight:700;color:var(--navy);margin-bottom:5px}
+  .env-box{background:#1e293b;color:#e2e8f0;border-radius:8px;padding:18px 22px;margin:16px 0;font-family:monospace;font-size:.88rem;line-height:1.9}
+  .env-box .comment{color:#64748b}
+  .env-box .key{color:#93c5fd}
+  .env-box .val{color:#86efac}
+  .img-placeholder{border:2px dashed var(--border);border-radius:8px;padding:18px;text-align:center;color:var(--muted);font-size:.85rem;background:var(--bg);margin:12px 0}
+  .back-link{display:inline-flex;align-items:center;gap:8px;color:var(--navy);text-decoration:none;font-weight:600;font-size:.9rem;margin-bottom:28px;padding:8px 16px;border:1px solid var(--border);border-radius:8px;background:var(--bg)}
+  .back-link:hover{background:var(--navy);color:white}
+  .tip{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:12px 16px;font-size:.87rem;color:#166534;margin-top:10px}
+  .tip::before{content:'💡 Tip: ';font-weight:700}
+  .warn-inline{background:#fffbeb;border:1px solid #fde68a;border-radius:8px;padding:12px 16px;font-size:.87rem;color:#92400e;margin-top:10px}
+  .warn-inline::before{content:'⚠️ Important: ';font-weight:700}
+  .footer{background:var(--navy);color:white;text-align:center;padding:26px;font-size:.83rem;opacity:.85}
+  .url-box{background:#f1f5f9;border:1px solid var(--border);border-radius:6px;padding:10px 16px;font-family:monospace;font-size:.9rem;color:#1e293b;margin:8px 0;word-break:break-all}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-inner">
+    <h1>📘📸 Facebook &amp; Instagram Developer App Setup</h1>
+    <p>Step-by-step guide to creating a Facebook Developer App and obtaining all the API keys and IDs required to enable Facebook and Instagram publishing in Apex Social Automations.</p>
+    <div class="tags">
+      <span class="tag">Admin Setup Guide</span>
+      <span class="tag">FACEBOOK_APP_ID</span>
+      <span class="tag">FACEBOOK_APP_SECRET</span>
+    </div>
+  </div>
+</div>
+
+<div class="toc-wrap">
+  <div class="toc">
+    <h2>Contents</h2>
+    <div class="toc-links">
+      <a href="#overview">Overview</a>
+      <a href="#fb-create">1. Create Facebook Developer Account</a>
+      <a href="#fb-app">2. Create a Facebook App</a>
+      <a href="#fb-keys">3. Get App ID &amp; Secret</a>
+      <a href="#fb-oauth">4. Set Up OAuth &amp; Redirect URIs</a>
+      <a href="#fb-permissions">5. Add Required Permissions</a>
+      <a href="#ig-setup">6. Add Instagram to the App</a>
+      <a href="#fb-live">7. Switch App to Live Mode</a>
+      <a href="#env-vars">8. Add Keys to Your App</a>
+    </div>
+  </div>
+</div>
+
+<div class="content">
+  <a href="user-manual.html" class="back-link">← Back to User Manual</a>
+
+  <!-- OVERVIEW -->
+  <div class="section" id="overview">
+    <h2 class="section-title">Overview — What You Are Setting Up</h2>
+    <div class="callout info">
+      <strong>This guide is for the platform administrator only</strong>
+      Regular users of Apex Social Automations do NOT need to do any of this. This setup is done once by the person who owns and runs the platform (the admin). Once these keys are configured in the app's environment variables, all users can connect their Facebook Pages and Instagram accounts using the simple OAuth flow in the app.
+    </div>
+    <p>Facebook and Instagram use the same developer app. You create one Facebook Developer App, and it handles both Facebook Page publishing and Instagram Professional account publishing through the Graph API. The two keys you need are:</p>
+    <div class="env-box">
+      <span class="comment"># These go in your .env.local file and Vercel Environment Variables</span><br/>
+      <span class="key">FACEBOOK_APP_ID</span>=<span class="val">your_app_id_here</span><br/>
+      <span class="key">FACEBOOK_APP_SECRET</span>=<span class="val">your_app_secret_here</span>
+    </div>
+  </div>
+
+  <!-- STEP 1: DEVELOPER ACCOUNT -->
+  <div class="section" id="fb-create">
+    <h2 class="section-title">1. Create a Facebook Developer Account</h2>
+    <h3 class="step-group fb">📘 Facebook Developer Registration</h3>
+    <div class="step-body-wrap">
+
+      <div class="step">
+        <div class="num fb">1</div>
+        <div class="step-content">
+          <h4>Go to the Facebook Developer portal</h4>
+          <p>Open your browser and go to <strong>https://developers.facebook.com</strong>. This is Facebook's official developer portal where all apps are created and managed. You need to be logged in to your Facebook account to proceed.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="num fb">2</div>
+        <div class="step-content">
+          <h4>Log in with your Facebook account</h4>
+          <p>Click <strong>Log In</strong> at the top right of the page. Use the Facebook account that you want to be the developer/owner of this app. This should be your main business Facebook account — the same one that manages your Facebook Page.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="num fb">3</div>
+        <div class="step-content">
+          <h4>Register as a developer (first time only)</h4>
+          <p>If this is your first time visiting the developer portal, click <strong>"Get Started"</strong> at the top of the page. Facebook will ask you to verify your account and accept the Facebook Platform Policy and Developer Terms. Read through them and click <strong>Next</strong> then <strong>Done</strong> to complete registration. If you have already registered as a developer before, skip this step — you will go directly to the My Apps dashboard.</p>
+          <div class="warn-inline">Facebook requires your account to have a verified phone number before you can create apps. If prompted, go to your Facebook Settings → Security and Login → Two-Factor Authentication and add your phone number.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- STEP 2: CREATE APP -->
+  <div class="section" id="fb-app">
+    <h2 class="section-title">2. Create a New Facebook App</h2>
+    <h3 class="step-group fb">📘 Creating the App</h3>
+    <div class="step-body-wrap">
+
+      <div class="step">
+        <div class="num fb">1</div>
+        <div class="step-content">
+          <h4>Open "My Apps" and click "Create App"</h4>
+          <p>After logging in, click <strong>My Apps</strong> in the top right navigation bar. This takes you to your app dashboard. Click the green <strong>"Create App"</strong> button in the top right corner of the page.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="num fb">2</div>
+        <div class="step-content">
+          <h4>Select the app use case</h4>
+          <p>Facebook will ask what your app does. Select <strong>"Other"</strong> if you do not see a fitting option, or select <strong>"Allow people to log in with their Facebook account (Facebook Login)"</strong>. Then click <strong>Next</strong>.</p>
+          <div class="tip">If Facebook asks for an app type, select <strong>"Business"</strong>. This gives access to all the Graph API features needed for posting to Pages and Instagram.</div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="num fb">3</div>
+        <div class="step-content">
+          <h4>Enter your app details</h4>
+          <p>You will see a form asking for:</p>
+          <ul>
+            <li><strong>App Name:</strong> Enter something descriptive like <em>Apex Social Automations</em>. This name appears to users when they authorize the app with their Facebook account.</li>
+            <li><strong>App Contact Email:</strong> Enter your business email address (e.g. info.apexrmgroup@gmail.com). Facebook will send important notifications here.</li>
+            <li><strong>Business Account:</strong> If you have a Facebook Business Manager account, link it here. If not, leave it blank for now — you can link it later.</li>
+          </ul>
+          <p>Once filled in, click <strong>"Create App"</strong>. Facebook may ask you to enter your Facebook password as a security confirmation.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="num fb">4</div>
+        <div class="step-content">
+          <h4>You are now inside your new app's dashboard</h4>
+          <p>After creation, you will be taken to the App Dashboard. This is the control panel for your Facebook app. You will see a left sidebar with various settings, and the main area showing your App ID prominently at the top. Keep this page open — you will need it in the next steps.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- STEP 3: GET KEYS -->
+  <div class="section" id="fb-keys">
+    <h2 class="section-title">3. Get Your App ID and App Secret</h2>
+    <h3 class="step-group fb">📘 Copying the Keys</h3>
+    <div class="step-body-wrap">
+
+      <div class="step">
+        <div class="num fb">1</div>
+        <div class="step-content">
+          <h4>Find your App ID</h4>
+          <p>On your App Dashboard, look at the top of the page or in the left sidebar. You will see a number labelled <strong>App ID</strong> — it is a long number like <em>1234567890123456</em>. This is your <strong>FACEBOOK_APP_ID</strong>. Copy it and save it somewhere safe.</p>
+          <div class="url-box">Example: FACEBOOK_APP_ID = 1234567890123456</div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="num fb">2</div>
+        <div class="step-content">
+          <h4>Find your App Secret</h4>
+          <p>In the left sidebar, click <strong>App Settings</strong> → <strong>Basic</strong>. Scroll down to find the <strong>App Secret</strong> field. It is hidden by default — click the <strong>"Show"</strong> button next to it. Facebook will ask for your Facebook password to confirm your identity before revealing the secret. Enter your password and click Submit. You will now see a long string of letters and numbers — this is your <strong>FACEBOOK_APP_SECRET</strong>. Copy it immediately and store it securely.</p>
+          <div class="warn-inline">Never share your App Secret publicly. Do not put it in any public code repository like GitHub. This key gives full control over your Facebook app. Store it only in your .env.local file and Vercel's Environment Variables dashboard.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- STEP 4: OAUTH -->
+  <div class="section" id="fb-oauth">
+    <h2 class="section-title">4. Set Up Facebook Login &amp; Redirect URIs</h2>
+    <h3 class="step-group fb">📘 OAuth Configuration</h3>
+    <div class="step-body-wrap">
+
+      <div class="step">
+        <div class="num fb">1</div>
+        <div class="step-content">
+          <h4>Add the "Facebook Login" product to your app</h4>
+          <p>In the left sidebar of your app dashboard, click <strong>"Add Product"</strong> (or scroll down to the Products section on the dashboard). Find <strong>Facebook Login</strong> in the list and click <strong>"Set Up"</strong> next to it. Choose <strong>Web</strong> as the platform. On the next screen, it will ask for your website URL — enter <strong>https://app.apexrmgroup.com</strong> and click Save. Then click <strong>Continue</strong> until the setup wizard is complete.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="num fb">2</div>
+        <div class="step-content">
+          <h4>Configure the OAuth Redirect URIs</h4>
+          <p>After adding Facebook Login, it will appear in your left sidebar. Click <strong>Facebook Login</strong> → <strong>Settings</strong> in the sidebar. You will see a field called <strong>"Valid OAuth Redirect URIs"</strong>. This is where you tell Facebook which URLs are allowed to receive the authorization response after a user logs in. Add the following URL exactly as written:</p>
+          <div class="url-box">https://app.apexrmgroup.com/api/social/facebook/callback</div>
+          <p>Click <strong>Add</strong> after typing the URL, then click <strong>Save Changes</strong> at the bottom of the page.</p>
+          <div class="tip">If you are also running the app locally for development, add a second redirect URI: <strong>http://localhost:3000/api/social/facebook/callback</strong></div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="num fb">3</div>
+        <div class="step-content">
+          <h4>Enable Client OAuth Login and Web OAuth Login</h4>
+          <p>Still on the Facebook Login → Settings page, make sure these two toggles are turned <strong>ON</strong>:</p>
+          <ul>
+            <li><strong>Client OAuth Login:</strong> ON</li>
+            <li><strong>Web OAuth Login:</strong> ON</li>
+          </ul>
+          <p>Leave everything else at its default setting. Click <strong>Save Changes</strong>.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- STEP 5: PERMISSIONS -->
+  <div class="section" id="fb-permissions">
+    <h2 class="section-title">5. Add Required Permissions &amp; Scopes</h2>
+    <h3 class="step-group fb">📘 Permissions Configuration</h3>
+    <div class="step-body-wrap">
+
+      <div class="step">
+        <div class="num fb">1</div>
+        <div class="step-content">
+          <h4>Go to App Review → Permissions and Features</h4>
+          <p>In the left sidebar, click <strong>App Review</strong> → <strong>Permissions and Features</strong>. This page lists all the permissions your app can request. The permissions listed below are the ones your app requests from users when they connect their Facebook account. You need to ensure these are approved for your app to work in live mode.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="num fb">2</div>
+        <div class="step-content">
+          <h4>Required permissions for this app</h4>
+          <p>The following permissions are used by Apex Social Automations. Search for each one and click <strong>"Request Advanced Access"</strong> for each (this is needed for live/production use):</p>
+          <ul>
+            <li><strong>pages_manage_posts</strong> — Allows the app to create, edit, and delete posts on Pages the user manages</li>
+            <li><strong>pages_read_engagement</strong> — Allows reading Page metrics and engagement data</li>
+            <li><strong>pages_show_list</strong> — Allows viewing the list of Pages the user manages</li>
+            <li><strong>instagram_content_publish</strong> — Allows publishing photos and videos to Instagram Business accounts</li>
+            <li><strong>instagram_manage_accounts</strong> — Allows managing Instagram accounts connected to Pages</li>
+            <li><strong>instagram_manage_insights</strong> — Allows reading Instagram insights and metrics</li>
+          </ul>
+          <div class="warn-inline">For testing purposes (during development), these permissions work automatically when using the app in Development mode with test users. For live public access, you must submit each permission to Facebook for App Review. This process can take a few days to a few weeks.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- STEP 6: INSTAGRAM -->
+  <div class="section" id="ig-setup">
+    <h2 class="section-title">6. Enable Instagram in Your Facebook App</h2>
+    <h3 class="step-group ig">📸 Instagram Configuration</h3>
+    <div class="step-body-wrap">
+
+      <div class="step">
+        <div class="num ig">1</div>
+        <div class="step-content">
+          <h4>Add Instagram Graph API product</h4>
+          <p>Go back to your app dashboard. Click <strong>"Add Product"</strong> in the left sidebar. Find <strong>Instagram Graph API</strong> in the product list and click <strong>"Set Up"</strong>. This product enables your app to publish content to Instagram Professional accounts via the Graph API. It uses the same App ID and App Secret — no additional keys are required specifically for Instagram.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="num ig">2</div>
+        <div class="step-content">
+          <h4>Set the Instagram OAuth Redirect URI</h4>
+          <p>After adding Instagram Graph API, go back to <strong>Facebook Login</strong> → <strong>Settings</strong> in the sidebar. In the <strong>Valid OAuth Redirect URIs</strong> field, also add the Instagram-specific callback URL:</p>
+          <div class="url-box">https://app.apexrmgroup.com/api/social/instagram/callback</div>
+          <p>Click <strong>Add</strong> and then <strong>Save Changes</strong>. Both the Facebook and Instagram callback URLs should now be in the list.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="num ig">3</div>
+        <div class="step-content">
+          <h4>Add test users for development (optional)</h4>
+          <p>While your app is still in Development mode, only users who are added as "Testers" or "Developers" in the app can authorize it. To add test users, go to <strong>App Roles</strong> → <strong>Roles</strong> in the left sidebar. Click <strong>Add People</strong> under the "Testers" section and enter the Facebook username or email of anyone you want to test with. They will receive a notification to accept the role.</p>
+          <div class="tip">Add your own Facebook account and any other team members who need to test the app. Once the app is in Live mode, any Facebook/Instagram user can connect without being added here.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- STEP 7: LIVE MODE -->
+  <div class="section" id="fb-live">
+    <h2 class="section-title">7. Switch Your App to Live Mode</h2>
+    <h3 class="step-group fb">📘 Going Live</h3>
+    <div class="step-body-wrap">
+
+      <div class="step">
+        <div class="num fb">1</div>
+        <div class="step-content">
+          <h4>Find the app mode toggle</h4>
+          <p>At the top of your App Dashboard, you will see a toggle that currently says <strong>Development</strong>. In Development mode, only you and your testers can use the app. To allow all users to connect their Facebook accounts, you need to switch to <strong>Live</strong> mode.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="num fb">2</div>
+        <div class="step-content">
+          <h4>Switch to Live mode</h4>
+          <p>Click the toggle to switch from <strong>Development</strong> to <strong>Live</strong>. Facebook will warn you about needing a Privacy Policy URL. Enter your Privacy Policy URL — this can be a page on your website. If you do not have one yet, you can create a simple privacy policy page at your website apexrmgroup.com and use that URL. Click <strong>Switch Mode</strong> to confirm.</p>
+          <div class="warn-inline">Some advanced permissions (like pages_manage_posts) require Facebook App Review before they work in Live mode. If users are seeing permission errors, you may need to submit those permissions for review. Standard permissions like public_profile and email work immediately in Live mode without review.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- STEP 8: ENV VARS -->
+  <div class="section" id="env-vars">
+    <h2 class="section-title">8. Add Your Keys to the App</h2>
+    <div class="callout success">
+      <strong>You now have everything you need</strong>
+      You have your FACEBOOK_APP_ID and FACEBOOK_APP_SECRET. Now add them to your app in two places: your local .env.local file (for development) and Vercel Environment Variables (for production).
+    </div>
+
+    <h3 class="step-group fb">📘 Adding to .env.local (Local Development)</h3>
+    <div class="step-body-wrap">
+      <div class="step">
+        <div class="num fb">1</div>
+        <div class="step-content">
+          <h4>Open your .env.local file</h4>
+          <p>In your project folder <strong>C:\Users\Pascal\Desktop\RUGEMA DCS\Apex\WebSite\Autmation</strong>, find and open the file named <strong>.env.local</strong> in a text editor. Find the lines for FACEBOOK_APP_ID and FACEBOOK_APP_SECRET and replace the placeholder values with the real ones you copied from the Facebook Developer portal.</p>
+          <div class="env-box">
+            <span class="key">FACEBOOK_APP_ID</span>=<span class="val">1234567890123456</span><br/>
+            <span class="key">FACEBOOK_APP_SECRET</span>=<span class="val">abcdef1234567890abcdef1234567890</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h3 class="step-group fb" style="margin-top:20px;">📘 Adding to Vercel (Production)</h3>
+    <div class="step-body-wrap">
+      <div class="step">
+        <div class="num fb">1</div>
+        <div class="step-content">
+          <h4>Go to Vercel Environment Variables</h4>
+          <p>Log in to <strong>vercel.com</strong>. Go to your project <strong>apex-social-automations</strong>. Click <strong>Settings</strong> in the top navigation, then click <strong>Environment Variables</strong> in the left sidebar.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="num fb">2</div>
+        <div class="step-content">
+          <h4>Add or update the variables</h4>
+          <p>Find <strong>FACEBOOK_APP_ID</strong> and <strong>FACEBOOK_APP_SECRET</strong> in the list and click Edit to update them with your new values. If they do not exist yet, click <strong>Add New</strong>, enter the name and value, select <strong>All Environments</strong>, and click <strong>Save</strong>. After saving both variables, go to <strong>Deployments</strong>, click the three-dot menu on the latest deployment, and click <strong>Redeploy</strong> to apply the new environment variables.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  Facebook &amp; Instagram Developer App Setup Guide — Apex R&amp;M Group — https://app.apexrmgroup.com
+</div>
+</body>
+</html>

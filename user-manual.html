@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Apex Social Automations — User Manual</title>
+<style>
+  :root {
+    --navy: #1B2B5E;
+    --green: #4A8C2A;
+    --light-green: #6BBF3E;
+    --border: #e5e7eb;
+    --bg: #f9fafb;
+    --text: #1f2937;
+    --muted: #6b7280;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; color: var(--text); background: #fff; line-height: 1.8; font-size: 15px; }
+
+  .header { background: var(--navy); color: white; padding: 0; }
+  .header-inner { max-width: 980px; margin: 0 auto; padding: 52px 28px 40px; }
+  .header h1 { font-size: 2.1rem; font-weight: 800; margin-bottom: 10px; }
+  .header p { opacity: .8; font-size: 1.05rem; max-width: 600px; }
+  .header .tag { display: inline-block; background: var(--light-green); color: white; font-size: .78rem; font-weight: 700; padding: 4px 14px; border-radius: 20px; margin-top: 16px; }
+
+  .toc-wrap { background: var(--bg); border-bottom: 2px solid var(--border); }
+  .toc { max-width: 980px; margin: 0 auto; padding: 22px 28px; }
+  .toc h2 { font-size: .78rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .07em; margin-bottom: 14px; }
+  .toc-links { display: flex; flex-wrap: wrap; gap: 8px; }
+  .toc-links a { background: white; border: 1px solid var(--border); color: var(--navy); padding: 6px 16px; border-radius: 20px; font-size: .83rem; text-decoration: none; font-weight: 600; transition: all .15s; }
+  .toc-links a:hover { background: var(--navy); color: white; }
+
+  .content { max-width: 980px; margin: 0 auto; padding: 48px 28px 100px; }
+
+  .section { margin-bottom: 64px; }
+  h2.section-title { font-size: 1.55rem; font-weight: 800; color: var(--navy); padding-bottom: 14px; border-bottom: 3px solid var(--light-green); margin-bottom: 32px; display: flex; align-items: center; gap: 12px; }
+  h3.plat-title { font-size: 1.15rem; font-weight: 800; color: white; padding: 14px 20px; border-radius: 10px 10px 0 0; margin-top: 36px; margin-bottom: 0; display: flex; align-items: center; gap: 10px; }
+  h3.plat-title.fb { background: #1877F2; }
+  h3.plat-title.ig { background: linear-gradient(90deg, #833ab4, #fd1d1d, #fcb045); }
+  h3.plat-title.li { background: #0A66C2; }
+  h3.plat-title.tw { background: #000000; }
+  h3.plat-title.yt { background: #FF0000; }
+  h3.plat-title.gen { background: var(--navy); }
+  .plat-body { border: 2px solid var(--border); border-top: none; border-radius: 0 0 10px 10px; padding: 28px; margin-bottom: 8px; }
+
+  .step { display: flex; gap: 20px; margin-bottom: 28px; padding-bottom: 28px; border-bottom: 1px solid var(--border); align-items: flex-start; }
+  .step:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+  .step-num { width: 38px; height: 38px; border-radius: 50%; background: var(--navy); color: white; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: .9rem; flex-shrink: 0; margin-top: 2px; }
+  .step-num.fb { background: #1877F2; }
+  .step-num.ig { background: #E1306C; }
+  .step-num.li { background: #0A66C2; }
+  .step-num.tw { background: #000; }
+  .step-num.yt { background: #FF0000; }
+  .step-body { flex: 1; }
+  .step-body h4 { font-size: 1rem; font-weight: 700; color: var(--navy); margin-bottom: 8px; }
+  .step-body p { color: var(--text); margin-bottom: 8px; }
+  .step-body p:last-child { margin-bottom: 0; }
+  .step-body ul { padding-left: 20px; margin: 8px 0; }
+  .step-body ul li { margin-bottom: 6px; }
+
+  .callout { border-radius: 10px; padding: 16px 20px; margin: 20px 0; font-size: .92rem; }
+  .callout.info { background: #eff6ff; border-left: 4px solid #3b82f6; }
+  .callout.warn { background: #fffbeb; border-left: 4px solid #f59e0b; }
+  .callout.success { background: #f0fdf4; border-left: 4px solid #22c55e; }
+  .callout.danger { background: #fef2f2; border-left: 4px solid #ef4444; }
+  .callout strong { display: block; font-weight: 700; color: var(--navy); margin-bottom: 6px; font-size: .95rem; }
+
+  .tip { background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; padding: 12px 16px; font-size: .87rem; color: #166534; margin-top: 10px; }
+  .tip::before { content: '💡 Tip: '; font-weight: 700; }
+
+  .warn-box { background: #fffbeb; border: 1px solid #fde68a; border-radius: 8px; padding: 12px 16px; font-size: .87rem; color: #92400e; margin-top: 10px; }
+  .warn-box::before { content: '⚠️ Important: '; font-weight: 700; }
+
+  .req-box { background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 16px 20px; margin: 16px 0; }
+  .req-box h4 { font-size: .82rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; margin-bottom: 10px; }
+  .req-box ul { padding-left: 18px; font-size: .9rem; }
+  .req-box ul li { margin-bottom: 6px; }
+
+  table { width: 100%; border-collapse: collapse; font-size: .9rem; margin: 16px 0; }
+  th { background: var(--navy); color: white; padding: 11px 16px; text-align: left; font-weight: 600; }
+  td { padding: 11px 16px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  tr:nth-child(even) td { background: var(--bg); }
+
+  .badge { display: inline-block; padding: 2px 10px; border-radius: 20px; font-size: .75rem; font-weight: 700; }
+  .badge.required { background: #fee2e2; color: #991b1b; }
+  .badge.free { background: #dbeafe; color: #1e40af; }
+  .badge.pro { background: #fef9c3; color: #854d0e; }
+
+  .faq-item { border: 1px solid var(--border); border-radius: 10px; margin-bottom: 14px; overflow: hidden; }
+  .faq-q { padding: 16px 20px; font-weight: 700; font-size: .95rem; color: var(--navy); background: var(--bg); }
+  .faq-a { padding: 16px 20px; font-size: .9rem; border-top: 1px solid var(--border); line-height: 1.8; }
+
+  .footer { background: var(--navy); color: white; text-align: center; padding: 28px; font-size: .85rem; opacity: .85; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-inner">
+    <h1>Apex Social Automations</h1>
+    <p>Complete User Manual — How to register, set up your account, and connect all your social media platforms step by step.</p>
+    <span class="tag">Official User Guide — Apex R&amp;M Group</span>
+  </div>
+</div>
+
+<div class="toc-wrap">
+  <div class="toc">
+    <h2>Contents</h2>
+    <div class="toc-links">
+      <a href="#register">1. Register</a>
+      <a href="#verify">2. Verify Email</a>
+      <a href="#login">3. Log In</a>
+      <a href="#dashboard">4. Dashboard</a>
+      <a href="#requirements">5. Requirements</a>
+      <a href="#connected-accounts">6. Connected Accounts Page</a>
+      <a href="#facebook">7. Connect Facebook</a>
+      <a href="#instagram">8. Connect Instagram</a>
+      <a href="#linkedin">9. Connect LinkedIn</a>
+      <a href="#twitter">10. Connect X (Twitter)</a>
+      <a href="#youtube">11. Connect YouTube</a>
+      <a href="#compose">12. Publish a Post</a>
+      <a href="#schedule">13. Schedule a Post</a>
+      <a href="#plans">14. Plans &amp; Limits</a>
+      <a href="#faq">15. FAQ &amp; Troubleshooting</a>
+    </div>
+  </div>
+</div>
+
+<div class="content">
+
+  <!-- ========== 1. REGISTER ========== -->
+  <div class="section" id="register">
+    <h2 class="section-title">1. Creating Your Account</h2>
+
+    <p style="margin-bottom:24px;">To start using Apex Social Automations, you first need to create a free account. The process takes about 2 minutes and only requires a valid email address. Follow every step below carefully.</p>
+
+    <div class="plat-body" style="border:2px solid var(--border); border-radius:10px;">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <h4>Open the registration page in your browser</h4>
+          <p>Open any web browser (Chrome, Firefox, Edge, or Safari) on your computer or phone. In the address bar at the top, type <strong>https://app.apexrmgroup.com/signup</strong> and press Enter. You will land on the sign-up form. Do not use the main website apexrmgroup.com — you must go to the /signup page specifically.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <h4>Enter your full name</h4>
+          <p>In the first field labelled "Full Name", type your first and last name exactly as you want it to appear on your account. This name will be shown in the dashboard and on notification emails. You can change it later in Settings if needed.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <h4>Enter your email address</h4>
+          <p>In the "Email" field, type your email address carefully. This email will be used to log in, receive a verification email, and receive password reset links. Make sure there are no typos. Use a real email address you have access to — you will need to open an email from this address in the next step.</p>
+          <div class="warn-box">Do not use a temporary or fake email address. The system will send a verification link to this address. If you cannot access the email, you will not be able to activate your account.</div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <h4>Create a strong password</h4>
+          <p>In the "Password" field, create a password that is at least 8 characters long. A good password includes a mix of uppercase letters, lowercase letters, numbers, and symbols (for example: <strong>MyBrand@2024</strong>). Do not use simple passwords like "12345678" or your name. Write your password down in a safe place so you do not forget it.</p>
+          <div class="tip">Use a password manager like Bitwarden (free) or your browser's built-in password saver to store your credentials securely.</div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">5</div>
+        <div class="step-body">
+          <h4>Click "Create Account"</h4>
+          <p>Once all fields are filled in correctly, click the green <strong>"Create Account"</strong> button at the bottom of the form. The system will instantly create your account and send a verification email to the address you entered. You will see a confirmation message on screen telling you to check your email.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== 2. VERIFY ========== -->
+  <div class="section" id="verify">
+    <h2 class="section-title">2. Verifying Your Email Address</h2>
+
+    <p style="margin-bottom:24px;">After registering, your account is created but it is not yet active. You must verify your email address before you can connect social accounts or publish posts. This is a security measure to confirm you own the email address you registered with.</p>
+
+    <div class="plat-body" style="border:2px solid var(--border); border-radius:10px;">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <h4>Open your email inbox</h4>
+          <p>Go to your email provider (Gmail, Outlook, Yahoo, or whichever email service you use). Look for a new email with the subject line <strong>"Verify your email — Apex Social Automations"</strong>. This email is sent immediately after registration and should arrive within 1–2 minutes.</p>
+          <div class="warn-box">If you cannot find the email in your inbox, check your Spam or Junk Mail folder. Some email providers mistakenly filter automatic emails into spam. If you still cannot find it, go back to the app and look for a "Resend verification email" option.</div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <h4>Open the verification email</h4>
+          <p>Click on the email to open it. Inside you will see a message from Apex Social Automations explaining that you need to confirm your email address to activate your account.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <h4>Click the "Verify My Email" button</h4>
+          <p>Inside the email there is a large button or link that says <strong>"Verify My Email"</strong> or <strong>"Confirm Email"</strong>. Click it. Your browser will open and you will be automatically redirected to the app with your account now fully activated. You may see a success message confirming verification.</p>
+          <div class="tip">The verification link expires after 24 hours. If you did not click it within 24 hours, you will need to request a new link from the login page.</div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <h4>Confirmation</h4>
+          <p>Once verified, your account status changes from "Pending Verification" to "Active". You can now log in and use all features of the platform. You only need to do this verification once — you will never be asked to verify again unless you change your email address.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== 3. LOGIN ========== -->
+  <div class="section" id="login">
+    <h2 class="section-title">3. Logging In to Your Account</h2>
+
+    <p style="margin-bottom:24px;">After verifying your email you can log in to the platform at any time from any device with an internet connection.</p>
+
+    <div class="plat-body" style="border:2px solid var(--border); border-radius:10px;">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <h4>Go to the login page</h4>
+          <p>Open your browser and go to <strong>https://app.apexrmgroup.com/login</strong>. You will see the login form with fields for email and password.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <h4>Enter your email and password</h4>
+          <p>Type the email address and password you used when registering. Make sure there are no extra spaces before or after your email. Passwords are case-sensitive — check that Caps Lock is not on.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <h4>Click "Sign In"</h4>
+          <p>Click the <strong>"Sign In"</strong> button. If your credentials are correct, you will be taken directly to your Dashboard. If you see an error, double-check your password. If you forgot your password, click the <strong>"Forgot password?"</strong> link below the form — a reset email will be sent to your address.</p>
+          <div class="tip">Your session stays active for several days. You do not need to log in every time you open the app unless you signed out or are using a different device.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== 4. DASHBOARD ========== -->
+  <div class="section" id="dashboard">
+    <h2 class="section-title">4. Understanding Your Dashboard</h2>
+
+    <p style="margin-bottom:24px;">Once logged in, you will see your dashboard. This is your main control center. Here is a detailed explanation of every part of the interface.</p>
+
+    <table>
+      <tr><th>Sidebar Item</th><th>Detailed Description</th></tr>
+      <tr><td><strong>Dashboard</strong></td><td>Your home page. Shows a summary of your activity: how many posts you have published, how many are scheduled, how many social accounts are connected, and a list of your most recent posts with their status.</td></tr>
+      <tr><td><strong>Compose Post</strong></td><td>The main area for creating and publishing content. Here you write your caption, choose platforms, upload media (images or video), add hashtags, and either publish immediately or schedule for a future date.</td></tr>
+      <tr><td><strong>History</strong></td><td>A complete list of all posts you have ever sent through the platform — whether published, failed, or partially published. Each post shows which platforms it was sent to, the status on each platform, and any error messages.</td></tr>
+      <tr><td><strong>Content Calendar</strong></td><td>A visual calendar view showing all your scheduled posts. You can see what content is planned for each day and week. Click on any day to see the posts scheduled for that date.</td></tr>
+      <tr><td><strong>Analytics</strong></td><td>Charts and statistics showing how your posts are performing. You can filter by date range and platform to track engagement trends over time.</td></tr>
+      <tr><td><strong>Media Library</strong></td><td>Your personal storage area for images and videos. You can upload files here first and then reuse them across multiple posts without uploading again. Supported formats: JPG, PNG, GIF, MP4, MOV.</td></tr>
+      <tr><td><strong>Notifications</strong></td><td>A notification centre that shows important updates — such as when a post successfully publishes, when a post fails, or when there are issues with a connected account.</td></tr>
+      <tr><td><strong>Connected Accounts</strong></td><td>The page where you link all your social media accounts to the platform. This is where you go to add Facebook, Instagram, LinkedIn, X, and YouTube. You must connect accounts here before you can publish to them.</td></tr>
+      <tr><td><strong>Brand Voice</strong></td><td>Settings for your brand tone and style. When you use the AI caption generator, it uses these settings to write content that matches your brand's language and personality.</td></tr>
+      <tr><td><strong>Settings</strong></td><td>Account settings where you can update your name, email address, and password.</td></tr>
+      <tr><td><strong>Billing</strong></td><td>Shows your current plan (Free or Pro), your billing history, and the option to upgrade to Pro for more features and higher posting limits.</td></tr>
+    </table>
+  </div>
+
+  <!-- ========== 5. REQUIREMENTS ========== -->
+  <div class="section" id="requirements">
+    <h2 class="section-title">5. What You Need Before Connecting Each Platform</h2>
+
+    <div class="callout info">
+      <strong>No API keys or developer setup required</strong>
+      You do not need any developer API keys, technical knowledge, or developer accounts to connect your social media. The platform handles all technical connections on your behalf. You only need to have the correct type of account on each social media platform, as described below.
+    </div>
+
+    <h3 class="plat-title fb">📘 Facebook — Requirements</h3>
+    <div class="plat-body">
+      <p>To connect Facebook and publish posts through this platform, you cannot use a regular personal Facebook profile. Facebook's API (which this platform uses to post on your behalf) only allows posting to <strong>Facebook Pages</strong>, not personal timelines.</p>
+      <div class="req-box">
+        <h4>What you need</h4>
+        <ul>
+          <li>A <strong>Facebook Page</strong> — this is a public business or brand page (not your personal profile)</li>
+          <li>Your personal Facebook account must be listed as the <strong>Admin</strong> of that Page</li>
+          <li>The Facebook Page must be <strong>published</strong> (not set to unpublished or draft mode)</li>
+          <li>Your personal Facebook account must have a verified email or phone number</li>
+        </ul>
+      </div>
+      <p>If you do not have a Facebook Page yet, you can create one for free by going to <strong>facebook.com/pages/create</strong>. Choose a page category that matches your business (Local Business, Brand, Public Figure, etc.), give it a name, and follow the setup steps. The whole process takes about 5 minutes.</p>
+      <div class="warn-box">If you try to connect a personal Facebook profile instead of a Page, the connection will either fail or will not allow publishing. Make sure the account you are logging in with during authorization is the admin of the Page you want to post to.</div>
+    </div>
+
+    <h3 class="plat-title ig">📸 Instagram — Requirements</h3>
+    <div class="plat-body">
+      <p>Instagram has stricter requirements than other platforms. Regular personal Instagram accounts cannot be connected to third-party publishing tools. You must convert your account to a <strong>Professional (Business or Creator) account</strong> and it must be linked to a Facebook Page.</p>
+      <div class="req-box">
+        <h4>What you need</h4>
+        <ul>
+          <li>An Instagram account switched to <strong>Professional mode</strong> (Business or Creator)</li>
+          <li>That Instagram Professional account must be <strong>linked to a Facebook Page</strong></li>
+          <li>The Facebook Page it is linked to must already be connected in this app (connect Facebook first)</li>
+          <li>Your Instagram account must not be restricted or flagged by Instagram</li>
+        </ul>
+      </div>
+      <p>To switch to a Professional account: open the Instagram app on your phone → tap your profile picture (bottom right) → tap the three lines (top right) → Settings and Privacy → Account type and tools → Switch to Professional Account. Choose Business or Creator and follow the steps. This is completely free.</p>
+      <p>To link your Instagram to a Facebook Page: in Instagram, go to Settings and Privacy → Account → Linked Accounts → Facebook → log in to Facebook and select the Page you want to link.</p>
+      <div class="warn-box">Connect Facebook FIRST in this app before attempting to connect Instagram. Instagram's publishing works through your Facebook connection. If Facebook is not connected, Instagram cannot be added.</div>
+    </div>
+
+    <h3 class="plat-title li">💼 LinkedIn — Requirements</h3>
+    <div class="plat-body">
+      <p>LinkedIn is one of the easiest platforms to connect. You can post to your personal LinkedIn profile or to a LinkedIn Company Page that you manage.</p>
+      <div class="req-box">
+        <h4>What you need</h4>
+        <ul>
+          <li>An active LinkedIn personal account</li>
+          <li>Your LinkedIn account email must be verified</li>
+          <li>If posting to a Company Page: you must be listed as an <strong>Admin or Super Admin</strong> of that Company Page on LinkedIn</li>
+          <li>Your LinkedIn account should be at least a few weeks old (very new accounts may have temporary posting restrictions)</li>
+        </ul>
+      </div>
+      <div class="tip">You can post to both your personal LinkedIn profile and a Company Page at the same time by selecting both in the Compose screen — just make sure the Company Page connection is also added under Connected Accounts.</div>
+    </div>
+
+    <h3 class="plat-title tw">🐦 X (Twitter) — Requirements</h3>
+    <div class="plat-body">
+      <p>X (formerly Twitter) is straightforward to connect. Any active X account can be connected and used to post text, images, and short videos.</p>
+      <div class="req-box">
+        <h4>What you need</h4>
+        <ul>
+          <li>An active X (Twitter) account</li>
+          <li>Your account must not be suspended, locked, or restricted</li>
+          <li>Your X account email address must be verified</li>
+          <li>Your account must be at least a few days old (brand new accounts may not have full API access)</li>
+        </ul>
+      </div>
+      <div class="warn-box">X Free accounts have monthly posting limits set by X's API policies. If you reach the limit, posts to X will fail until the next month. X Premium (paid blue checkmark) subscribers have higher limits.</div>
+    </div>
+
+    <h3 class="plat-title yt">▶️ YouTube — Requirements</h3>
+    <div class="plat-body">
+      <p>YouTube is used for video posts only. You need a Google account that has a YouTube channel set up on it.</p>
+      <div class="req-box">
+        <h4>What you need</h4>
+        <ul>
+          <li>A Google account (Gmail)</li>
+          <li>A <strong>YouTube channel</strong> created on that Google account</li>
+          <li>The YouTube channel must not be terminated or restricted by YouTube</li>
+          <li>For video uploads: the file must be in MP4 or MOV format</li>
+          <li>New YouTube channels may need to wait up to 24 hours after creation before uploads are enabled</li>
+        </ul>
+      </div>
+      <p>If you do not have a YouTube channel yet, go to youtube.com, sign in with your Google account, click your profile picture (top right) → Create a channel. Give it a name and click Create. You are ready to start uploading.</p>
+    </div>
+  </div>
+
+  <!-- ========== 6. CONNECTED ACCOUNTS PAGE ========== -->
+  <div class="section" id="connected-accounts">
+    <h2 class="section-title">6. Finding the Connected Accounts Page</h2>
+
+    <p style="margin-bottom:24px;">Before connecting any specific platform, here is how to get to the right page in the app.</p>
+
+    <div class="plat-body" style="border:2px solid var(--border); border-radius:10px;">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <h4>Log in to the app</h4>
+          <p>Go to <strong>https://app.apexrmgroup.com/login</strong> and sign in with your email and password. After logging in, you will see your dashboard.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <h4>Find "Connected Accounts" in the sidebar</h4>
+          <p>Look at the left side of the screen. You will see a navigation menu (the sidebar). Scroll down to the section labelled <strong>MANAGE</strong>. Under it, click on <strong>"Connected Accounts"</strong>. On a phone or tablet, tap the hamburger menu icon (three horizontal lines) at the top left of the screen to open the sidebar first.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <h4>The Connected Accounts page</h4>
+          <p>This page shows all 5 platforms (Facebook, Instagram, LinkedIn, X, YouTube) with their current connection status. Platforms that are not yet connected show a <strong>"Connect"</strong> button next to them. Platforms that are already connected show a green <strong>"Connected"</strong> label. This is where you will perform all the connection steps for each platform described in the sections below.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== 7. FACEBOOK ========== -->
+  <div class="section" id="facebook">
+    <h2 class="section-title">7. Connecting Your Facebook Page</h2>
+
+    <div class="callout warn">
+      <strong>Before you start</strong>
+      Make sure you have a Facebook Page (not just a personal profile) and that your Facebook account is the admin of that page. See Section 5 for how to create a Page if you do not have one.
+    </div>
+
+    <h3 class="plat-title fb">📘 Facebook — Full Connection Steps</h3>
+    <div class="plat-body">
+
+      <div class="step">
+        <div class="step-num fb">1</div>
+        <div class="step-body">
+          <h4>Go to Connected Accounts and click "Connect" next to Facebook</h4>
+          <p>On the Connected Accounts page, find Facebook in the list. To its right, there is a button labelled <strong>"Connect"</strong>. Click it. The app will prepare the Facebook authorization flow. In a moment, a new popup window or browser tab will open redirecting you to Facebook's website.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num fb">2</div>
+        <div class="step-body">
+          <h4>Log in to Facebook (if not already logged in)</h4>
+          <p>If you are not already logged into Facebook in your browser, you will see the Facebook login form. Enter the email address and password for the Facebook account that is the <strong>admin of your Facebook Page</strong>. This is important — if you log in with a personal account that is not the Page admin, you will not be able to select the correct Page in the next step. Click <strong>Log In</strong> to continue.</p>
+          <div class="tip">If you are already logged into Facebook in your browser, Facebook will skip this step and go directly to the permissions screen.</div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num fb">3</div>
+        <div class="step-body">
+          <h4>Review and grant all Facebook permissions</h4>
+          <p>Facebook will show you a permissions screen listing everything the app is requesting access to. This includes: managing your Pages, reading Page insights, publishing content, and managing posts. These permissions are necessary for the app to publish posts on your behalf. <strong>Do not uncheck or deny any permissions</strong> — if you do, the connection may be incomplete and publishing will fail. Read through the list, then click <strong>"Allow"</strong> or <strong>"Continue as [your name]"</strong> to approve all permissions at once.</p>
+          <div class="warn-box">If Facebook shows a warning saying the app is "not verified" or is in development mode, this is normal for platforms in early stages. Click "Continue" to proceed. Your data is not shared with anyone — the app only uses access to post content you create.</div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num fb">4</div>
+        <div class="step-body">
+          <h4>Select which Facebook Page to connect</h4>
+          <p>After granting permissions, Facebook will show you a list of all the Pages that your account manages. Scroll through the list and find the specific Page you want to use for publishing. Check the box next to that Page name. If you manage multiple Pages, you can select the one most relevant to your business. Once you have made your selection, click <strong>"Done"</strong> or <strong>"Connect"</strong> to confirm.</p>
+          <div class="warn-box">If no Pages appear in the list, it means the Facebook account you logged in with is not an admin of any Page. Go to Facebook, create a Page or ask someone to add you as admin, then come back and try again.</div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num fb">5</div>
+        <div class="step-body">
+          <h4>Confirm the final Facebook authorization screen</h4>
+          <p>Facebook will show one more confirmation screen summarizing what access you are giving. It will say something like "Apex Social Automations will be able to manage your Page". Click <strong>"OK"</strong> or <strong>"Done"</strong> on this final screen. The popup or tab will close and you will be returned to the Connected Accounts page inside the app.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num fb">6</div>
+        <div class="step-body">
+          <h4>Verify the connection is successful</h4>
+          <p>Back on the Connected Accounts page, Facebook should now show a green <strong>"Connected"</strong> label along with the name of your Page. This confirms the connection was successful. You can now select Facebook as a publishing target when composing posts.</p>
+          <div class="tip">Facebook access tokens expire roughly every 60 days. When that happens, you will see a notification in the app reminding you to reconnect. The reconnection process is the same as above and takes less than a minute.</div>
+        </div>
+      </div>
+
+      <p style="margin-top:20px;padding-top:14px;border-top:1px solid #e5e7eb;font-size:.82rem;color:#999;">Admin reference: <a href="guide-facebook-instagram.html" target="_blank" style="color:#1877F2;">How to set up the Facebook &amp; Instagram Developer App →</a></p>
+
+    </div>
+  </div>
+
+  <!-- ========== 8. INSTAGRAM ========== -->
+  <div class="section" id="instagram">
+    <h2 class="section-title">8. Connecting Your Instagram Account</h2>
+
+    <div class="callout danger">
+      <strong>Connect Facebook FIRST</strong>
+      Instagram cannot be connected unless Facebook is already connected in the app. Instagram publishing works through your Facebook Page connection. If you skipped Section 7, go back and connect Facebook first, then return here.
+    </div>
+
+    <h3 class="plat-title ig">📸 Instagram — Full Connection Steps</h3>
+    <div class="plat-body">
+
+      <div class="step">
+        <div class="step-num ig">1</div>
+        <div class="step-body">
+          <h4>Switch your Instagram account to Professional mode (if not done already)</h4>
+          <p>Open the Instagram app on your phone. Tap your <strong>profile picture</strong> in the bottom right corner to go to your profile. Then tap the <strong>three horizontal lines</strong> (☰) in the top right corner to open the menu. Tap <strong>Settings and Privacy</strong>. Scroll down and tap <strong>Account type and tools</strong>. Tap <strong>Switch to Professional Account</strong>. Choose either <strong>Business</strong> (for companies, brands, and shops) or <strong>Creator</strong> (for influencers, content creators, public figures). Follow the on-screen steps to complete the switch. This is free and does not delete any of your existing posts or followers.</p>
+          <div class="warn-box">If you skip this step and try to connect a personal Instagram account, the connection will fail. Instagram's API does not allow publishing to personal accounts.</div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num ig">2</div>
+        <div class="step-body">
+          <h4>Link your Instagram account to your Facebook Page</h4>
+          <p>Still in the Instagram app, go back to <strong>Settings and Privacy</strong>. Tap <strong>Account</strong>, then tap <strong>Linked Accounts</strong>. Tap <strong>Facebook</strong>. You will be prompted to log in to Facebook — use the same Facebook account that is the admin of your Facebook Page (the same one you connected in Section 7). Once logged in, select the <strong>Facebook Page</strong> you want to link your Instagram account to. Tap <strong>Connect</strong> to confirm the link. You should see a confirmation that Instagram is now linked to your Page.</p>
+          <div class="tip">The Facebook Page you link here must be the same Page you already connected in the app in Section 7. If they are different Pages, Instagram publishing will not work correctly.</div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num ig">3</div>
+        <div class="step-body">
+          <h4>Go to Connected Accounts and click "Connect" next to Instagram</h4>
+          <p>Back in the Apex Social Automations app, go to the <strong>Connected Accounts</strong> page. Find <strong>Instagram</strong> in the list and click its <strong>"Connect"</strong> button. A popup or new tab will open redirecting you to Facebook's authorization page (Instagram authorization happens through Facebook).</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num ig">4</div>
+        <div class="step-body">
+          <h4>Log in with the Facebook account linked to your Instagram</h4>
+          <p>On the authorization screen, log in with the same Facebook account that is linked to your Instagram Professional account. This must be the Facebook account you used in Steps 1 and 2 above. If you log in with a different Facebook account, your Instagram account will not appear in the next step.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num ig">5</div>
+        <div class="step-body">
+          <h4>Grant all Instagram permissions</h4>
+          <p>Facebook will show a list of permissions for Instagram — including the ability to manage your Instagram content, read your profile, and publish posts and reels. It is critical that you <strong>allow ALL permissions</strong>. Do not toggle any off. If you deny the "Publish Content" permission, the app will not be able to post anything to Instagram. Click <strong>Allow</strong> to grant everything.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num ig">6</div>
+        <div class="step-body">
+          <h4>Select your Instagram Professional account</h4>
+          <p>A screen will appear showing the Instagram Professional accounts linked to your Facebook Page. Your account name and profile picture should appear here. Select it by checking the checkbox next to it, then click <strong>Done</strong> or <strong>Connect</strong>.</p>
+          <div class="warn-box">If your Instagram account does not appear here, it usually means one of two things: either your Instagram was not switched to Professional mode (Step 1), or it was not linked to the correct Facebook Page (Step 2). Go back and confirm both steps, then try connecting again.</div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num ig">7</div>
+        <div class="step-body">
+          <h4>Verify the connection is successful</h4>
+          <p>Back on the Connected Accounts page, Instagram should now show a green <strong>"Connected"</strong> label with your Instagram username displayed next to it. You can now select Instagram when composing posts. Note that Instagram requires at least one image or video — you cannot publish text-only posts to Instagram.</p>
+        </div>
+      </div>
+
+      <p style="margin-top:20px;padding-top:14px;border-top:1px solid #e5e7eb;font-size:.82rem;color:#999;">Admin reference: <a href="guide-facebook-instagram.html" target="_blank" style="color:#E1306C;">How to set up the Facebook &amp; Instagram Developer App →</a></p>
+
+    </div>
+  </div>
+
+  <!-- ========== 9. LINKEDIN ========== -->
+  <div class="section" id="linkedin">
+    <h2 class="section-title">9. Connecting Your LinkedIn Account</h2>
+
+    <h3 class="plat-title li">💼 LinkedIn — Full Connection Steps</h3>
+    <div class="plat-body">
+
+      <div class="step">
+        <div class="step-num li">1</div>
+        <div class="step-body">
+          <h4>Go to Connected Accounts and click "Connect" next to LinkedIn</h4>
+          <p>On the Connected Accounts page, find <strong>LinkedIn</strong> in the list and click its <strong>"Connect"</strong> button. The app will redirect you to LinkedIn's official authorization page. This happens inside a popup window or a new browser tab.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num li">2</div>
+        <div class="step-body">
+          <h4>Log in to LinkedIn</h4>
+          <p>If you are not already logged into LinkedIn in your browser, you will see the LinkedIn login form. Enter your LinkedIn email address and password. Make sure you are logging in with the account you want to post as — either your personal profile or the account that manages your Company Page. Click <strong>Sign In</strong>.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num li">3</div>
+        <div class="step-body">
+          <h4>Authorize the app on LinkedIn</h4>
+          <p>LinkedIn will show you an authorization screen explaining what access the app is requesting. This includes: reading your profile, managing your shares, and posting content on your behalf. Review the permissions and click <strong>"Allow"</strong> to grant access. LinkedIn will then redirect you back to the app automatically.</p>
+          <div class="warn-box">LinkedIn access tokens expire every 60 days. You will receive a notification in the app when your LinkedIn token is about to expire. Simply reconnect using the same steps above to refresh it.</div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num li">4</div>
+        <div class="step-body">
+          <h4>Verify the connection</h4>
+          <p>You will be returned to the Connected Accounts page. LinkedIn should now show a green <strong>"Connected"</strong> status with your name or profile displayed. You can now select LinkedIn when composing posts.</p>
+          <div class="tip">When composing a post, if you also manage a LinkedIn Company Page, it will appear as a separate option alongside your personal profile. You can post to both at the same time by selecting both.</div>
+        </div>
+      </div>
+
+      <p style="margin-top:20px;padding-top:14px;border-top:1px solid #e5e7eb;font-size:.82rem;color:#999;">Admin reference: <a href="guide-linkedin.html" target="_blank" style="color:#0A66C2;">How to set up the LinkedIn Developer App →</a></p>
+
+    </div>
+  </div>
+
+  <!-- ========== 10. TWITTER / X ========== -->
+  <div class="section" id="twitter">
+    <h2 class="section-title">10. Connecting Your X (Twitter) Account</h2>
+
+    <h3 class="plat-title tw">🐦 X (Twitter) — Full Connection Steps</h3>
+    <div class="plat-body">
+
+      <div class="step">
+        <div class="step-num tw">1</div>
+        <div class="step-body">
+          <h4>Go to Connected Accounts and click "Connect" next to X (Twitter)</h4>
+          <p>On the Connected Accounts page, find <strong>X (Twitter)</strong> in the list and click the <strong>"Connect"</strong> button. A popup or new browser tab will open and redirect you to X's official authorization page at twitter.com (or x.com).</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num tw">2</div>
+        <div class="step-body">
+          <h4>Log in to your X account</h4>
+          <p>If you are not already signed into X in your browser, you will see the X login screen. Enter your X username (or phone or email) and password. Click <strong>Log In</strong>. Make sure you are logging in with the X account you want to post from, as you cannot change this without reconnecting.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num tw">3</div>
+        <div class="step-body">
+          <h4>Authorize the app</h4>
+          <p>X will show you an authorization screen saying something like <em>"Authorize Apex Social Automations to use your account?"</em>. It will list what the app can do: read your profile, post tweets, and manage your content. Click <strong>"Authorize app"</strong> to confirm. X will automatically close the popup and return you to the app.</p>
+          <div class="warn-box">X (Twitter) has introduced API usage limits for free accounts. If you post more than the monthly limit, X will block further posts until the following month. X Premium subscribers have significantly higher limits.</div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num tw">4</div>
+        <div class="step-body">
+          <h4>Verify the connection</h4>
+          <p>Back on the Connected Accounts page, X (Twitter) should now show a green <strong>"Connected"</strong> status with your X username (e.g. @YourHandle) shown beside it. You can now include X as a publishing target when creating posts.</p>
+        </div>
+      </div>
+
+      <p style="margin-top:20px;padding-top:14px;border-top:1px solid #e5e7eb;font-size:.82rem;color:#999;">Admin reference: <a href="guide-twitter-x.html" target="_blank" style="color:#000;">How to set up the X (Twitter) Developer App →</a></p>
+
+    </div>
+  </div>
+
+  <!-- ========== 11. YOUTUBE ========== -->
+  <div class="section" id="youtube">
+    <h2 class="section-title">11. Connecting Your YouTube Channel</h2>
+
+    <div class="callout info">
+      <strong>Video uploads only</strong>
+      YouTube is used for video content only. You must have an MP4 or MOV video file to post to YouTube. Text-only or image posts cannot be published to YouTube through this platform.
+    </div>
+
+    <h3 class="plat-title yt">▶️ YouTube — Full Connection Steps</h3>
+    <div class="plat-body">
+
+      <div class="step">
+        <div class="step-num yt">1</div>
+        <div class="step-body">
+          <h4>Make sure you have a YouTube channel</h4>
+          <p>Before connecting, confirm that your Google account has a YouTube channel. Open a new browser tab and go to <strong>youtube.com</strong>. Click your profile picture in the top right corner. If you see <strong>"Your channel"</strong> in the menu, you already have a channel. If not, click <strong>"Create a channel"</strong>, enter a channel name, and click <strong>Create</strong>. You can start connecting immediately after creating it (although uploads may take up to 24 hours to be enabled on brand new channels).</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num yt">2</div>
+        <div class="step-body">
+          <h4>Go to Connected Accounts and click "Connect" next to YouTube</h4>
+          <p>In the Apex Social Automations app, go to the Connected Accounts page and click the <strong>"Connect"</strong> button next to YouTube. A popup or new tab will open and you will be redirected to Google's account selection screen.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num yt">3</div>
+        <div class="step-body">
+          <h4>Select your Google account</h4>
+          <p>Google will show you a list of Google accounts that are currently signed into your browser. Click the account that has your YouTube channel. If your account is not listed, click <strong>"Use another account"</strong> and sign in with the Google/Gmail account that owns your YouTube channel.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num yt">4</div>
+        <div class="step-body">
+          <h4>Grant YouTube permissions</h4>
+          <p>Google will show a permissions screen listing what the app wants access to. This includes: viewing your YouTube account information, managing your YouTube videos, and uploading content. You must click <strong>"Allow"</strong> or <strong>"Continue"</strong> to grant all permissions. If you deny the upload permission, the app will not be able to publish videos to your channel.</p>
+          <div class="warn-box">Google may show a warning that the app is not verified by Google. This is normal for smaller platforms. Click <strong>"Advanced"</strong> and then <strong>"Go to Apex Social Automations (unsafe)"</strong> to proceed. This warning does not mean the app is dangerous — it only means Google has not yet completed its official verification review for this app.</div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num yt">5</div>
+        <div class="step-body">
+          <h4>Verify the connection</h4>
+          <p>You will be returned to the Connected Accounts page. YouTube should now show a green <strong>"Connected"</strong> status with your channel name displayed. You can now select YouTube when composing video posts.</p>
+          <div class="tip">When posting to YouTube, always include a video file. Add a clear title (in the caption field) and relevant hashtags to help your video get discovered in YouTube search.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ========== 12. COMPOSE ========== -->
+  <div class="section" id="compose">
+    <h2 class="section-title">12. Publishing Your First Post</h2>
+
+    <p style="margin-bottom:24px;">Once you have connected at least one social account, you are ready to publish. Here is the complete step-by-step process for creating and sending a post.</p>
+
+    <div class="plat-body" style="border:2px solid var(--border); border-radius:10px;">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <h4>Click "Compose Post" in the sidebar</h4>
+          <p>In the left navigation menu, click <strong>Compose Post</strong> (it has a pencil icon and is highlighted in green). This opens the post composer page where you create your content.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <h4>Select which platforms to publish to</h4>
+          <p>At the top of the composer, you will see icons or buttons for each connected platform (Facebook, Instagram, LinkedIn, X, YouTube). Click on the platforms you want to publish to — you can select one or all of them at the same time. Selected platforms will be highlighted. Only platforms you have connected will appear here.</p>
+          <div class="warn-box">Remember that Instagram always requires an image or video. If you select Instagram but do not attach media, the post to Instagram will fail even if it succeeds on other platforms.</div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <h4>Write your caption</h4>
+          <p>In the large text area, type the main body of your post. This is the text that will appear on all selected platforms. Write clearly and concisely. You can write the same text for all platforms, or use the platform-specific overrides (if available) to customize the message per platform.</p>
+          <div class="tip">Click the <strong>AI button</strong> (sparkle icon) to have the AI automatically generate a caption for you based on your brand voice settings. This is especially helpful if you are not sure what to write.</div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <h4>Add hashtags (optional but recommended)</h4>
+          <p>Below the caption field there is a hashtags section. Type relevant hashtags without the # symbol (the app adds it automatically), separated by commas or spaces. Good hashtags increase the reach of your post on Instagram, LinkedIn, and X. You can also click the AI suggest button to automatically generate relevant hashtags based on your caption.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">5</div>
+        <div class="step-body">
+          <h4>Upload media (image or video)</h4>
+          <p>Click the <strong>Upload Media</strong> button or drag a file into the media area. You can upload images (JPG or PNG) or videos (MP4 or MOV). You can also select a file you previously uploaded to your Media Library by clicking <strong>"From Library"</strong>. The platform will automatically resize and convert the video to the correct dimensions for each platform (for example, vertical 9:16 for Instagram Reels, horizontal 16:9 for YouTube).</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">6</div>
+        <div class="step-body">
+          <h4>Click "Publish Now" to post immediately</h4>
+          <p>When you are happy with your content, click the green <strong>"Publish Now"</strong> button. The app will send your post to all selected platforms at the same time. You will see the status change to "Publishing". Within a few seconds to a couple of minutes, the status will update to <strong>"Published"</strong> (success) or <strong>"Failed"</strong> (error). Go to the <strong>History</strong> page to see the detailed result for each platform.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== 13. SCHEDULE ========== -->
+  <div class="section" id="schedule">
+    <h2 class="section-title">13. Scheduling a Post for Later</h2>
+
+    <p style="margin-bottom:24px;">Instead of publishing immediately, you can schedule your post to go live at a specific date and time in the future. This is useful for planning your content calendar in advance.</p>
+
+    <div class="plat-body" style="border:2px solid var(--border); border-radius:10px;">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <h4>Create your post as normal</h4>
+          <p>Follow Steps 1 through 5 from Section 12 above — select platforms, write your caption, add hashtags, and upload any media. Do not click "Publish Now" yet.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <h4>Click "Schedule" or find the date/time picker</h4>
+          <p>Look for the <strong>Schedule</strong> option or a calendar/clock icon near the publish button. Click on it to reveal the date and time selector.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <h4>Choose a future date and time</h4>
+          <p>Use the date picker to select the day you want to publish, then use the time picker to set the exact hour and minute. Make sure to select a time in the future — you cannot schedule a post in the past. All times are in your local timezone.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <h4>Click "Schedule Post"</h4>
+          <p>Confirm your scheduled time and click <strong>"Schedule Post"</strong>. The post will be saved with a <strong>Scheduled</strong> status. The app will automatically publish it at the exact time you set — you do not need to be logged in or have the app open when it publishes.</p>
+          <div class="tip">You can view and manage all scheduled posts on the <strong>Content Calendar</strong> page. From there you can also edit or delete a scheduled post before it publishes.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== 14. PLANS ========== -->
+  <div class="section" id="plans">
+    <h2 class="section-title">14. Plans &amp; Feature Limits</h2>
+
+    <table>
+      <tr><th>Feature</th><th><span class="badge free">FREE Plan</span></th><th><span class="badge pro">PRO Plan</span></th></tr>
+      <tr><td>Connected social accounts</td><td>Up to 3 platforms</td><td>All 5 platforms</td></tr>
+      <tr><td>Posts per month</td><td>20 posts</td><td>Unlimited</td></tr>
+      <tr><td>Scheduled posts at one time</td><td>Up to 5</td><td>Unlimited</td></tr>
+      <tr><td>Media storage</td><td>500 MB</td><td>10 GB</td></tr>
+      <tr><td>AI caption generation</td><td>5 per month</td><td>Unlimited</td></tr>
+      <tr><td>Analytics history</td><td>Last 7 days</td><td>Last 90 days</td></tr>
+      <tr><td>Priority support</td><td>Not included</td><td>Included</td></tr>
+    </table>
+
+    <p style="margin-top:16px;color:var(--muted);font-size:.9rem;">To upgrade from Free to Pro, click <strong>Billing</strong> in the sidebar and follow the upgrade steps. Payment is handled securely through Stripe.</p>
+  </div>
+
+  <!-- ========== 15. FAQ ========== -->
+  <div class="section" id="faq">
+    <h2 class="section-title">15. Frequently Asked Questions &amp; Troubleshooting</h2>
+
+    <div class="faq-item">
+      <div class="faq-q">Do I need API keys or developer access to connect my social accounts?</div>
+      <div class="faq-a">No. You do not need any API keys, developer accounts, or technical knowledge. The platform manages all technical connections on your behalf. All you need is the correct type of account on each platform — for example, a Facebook Page for Facebook, or a Professional account for Instagram. Everything else is handled automatically when you click "Connect" and go through the authorization steps.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">I connected Instagram but my posts fail on Instagram. What is wrong?</div>
+      <div class="faq-a">The most common reasons are: (1) Your Instagram account is not set to Professional mode — go to Instagram Settings → Account type and tools → Switch to Professional Account. (2) Your Instagram is not linked to the correct Facebook Page — go to Instagram Settings → Linked Accounts → Facebook and link it to the same Page you connected in the app. (3) You did not include an image or video — Instagram does not support text-only posts. (4) Your Facebook connection expired — go to Connected Accounts and reconnect Facebook first, then reconnect Instagram.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">My post shows "Failed" on one platform. What should I do?</div>
+      <div class="faq-a">Go to the History page and find the failed post. Click on it to expand the details — you will see the specific error message for the platform that failed. Common fixes include: reconnecting the account (if the token expired), checking that your media file is in a supported format, or waiting a few minutes and trying again (platform API hiccups can cause temporary failures). Use the "Reuse" button to load the post back into the composer and republish it.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">How do I reconnect an account after it expires?</div>
+      <div class="faq-a">Go to Connected Accounts in the sidebar. Find the platform that has expired — it will show a warning or "Reconnect" button instead of the green "Connected" label. Click "Reconnect" and follow the same authorization steps as when you first connected it. Your previous posts and settings will not be affected. The whole process takes about 1 minute.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">My post is stuck on "Publishing" for more than 10 minutes. What happened?</div>
+      <div class="faq-a">Occasionally a publishing job can get stuck if there was a network interruption or a timeout on the platform's API. Refresh the History page to check if the status has updated. If it is still stuck after 10 minutes, use the "Reuse" button to reload the post into the composer and try publishing again. If the problem persists, contact support at info.apexrmgroup@gmail.com.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">Can I post to multiple platforms at the same time with different text?</div>
+      <div class="faq-a">Yes. In the Compose screen, after selecting multiple platforms, look for a "Platform Overrides" or "Customize per platform" option. This allows you to write a different caption for each platform while using the same media file. If you do not use overrides, the same caption is sent to all selected platforms.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">I forgot my password. How do I reset it?</div>
+      <div class="faq-a">Go to the login page at https://app.apexrmgroup.com/login and click the "Forgot password?" link below the form. Enter your registered email address and click Submit. You will receive a password reset email within a few minutes. Click the link in that email, enter a new password, and you will be able to log in immediately.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">What video formats and sizes are supported?</div>
+      <div class="faq-a">Supported video formats are MP4 and MOV. The platform automatically converts your video to the correct dimensions for each platform: vertical 9:16 (1080×1920) for Instagram Reels, horizontal 16:9 (1280×720) for Facebook, LinkedIn, and X, and Full HD 16:9 (1920×1080) for YouTube. Maximum video length varies by platform: 90 seconds for Instagram Reels, 10 minutes for Facebook, 10 minutes for LinkedIn, 2 minutes 20 seconds for X, and up to 60 minutes for YouTube.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">How do I delete a scheduled post before it publishes?</div>
+      <div class="faq-a">Go to the Content Calendar page. Find the scheduled post on the calendar. Click on it to see its details. You will see a Delete or Cancel button. Click it to remove the post from the queue. It will be deleted and will not publish at the scheduled time.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">Who do I contact if I have a problem that is not covered here?</div>
+      <div class="faq-a">Contact Apex R&amp;M Group directly by email at <strong>info.apexrmgroup@gmail.com</strong> or visit the main website at <strong>apexrmgroup.com</strong>. Please include your account email address and a description of the problem when reaching out, along with any error messages you see.</div>
+    </div>
+
+  </div>
+
+</div>
+
+<div class="footer">
+  Apex Social Automations — Official User Manual &nbsp;|&nbsp; Apex R&amp;M Group &nbsp;|&nbsp; https://app.apexrmgroup.com &nbsp;|&nbsp; info.apexrmgroup@gmail.com
+</div>
+
+</body>
+</html>
