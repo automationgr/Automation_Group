@@ -194,8 +194,8 @@
         <div class="num">2</div>
         <div class="step-content">
           <h4>Copy the Client ID</h4>
-          <p>On the Auth page, you will see your <strong>Client ID</strong> displayed in a field. It looks like a long alphanumeric string such as <em>78abc1234def5678</em>. Click the copy icon next to it or select the text and copy it manually. This is your <strong>LINKEDIN_CLIENT_ID</strong>. Save it somewhere safe.</p>
-          <div class="url-box">Example: LINKEDIN_CLIENT_ID = 78abc1234def5678</div>
+          <p>On the Auth page, you will see your <strong>Client ID</strong> displayed in a field. It looks like a long alphanumeric string such as <em>78abc1234d......</em>. Click the copy icon next to it or select the text and copy it manually. This is your <strong>LINKEDIN_CLIENT_ID</strong>. Save it somewhere safe.</p>
+          <div class="url-box">Example: LINKEDIN_CLIENT_ID = 78abc1234d......</div>
         </div>
       </div>
 
@@ -230,7 +230,7 @@
         <div class="step-content">
           <h4>Add the production callback URL</h4>
           <p>Click the <strong>"Add redirect URL"</strong> button. Type in the following URL exactly as written and click <strong>Add</strong>:</p>
-          <div class="url-box">https://app.apexrmgroup.com/api/social/linkedin/callback</div>
+          <div class="url-box">https://Your Domain/api/social/linkedin/callback</div>
           <p>After adding it, click <strong>Update</strong> to save your changes.</p>
           <div class="tip">For local development, also add: <strong>http://localhost:3000/api/social/linkedin/callback</strong></div>
         </div>
@@ -328,7 +328,7 @@
           <h4>Update your .env.local file</h4>
           <p>Open the file <strong>.env.local</strong> in your project folder and update the LinkedIn lines:</p>
           <div class="env-box">
-            <span class="key">LINKEDIN_CLIENT_ID</span>=<span class="val">78abc1234def5678</span><br/>
+            <span class="key">LINKEDIN_CLIENT_ID</span>=<span class="val">78abc1234......</span><br/>
             <span class="key">LINKEDIN_CLIENT_SECRET</span>=<span class="val">abcdefghij1234567890abcdefgh</span>
           </div>
         </div>
@@ -350,7 +350,7 @@
 </div>
 
 <div class="footer">
-  LinkedIn Developer App Setup Guide — Apex R&amp;M Group — https://app.apexrmgroup.com
+  LinkedIn Developer App Setup Guide — Apex R&amp;M Group — https://[Your Domain]
 </div>
 </body>
 </html>
