@@ -73,9 +73,9 @@
   <div class="container">
     <div class="page-hero-content">
       <div class="page-hero-breadcrumb"><a href="index.html">Home</a><span>/</span><span>Careers</span></div>
-      <h1>Build Your Career at the Forefront of African Spatial Consulting</h1>
+      <h1 data-cms-html="hero_title">Build Your Career at the Forefront of African Spatial Consulting</h1>
       <div class="page-hero-line"></div>
-      <p>We believe great people build great outcomes. At Apex R&M Group, you will work on meaningful projects, alongside brilliant colleagues, across some of Africa's most dynamic landscapes.</p>
+      <p data-cms="hero_subtitle">We believe great people build great outcomes. At Apex R&M Group, you will work on meaningful projects, alongside brilliant colleagues, across some of Africa's most dynamic landscapes.</p>
     </div>
   </div>
 </div>
@@ -165,7 +165,7 @@
   </div>
 </section>
 
-<!-- OPEN POSITIONS --
+<!-- OPEN POSITIONS -->
 <section style="background:var(--warm-white);">
   <div class="container">
     <div class="section-header reveal">
@@ -173,7 +173,7 @@
       <h2 class="section-title">Current Vacancies</h2>
       <p class="section-subtitle">We are growing — join us at an exciting moment in our journey.</p>
     </div>
-    <div class="jobs-list">
+    <div class="jobs-list" id="jobs-list">
       <div class="job-card reveal" data-delay="100">
         <div class="job-info">
           <div class="job-title">Senior GIS Analyst</div>
@@ -233,7 +233,7 @@
   </div>
 </section>
 
-<!-- GRADUATE PROGRAMME --
+<!-- GRADUATE PROGRAMME -->
 <section style="background:white;">
   <div class="container">
     <div class="graduate-box reveal">
@@ -264,7 +264,7 @@
   </div>
 </section>
 
-<!-- CTA --
+<!-- CTA -->
 <section class="cta-strip">
   <div class="container">
     <div class="cta-strip-inner">
@@ -277,58 +277,51 @@
   </div>
 </section>
 
-<!---- APPLICATION MODAL --
+<!-- APPLICATION MODAL -->
 <div id="apply-modal" class="apply-modal">
   <div class="apply-box">
     <button class="apply-close" onclick="document.getElementById('apply-modal').classList.remove('open');">✕</button>
     <span class="section-label">Apply Now</span>
     <h2 style="font-family:var(--font-heading);font-size:1.5rem;color:var(--navy);margin:0.6rem 0 1.5rem;">Submit Your Application</h2>
-    <form class="apply-form" onsubmit="return false;">
+    <form class="apply-form" id="apply-form">
       <div class="form-group">
         <label>Full Name *</label>
-        <input type="text" placeholder="Your full name" required>
+        <input type="text" id="apply-fullname" placeholder="Your full name" required>
       </div>
       <div class="form-group">
         <label>Email Address *</label>
-        <input type="email" placeholder="your@email.com" required>
+        <input type="email" id="apply-email" placeholder="your@email.com" required>
       </div>
       <div class="form-group">
         <label>Phone Number</label>
-        <input type="tel" placeholder="+250 780 000 000">
+        <input type="tel" id="apply-phone" placeholder="+250 780 000 000">
       </div>
       <div class="form-group">
         <label>Position of Interest *</label>
-        <select required>
+        <select id="apply-position" required>
           <option value="">Select a position...</option>
-          <option>Senior GIS Analyst</option>
-          <option>Environmental Consultant (EIA Specialist)</option>
-          <option>Remote Sensing & EO Specialist</option>
-          <option>Land Administration Consultant</option>
-          <option>Business Development Manager</option>
-          <option>Graduate Programme</option>
-          <option>Internship</option>
-          <option>General Application</option>
         </select>
       </div>
       <div class="form-group">
         <label>LinkedIn Profile URL</label>
-        <input type="url" placeholder="https://linkedin.com/in/yourprofile">
+        <input type="url" id="apply-linkedin" placeholder="https://linkedin.com/in/yourprofile">
       </div>
       <div class="form-group">
         <label>Cover Letter / Why Apex R&M Group? *</label>
-        <textarea placeholder="Tell us why you want to join our team and what you'll bring..." required style="min-height:120px;"></textarea>
+        <textarea id="apply-coverletter" placeholder="Tell us why you want to join our team and what you'll bring..." required style="min-height:120px;"></textarea>
       </div>
       <div class="form-group">
-        <label>Upload CV</label>
-        <input type="file" accept=".pdf,.doc,.docx" style="padding:0.5rem;border:1.5px solid rgba(10,22,40,0.15);border-radius:var(--radius);width:100%;">
-        <small style="font-size:0.75rem;color:var(--gray);margin-top:0.3rem;display:block;">PDF or Word document. Max 5MB.</small>
+        <label>Upload CV *</label>
+        <input type="file" id="apply-cv" accept=".pdf,.doc,.docx" required style="padding:0.5rem;border:1.5px solid rgba(10,22,40,0.15);border-radius:var(--radius);width:100%;">
+        <small style="font-size:0.75rem;color:var(--gray);margin-top:0.3rem;display:block;">PDF or Word document. Max 10MB.</small>
       </div>
-      <button type="submit" class="btn-primary" style="width:100%;justify-content:center;">
+      <div id="apply-form-msg" style="font-size:0.85rem;margin-top:0.5rem;display:none;"></div>
+      <button type="submit" class="btn-primary" id="apply-submit-btn" style="width:100%;justify-content:center;">
         <i class="fa-solid fa-paper-plane"></i> Submit Application
       </button>
     </form>
   </div>
-</div>---------->
+</div>
 
 <!-- ===================== FOOTER ===================== -->
 <footer>
@@ -339,13 +332,13 @@
           <span class="diamond">◆</span>
           <span class="footer-logo-name">APEX R&M GROUP Ltd</span>
         </div>
-        <p class="footer-desc">Africa's premier spatial consulting firm — empowering governments, organisations, and communities with cutting-edge spatial intelligence and strategic advisory services.</p>
+        <p class="footer-desc" data-cms-setting="company_description">Africa's premier spatial consulting firm — empowering governments, organisations, and communities with cutting-edge spatial intelligence and strategic advisory services.</p>
         <div class="footer-social">
-          <a href="https://www.linkedin.com/company/116016508" class="social-icon" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
-          <a href="https://x.com/ApexRMGroup" class="social-icon" aria-label="Twitter/X"><i class="fa-brands fa-x-twitter"></i></a>
-          <a href="https://web.facebook.com/profile.php?id=61589665884720" class="social-icon" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
-          <a href="https://www.instagram.com/apexrmgroup/" class="social-icon" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
-          <a href="https://www.youtube.com/@ApexRMGroup" class="social-icon" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+          <a href="https://www.linkedin.com/company/116016508" data-cms-setting-href="social_linkedin" class="social-icon" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+          <a href="https://x.com/ApexRMGroup" data-cms-setting-href="social_twitter" class="social-icon" aria-label="Twitter/X"><i class="fa-brands fa-x-twitter"></i></a>
+          <a href="https://web.facebook.com/profile.php?id=61589665884720" data-cms-setting-href="social_facebook" class="social-icon" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+          <a href="https://www.instagram.com/apexrmgroup/" data-cms-setting-href="social_instagram" class="social-icon" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+          <a href="https://www.youtube.com/@ApexRMGroup" data-cms-setting-href="social_youtube" class="social-icon" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
         </div>
       </div>
       <div class="footer-col">
@@ -370,10 +363,10 @@
       </div>
       <div class="footer-col">
         <h4>Contact</h4>
-        <div class="footer-contact-item"><i class="fa-solid fa-location-dot"></i><span>Kigali, Rwanda (HQ)</span></div>
-        <div class="footer-contact-item"><i class="fa-solid fa-envelope"></i><a href="mailto:info.apexrmgroup@gmail.com">info.apexrmgroup@gmail.com</a></div>
-        <div class="footer-contact-item"><i class="fa-solid fa-phone"></i><a href="tel:+250787523890">+250 787 523 890</a></div>
-        <div class="footer-contact-item"><i class="fa-brands fa-whatsapp"></i><a href="https://wa.me/250787523890">WhatsApp Us</a></div>
+        <div class="footer-contact-item"><i class="fa-solid fa-location-dot"></i><span data-cms-setting="contact_address">Kigali, Rwanda (HQ)</span></div>
+        <div class="footer-contact-item"><i class="fa-solid fa-envelope"></i><a href="mailto:info.apexrmgroup@gmail.com" data-cms-setting="contact_email">info.apexrmgroup@gmail.com</a></div>
+        <div class="footer-contact-item"><i class="fa-solid fa-phone"></i><a href="tel:+250787523890" data-cms-setting="contact_phone">+250 787 523 890</a></div>
+        <div class="footer-contact-item"><i class="fa-brands fa-whatsapp"></i><a href="https://wa.me/250787523890" data-cms-setting-href="contact_whatsapp">WhatsApp Us</a></div>
         <h4 style="margin-top:1.5rem;">Newsletter</h4>
         <form class="newsletter-form" onsubmit="return false;">
           <input type="email" placeholder="Your email address">
@@ -397,6 +390,8 @@
 <a id="whatsapp-btn" href="https://wa.me/250787523890" target="_blank"><i class="fa-brands fa-whatsapp"></i></a>
 <script src="js/cms.js"></script>
 <script src="js/script.js"></script>
+<script src="js/cms-loader.js" data-api="https://admin.apexrmgroup.com" data-page="careers"></script>
+<script src="js/careers-cms.js"></script>
 <script>
   // Close modal on backdrop click
   document.getElementById('apply-modal').addEventListener('click', function(e) {

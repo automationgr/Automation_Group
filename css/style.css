@@ -1741,3 +1741,13 @@ footer {
   .container-wide { padding: 0 0.8rem; }
   .page-hero      { padding: 5rem 0 2.5rem; }
 }
+
+/* ── CMS-driven image slider (Admin Portal media slots) ── */
+.cms-slider { position: relative; overflow: hidden; }
+.cms-slider-track { position: relative; width: 100%; height: 100%; }
+.cms-slider-img {
+  position: absolute; top: 0; left: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  transition: opacity 1s ease-in-out;
+}

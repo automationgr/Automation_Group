@@ -283,6 +283,28 @@ function apexSaveToLocalStorage(msg) {
   return false;
 }
 
+/* Forward the submission to the Admin Portal CMS inbox (fire-and-forget; never blocks the form). */
+function apexSaveToAdminPortal(msg) {
+  try {
+    const loaderScript = document.querySelector('script[src*="cms-loader.js"]');
+    const apiBase = loaderScript ? (loaderScript.getAttribute('data-api') || '').replace(/\/$/, '') : '';
+    if (!apiBase) return;
+    fetch(apiBase + '/api/public/contact', {
+      method: 'POST',
+      mode: 'cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        fullName: msg.name,
+        email: msg.email,
+        phone: msg.phone,
+        subject: msg.subject,
+        message: `Organisation: ${msg.org}\nCountry: ${msg.country}\nBudget: ${msg.budget}\n\n${msg.message}`,
+        category: 'project-inquiry',
+      }),
+    }).catch(() => {});
+  } catch (e) { /* never block the existing form flow */ }
+}
+
 function apexWireContactForm() {
   const form = document.getElementById('apex-contact-form');
   if (!form) return;
@@ -326,6 +348,8 @@ function apexWireContactForm() {
         phone: msg.phone, country: msg.country, service: msg.service,
         budget: msg.budget, message: msg.message
       });
+      /* Also record in the Admin Portal inbox so it shows up in the CMS dashboard */
+      apexSaveToAdminPortal(msg);
 
       fresh.parentNode.innerHTML = `
         <div style="text-align:center;padding:3.5rem 2rem;">
