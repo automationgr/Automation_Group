@@ -60,6 +60,81 @@
     });
   }
 
+  function setText(id, value) {
+    var el = document.getElementById(id);
+    if (el && value) el.textContent = value;
+  }
+
+  function renderIconCards(containerId, cards, cardClass, iconClass, titleTag) {
+    var container = document.getElementById(containerId);
+    if (!container || !cards || !cards.length) return;
+    container.innerHTML = cards.map(function (c) {
+      return (
+        '<div class="' + cardClass + ' reveal">' +
+          '<div class="' + iconClass + '">' + escapeHtml(c.icon) + '</div>' +
+          '<' + titleTag + '>' + escapeHtml(c.title) + '</' + titleTag + '>' +
+          '<p>' + escapeHtml(c.description) + '</p>' +
+        '</div>'
+      );
+    }).join('');
+  }
+
+  function renderPageContent(content) {
+    if (!content) return;
+
+    if (content.culture) {
+      try {
+        var culture = JSON.parse(content.culture);
+        setText('culture-label', culture.sectionLabel);
+        setText('culture-title', culture.title);
+        setText('culture-subtitle', culture.subtitle);
+        renderIconCards('culture-grid', culture.cards, 'culture-card', 'culture-icon', 'h3');
+      } catch (e) { /* keep static fallback markup */ }
+    }
+
+    if (content.benefits) {
+      try {
+        var benefits = JSON.parse(content.benefits);
+        setText('benefits-label', benefits.sectionLabel);
+        setText('benefits-title', benefits.title);
+        renderIconCards('benefits-grid', benefits.cards, 'benefit-item', 'benefit-icon', 'h4');
+      } catch (e) { /* keep static fallback markup */ }
+    }
+
+    if (content.graduate) {
+      try {
+        var graduate = JSON.parse(content.graduate);
+        setText('graduate-label', graduate.label);
+        setText('graduate-title', graduate.title);
+        setText('graduate-paragraph1', graduate.paragraph1);
+        setText('graduate-paragraph2', graduate.paragraph2);
+        setText('graduate-button', graduate.buttonText);
+        var boxesEl = document.getElementById('graduate-info-boxes');
+        if (boxesEl && graduate.infoBoxes && graduate.infoBoxes.length) {
+          boxesEl.innerHTML = graduate.infoBoxes.map(function (b) {
+            return (
+              '<div class="glass-card" style="padding:1.2rem;">' +
+                '<div style="font-family:var(--font-ui);font-size:0.65rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);margin-bottom:0.5rem;">' + escapeHtml(b.label) + '</div>' +
+                '<div style="color:white;font-size:0.9rem;">' + escapeHtml(b.value) + '</div>' +
+              '</div>'
+            );
+          }).join('');
+        }
+      } catch (e) { /* keep static fallback markup */ }
+    }
+
+    if (content.cta) {
+      try {
+        var cta = JSON.parse(content.cta);
+        setText('cta-heading', cta.heading);
+        setText('cta-emphasis', cta.emphasis);
+        setText('cta-paragraph', cta.paragraph);
+        setText('cta-button1-text', cta.button1Text);
+        setText('cta-button2-text', cta.button2Text);
+      } catch (e) { /* keep static fallback markup */ }
+    }
+  }
+
   function showFormMessage(text, isError) {
     var el = document.getElementById('apply-form-msg');
     if (!el) return;
@@ -135,6 +210,11 @@
     fetch(apiBase + '/api/public/careers', { mode: 'cors' })
       .then(function (res) { return res.ok ? res.json() : { items: [] }; })
       .then(function (data) { renderJobs(data.items || []); })
+      .catch(function () { /* keep static fallback markup */ });
+
+    fetch(apiBase + '/api/public/content?page=careers', { mode: 'cors' })
+      .then(function (res) { return res.ok ? res.json() : null; })
+      .then(function (data) { renderPageContent(data && data.content); })
       .catch(function () { /* keep static fallback markup */ });
   });
 })();
