@@ -57,11 +57,14 @@
         '</div>'
       : '';
 
+    var companyName = job.category === 'EXTERNAL' ? (job.companyName || '') : 'Apex R&M Group';
+
     return (
       '<div class="job-card reveal" id="job-' + escapeHtml(job.slug || '') + '" data-category="' + escapeHtml(job.category || 'INTERNAL') + '" style="flex-direction:column;align-items:stretch;">' +
         '<div style="display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap;">' +
           '<div class="job-info">' +
             '<div class="job-title">' + escapeHtml(job.title) + '</div>' +
+            (companyName ? '<div class="job-company" style="font-size:0.85rem;color:var(--gold-d,#9c7a1e);font-weight:600;margin:0.15rem 0 0.3rem;">' + escapeHtml(companyName) + '</div>' : '') +
             '<div class="job-meta">' + meta.join('') + '</div>' +
           '</div>' +
           '<div style="display:flex;gap:0.6rem;flex-shrink:0;">' + headerAction + '</div>' +

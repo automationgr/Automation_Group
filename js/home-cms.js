@@ -135,8 +135,6 @@
         setText('cta-heading', cta.heading);
         setText('cta-emphasis', cta.emphasis);
         setText('cta-paragraph', cta.paragraph);
-        setText('cta-button1-text', cta.button1Text);
-        setText('cta-button2-text', cta.button2Text);
       } catch (e) { /* keep static fallback markup */ }
     }
   }
