@@ -9,7 +9,8 @@
  *   data-cms-img="field_key"      -> sets the src attribute of an <img> from /api/public/content
  *   data-cms-media="slot_key"     -> replaces children with a fixed image or auto-rotating slider
  *   data-cms-setting="key"        -> sets textContent from /api/public/settings
- *   data-cms-setting-href="key"   -> sets href from /api/public/settings (social links, mailto:, tel:)
+ *   data-cms-setting-href="key"   -> sets href from /api/public/settings (social links, mailto:, tel:, favicon)
+ *   data-cms-setting-src="key"    -> sets src from /api/public/settings (logo, favicon <img> fallback)
  *
  * If the API is unreachable, the page keeps whatever static content/markup already exists —
  * nothing is ever blanked out on failure.
@@ -56,6 +57,10 @@
     document.querySelectorAll('[data-cms-setting-href]').forEach(function (el) {
       var key = el.getAttribute('data-cms-setting-href');
       if (settings[key]) el.setAttribute('href', settings[key]);
+    });
+    document.querySelectorAll('[data-cms-setting-src]').forEach(function (el) {
+      var key = el.getAttribute('data-cms-setting-src');
+      if (settings[key]) el.setAttribute('src', settings[key]);
     });
   }
 
