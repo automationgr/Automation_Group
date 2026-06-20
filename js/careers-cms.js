@@ -72,12 +72,23 @@
   }
 
   function wireJobCardEvents(list) {
-    list.querySelectorAll('.view-details-btn').forEach(function (btn) {
+    var detailsButtons = list.querySelectorAll('.view-details-btn');
+    detailsButtons.forEach(function (btn) {
       btn.addEventListener('click', function (e) {
         e.preventDefault();
         var target = document.getElementById(btn.getAttribute('data-target'));
         if (!target) return;
         var isOpen = target.style.display !== 'none';
+
+        detailsButtons.forEach(function (otherBtn) {
+          if (otherBtn === btn) return;
+          var otherTarget = document.getElementById(otherBtn.getAttribute('data-target'));
+          if (otherTarget && otherTarget.style.display !== 'none') {
+            otherTarget.style.display = 'none';
+            otherBtn.textContent = 'View Details';
+          }
+        });
+
         target.style.display = isOpen ? 'none' : 'block';
         btn.textContent = isOpen ? 'View Details' : 'Hide Details';
         if (!isOpen) history.replaceState(null, '', btn.getAttribute('href'));
