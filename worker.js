@@ -2,6 +2,9 @@
 // there it rewrites <title>/og:title/description/og:description/og:url
 // server-side so link previews (WhatsApp, etc.) show the specific job,
 // since those crawlers don't execute careers-cms.js client-side.
+// Requires "run_worker_first": ["/careers", "/careers.html"] in wrangler.jsonc —
+// otherwise Cloudflare serves those paths straight from the asset store
+// and this script never runs for them.
 const ADMIN_API = 'https://admin.apexrmgroup.com';
 
 function stripHtml(html) {
@@ -15,10 +18,7 @@ export default {
     const slug = url.searchParams.get('job');
 
     if (!isCareersPage || !slug) {
-      const res = await env.ASSETS.fetch(request);
-      const passthrough = new Response(res.body, res);
-      passthrough.headers.set('X-Worker-Debug', 'passthrough:' + url.pathname + ':' + (slug || 'no-slug'));
-      return passthrough;
+      return env.ASSETS.fetch(request);
     }
 
     const assetResponse = await env.ASSETS.fetch(request);
@@ -26,38 +26,29 @@ export default {
     if (!contentType.includes('text/html')) return assetResponse;
 
     let job = null;
-    let debugInfo = 'ok';
     try {
       const apiRes = await fetch(ADMIN_API + '/api/public/careers');
-      debugInfo = 'apiStatus:' + apiRes.status;
       if (apiRes.ok) {
         const data = await apiRes.json();
         job = (data.items || []).find((j) => j.slug === slug) || null;
-        debugInfo += ',itemCount:' + (data.items || []).length + ',found:' + !!job;
       }
     } catch (e) {
-      debugInfo = 'fetchError:' + e.message;
+      // Admin API unreachable — fall back to the generic careers preview.
     }
 
-    if (!job) {
-      const fallback = new Response(assetResponse.body, assetResponse);
-      fallback.headers.set('X-Worker-Debug', 'no-job:' + debugInfo);
-      return fallback;
-    }
+    if (!job) return assetResponse;
 
     const title = job.title + ' | Careers at APEX R&M GROUP Ltd';
     const descSource = stripHtml(job.description) || ('Apply for ' + job.title + ' at APEX R&M GROUP Ltd.');
     const description = descSource.length > 200 ? descSource.slice(0, 197) + '...' : descSource;
     const pageUrl = url.toString();
 
-    const rewritten = new HTMLRewriter()
+    return new HTMLRewriter()
       .on('title', { element(el) { el.setInnerContent(title); } })
       .on('meta[name="description"]', { element(el) { el.setAttribute('content', description); } })
       .on('meta[property="og:title"]', { element(el) { el.setAttribute('content', title); } })
       .on('meta[property="og:description"]', { element(el) { el.setAttribute('content', description); } })
       .on('meta[property="og:url"]', { element(el) { el.setAttribute('content', pageUrl); } })
       .transform(assetResponse);
-    rewritten.headers.set('X-Worker-Debug', 'rewritten:' + debugInfo);
-    return rewritten;
   },
 };
