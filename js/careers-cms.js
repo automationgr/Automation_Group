@@ -15,6 +15,13 @@
     });
   }
 
+  function applyButtonHtml(job) {
+    if (job.category === 'EXTERNAL' && job.externalUrl) {
+      return '<a class="btn-primary" href="' + escapeHtml(job.externalUrl) + '" target="_blank" rel="noopener noreferrer" style="white-space:nowrap;">Apply Now</a>';
+    }
+    return '<button class="btn-primary apply-now-btn" type="button" data-job-id="' + escapeHtml(job.id) + '" style="white-space:nowrap;">Apply Now</button>';
+  }
+
   function renderJobsInto(containerId, jobs, emptyMessage) {
     var list = document.getElementById(containerId);
     if (!list) return;
@@ -35,6 +42,21 @@
       }
       var detailsId = containerId + '-details-' + idx;
       var hasDescription = job.description && job.description.replace(/<[^>]*>/g, '').trim().length > 0;
+
+      // With a description: only "View Details" shows up front; "Apply Now"
+      // appears at the end of the description once expanded. With no
+      // description there's nothing to expand, so Apply Now shows directly.
+      var headerAction = hasDescription
+        ? '<button class="btn-dark view-details-btn" type="button" data-target="' + detailsId + '" style="white-space:nowrap;">View Details</button>'
+        : applyButtonHtml(job);
+
+      var detailsPanel = hasDescription
+        ? '<div id="' + detailsId + '" class="job-description" style="display:none;margin-top:1rem;padding-top:1rem;border-top:1px solid rgba(10,22,40,0.08);line-height:1.8;">' +
+            job.description +
+            '<div style="margin-top:1.2rem;">' + applyButtonHtml(job) + '</div>' +
+          '</div>'
+        : '';
+
       return (
         '<div class="job-card reveal" style="flex-direction:column;align-items:stretch;">' +
           '<div style="display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap;">' +
@@ -42,12 +64,9 @@
               '<div class="job-title">' + escapeHtml(job.title) + '</div>' +
               '<div class="job-meta">' + meta.join('') + '</div>' +
             '</div>' +
-            '<div style="display:flex;gap:0.6rem;flex-shrink:0;">' +
-              (hasDescription ? '<button class="btn-secondary view-details-btn" type="button" data-target="' + detailsId + '" style="white-space:nowrap;">View Details</button>' : '') +
-              '<button class="btn-primary apply-now-btn" type="button" data-job-id="' + escapeHtml(job.id) + '" style="white-space:nowrap;">Apply Now</button>' +
-            '</div>' +
+            '<div style="display:flex;gap:0.6rem;flex-shrink:0;">' + headerAction + '</div>' +
           '</div>' +
-          (hasDescription ? '<div id="' + detailsId + '" class="job-description" style="display:none;margin-top:1rem;padding-top:1rem;border-top:1px solid rgba(10,22,40,0.08);line-height:1.8;">' + job.description + '</div>' : '') +
+          detailsPanel +
         '</div>'
       );
     }).join('');
