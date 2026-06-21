@@ -10,6 +10,20 @@
 (function () {
   var LEGACY_KEYS = ['data_collection', 'gis', 'remote_sensing', 'land_admin', 'environment', 'infrastructure', 'capacity'];
 
+  // Most services never had an actual MediaSlot saved — they were just
+  // showing their original static <img> path all along. Without this, any
+  // service with no saved slot renders no photo at all instead of falling
+  // back to what was always there.
+  var LEGACY_IMAGE_DEFAULTS = {
+    data_collection: '/Images/Services/1.png',
+    gis: '/Images/Services/2.png',
+    remote_sensing: 'Images/Services/3.png',
+    land_admin: 'Images/Services/4.png',
+    environment: 'Images/Services/5.png',
+    infrastructure: '/Images/Services/6.png',
+    capacity: 'Images/Services/7.png',
+  };
+
   function getApiBase() {
     var loaderScript = document.querySelector('script[src*="cms-loader.js"]');
     return loaderScript ? (loaderScript.getAttribute('data-api') || '').replace(/\/$/, '') : '';
@@ -76,7 +90,11 @@
         '</div>'
       );
     }
-    return '<img src="' + escapeHtml(slot.items[0].url) + '" alt="" style="width:100%; height:100%; object-fit:cover; display:block;">';
+    // No inline height here — the page's own CSS gives a direct <img> child
+    // of .service-detail-img an aspect-ratio:4/3 (auto height from width).
+    // Setting height:100% would force it to look up the parent's height
+    // instead, which is undefined, collapsing the image to nothing.
+    return '<img src="' + escapeHtml(slot.items[0].url) + '" alt="" style="width:100%; object-fit:cover; display:block;">';
   }
 
   function startSliders(container) {
@@ -117,7 +135,8 @@
         return '<span class="industry-tag">' + escapeHtml(i.text) + '</span>';
       }).join('');
       var slot = mediaSlots['service_' + item.key + '_image'];
-      var photo = mediaHtml(slot);
+      var legacyDefault = LEGACY_IMAGE_DEFAULTS[item.key];
+      var photo = slot ? mediaHtml(slot) : (legacyDefault ? '<img src="' + escapeHtml(legacyDefault) + '" alt="" style="width:100%; object-fit:cover; display:block;">' : '');
 
       var content = (
         '<div class="service-detail-content reveal-left">' +
