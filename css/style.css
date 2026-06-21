@@ -758,6 +758,13 @@ section { padding: 6rem 0; }
 .why-section {
   background: var(--warm-white);
 }
+/* Generic two-column layout used on about.html, careers.html, and
+   resources.html — each usage sets its own gap/alignment inline, this just
+   supplies the missing column split (was previously undefined, so every
+   usage silently collapsed to a single stacked column). */
+.r-grid-2 {
+  grid-template-columns: 1fr 1fr;
+}
 .why-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -1687,6 +1694,9 @@ footer {
 
   /* Why section */
   .why-grid { grid-template-columns: 1fr; gap: 2rem; }
+
+  /* Two-column sections (about/careers/resources) */
+  .r-grid-2 { grid-template-columns: 1fr; }
 
   /* Jobs */
   .job-card { flex-direction: column; align-items: flex-start; gap: 0.8rem; }
