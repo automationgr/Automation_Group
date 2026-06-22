@@ -307,10 +307,10 @@ function initMap(containerId, lat, lng, zoom) {
     attribution: '© OpenStreetMap contributors'
   }).addTo(map);
 
-  // Custom gold marker
+  // Custom map marker
   const icon = L.divIcon({
     className: '',
-    html: '<div style="width:16px;height:16px;background:#C9A84C;border:3px solid #0A1628;border-radius:50%;box-shadow:0 2px 8px rgba(0,0,0,0.4)"></div>',
+    html: '<div style="width:16px;height:16px;background:#3B82F6;border:3px solid #1656E0;border-radius:50%;box-shadow:0 2px 8px rgba(0,0,0,0.4)"></div>',
     iconSize: [16, 16],
     iconAnchor: [8, 8]
   });
