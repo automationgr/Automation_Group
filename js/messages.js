@@ -1,5 +1,5 @@
 /* ============================================================
-   APEX R&M GROUP — messages.js
+   AUTOMATION GROUP — messages.js
    Server-side storage via Supabase + EmailJS notifications
    Falls back to localStorage when Supabase is not configured.
    ============================================================
@@ -248,7 +248,7 @@ window.apexNotifyAdminRegistration = async function(user) {
     from_org:   '—',
     phone:      '—',
     service:    'Admin Portal — Access Request',
-    message:    'New admin access request for the APEX R&M GROUP Admin Portal.\n\n'
+    message:    'New admin access request for the AUTOMATION GROUP Admin Portal.\n\n'
               + 'Username: ' + user.username + '\n'
               + 'Full Name: ' + user.full_name + '\n'
               + 'Email: '    + user.email + '\n\n'
@@ -265,7 +265,7 @@ window.apexSendForgotPassword = async function(email, tempPassword) {
     service:    'Password Reset — Admin Portal',
     message:    'A password reset was requested for your admin account.\n\n'
               + 'Your new temporary password is: ' + tempPassword + '\n\n'
-              + 'Log in at: apexrmgroup.com/admin-portal\n'
+              + 'Log in at: automationgroup.rw/admin-portal\n'
               + 'Please change your password after logging in.'
   });
 };
@@ -365,7 +365,7 @@ function apexWireContactForm() {
     } catch(err) {
       console.error('[APEX] Form error:', err);
       if (btn) { btn.disabled = false; btn.innerHTML = orig; }
-      _showBanner(fresh, 'error', 'Something went wrong. Please email us directly at info.apexrmgroup@gmail.com');
+      _showBanner(fresh, 'error', 'Something went wrong. Please email us directly at info.automationgroup@gmail.com');
     }
   });
 }

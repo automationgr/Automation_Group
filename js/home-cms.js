@@ -67,6 +67,37 @@
     }).join('');
   }
 
+  function renderTestimonials(items) {
+    var inner = document.getElementById('testimonials-inner');
+    var dotsEl = document.getElementById('testimonials-dots');
+    if (!inner || !items || !items.length) return;
+    inner.innerHTML = items.map(function (t) {
+      var initials = (t.name || '').split(' ').map(function (p) { return p[0]; }).join('').slice(0, 2).toUpperCase();
+      return (
+        '<div class="testimonial-slide">' +
+          '<div class="testimonial-card">' +
+            '<div class="testimonial-stars">' + '★'.repeat(t.stars || 5) + '</div>' +
+            '<p class="testimonial-quote">&quot;' + escapeHtml(t.quote) + '&quot;</p>' +
+            '<div class="testimonial-author">' +
+              '<div class="testimonial-avatar">' + escapeHtml(initials) + '</div>' +
+              '<div class="testimonial-info">' +
+                '<div class="name">' + escapeHtml(t.name) + '</div>' +
+                '<div class="role">' + escapeHtml(t.role) + '</div>' +
+              '</div>' +
+            '</div>' +
+          '</div>' +
+        '</div>'
+      );
+    }).join('');
+    if (dotsEl) {
+      dotsEl.innerHTML = items.map(function (_, i) {
+        return '<button class="carousel-dot' + (i === 0 ? ' active' : '') + '"></button>';
+      }).join('');
+    }
+    var carouselEl = inner.closest('.testimonials-carousel');
+    if (carouselEl && typeof window.initCarousel === 'function') window.initCarousel(carouselEl);
+  }
+
   function renderInsightCards(posts) {
     var grid = document.getElementById('insights-preview-grid');
     if (!grid || !posts || !posts.length) return;
@@ -81,7 +112,7 @@
             '<div class="blog-date">' + escapeHtml(post.date) + '</div>' +
             '<h3>' + escapeHtml(post.title) + '</h3>' +
             '<p>' + escapeHtml(post.description) + '</p>' +
-            '<a href="insights.html" class="blog-read-more">Read More <i class="fa-solid fa-arrow-right"></i></a>' +
+            '<a href="services.html" class="blog-read-more">Read More <i class="fa-solid fa-arrow-right"></i></a>' +
           '</div>' +
         '</div>'
       );
@@ -116,6 +147,15 @@
         var logos = JSON.parse(content.client_logos);
         setText('client-logos-label', logos.label);
         renderClientLogos(logos.items);
+      } catch (e) { /* keep static fallback markup */ }
+    }
+
+    if (content.testimonials) {
+      try {
+        var testimonials = JSON.parse(content.testimonials);
+        setText('testimonials-label', testimonials.sectionLabel);
+        setText('testimonials-title', testimonials.title);
+        renderTestimonials(testimonials.items);
       } catch (e) { /* keep static fallback markup */ }
     }
 

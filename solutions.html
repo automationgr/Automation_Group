@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Solutions | AUTOMATION GROUP Ltd</title>
+  <meta name="description" content="Automation Group solutions: Metering, Automatic Tank Gauging, Fire and Gas Safety Systems, Energy Solutions, Building Management Systems, SCADA, Service & Repair, and Power Systems.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,600&family=Montserrat:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" type="image/jpeg" href="Images/Logo,Favicon.jpg" data-cms-setting-href="favicon_url">
+  <style>
+    .sector-detail { padding: 5rem 0; }
+    .sector-detail:nth-child(even) { background: var(--warm-white); }
+    .sector-detail-grid { display: grid; grid-template-columns: 1fr 1.4fr; gap: 4rem; align-items: center; }
+    .sector-detail-grid.reverse {order: 3; }
+    .sector-detail-grid.reverse .sector-img { order: 2; }
+    .sector-detail-grid.reverse .sector-content { order: 1; }
+    .sector-img img { width: 100%; border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); aspect-ratio: 4/3; object-fit: cover; }
+    .use-cases { margin: 1.5rem 0; display: flex; flex-direction: column; gap: 0.5rem; }
+    .use-case { display: flex; align-items: flex-start; gap: 0.6rem; font-size: 0.85rem; color: var(--text-body); line-height: 1.5; }
+    .use-case i { color: var(--gold); margin-top: 3px; flex-shrink: 0; font-size: 0.7rem; }
+    @media(max-width:768px){ .sector-detail-grid{grid-template-columns:1fr;} .sector-detail-grid.reverse .sector-img,.sector-detail-grid.reverse .sector-content{order:0;} }
+  </style>
+</head>
+<body>
+<div id="scroll-progress"></div>
+
+<nav id="navbar">
+  <a href="index.html" class="nav-logo">
+    <img src="Images/Logo,Favicon.jpg" alt="AUTOMATION GROUP Logo" class="site-logo" data-cms-setting-src="logo_url">
+  <span class="diamond">◆</span><div class="nav-logo-text"><span class="nav-logo-name">AUTOMATION GROUP</span><span class="nav-logo-tagline">Industrial Automation & Engineering Solutions</span></div></a>
+  <ul class="nav-links"><li><a href="index.html">Home</a></li><li><a href="about.html">About</a></li><li><a href="services.html">Services</a></li><li><a href="solutions.html">Solutions</a></li><li><a href="products.html">Products</a></li><li><a href="contact.html" class="nav-cta">Contact</a></li></ul>
+  <button class="nav-toggle"><span></span><span></span><span></span></button>
+</nav>
+<div class="nav-backdrop"></div>
+<div class="nav-mobile">
+  <div class="nav-mobile-body">
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="services.html">Services</a>
+    <a href="solutions.html">Solutions</a>
+    <a href="products.html">Products</a>
+    <a href="contact.html" class="mobile-cta">Contact</a>
+  </div>
+  <div class="nav-mobile-footer">
+    <i class="fa-solid fa-location-dot"></i>
+    <span>Kigali, Rwanda &bull; East Africa</span>
+  </div>
+</div>
+
+<!-- PAGE HERO -->
+<div class="page-hero">
+  <div class="page-hero-bg" data-cms-media="hero_image"></div>
+  <div class="page-hero-overlay"></div>
+  <div class="container">
+    <div class="page-hero-content">
+      <div class="page-hero-breadcrumb"><a href="index.html">Home</a><span>/</span><span>Solutions</span></div>
+      <h1 data-cms-html="hero_title">Perfect Solutions<br>For Every Industry</h1>
+      <div class="page-hero-line"></div>
+      <p data-cms="hero_subtitle">Reliable, certified, and standards-compliant solutions for liquid/gas measurement, safety, energy, and building automation across Rwanda and East Africa.</p>
+    </div>
+  </div>
+</div>
+
+<!-- SOLUTIONS OVERVIEW -->
+<section style="background:white;">
+  <div class="container">
+    <div class="section-header centered reveal">
+      <span class="section-label" id="overview-label">Eight Solutions</span>
+      <h2 class="section-title" id="overview-title">Solutions We Offer</h2>
+    </div>
+    <div class="sectors-grid" id="overview-grid">
+      <a href="#metering" class="sector-card reveal" data-delay="100" style="text-decoration:none;"><div class="sector-icon">📊</div><h3>Metering Solutions</h3><p>Custody transfer loading and pipeline measuring systems for liquids and gases.</p></a>
+      <a href="#tank-gauging" class="sector-card reveal" data-delay="150" style="text-decoration:none;"><div class="sector-icon">🛢️</div><h3>Automatic Tank Gauging</h3><p>Tank inventory monitoring with the highest accuracy level instrumentation.</p></a>
+      <a href="#fire-gas" class="sector-card reveal" data-delay="200" style="text-decoration:none;"><div class="sector-icon">🔥</div><h3>Fire and Gas Safety Systems</h3><p>Fully integrated F&G systems for refineries, terminals, and pipelines.</p></a>
+      <a href="#energy" class="sector-card reveal" data-delay="250" style="text-decoration:none;"><div class="sector-icon">⚡</div><h3>Energy Solutions</h3><p>Turnkey solutions to reduce energy costs across water, air, gas, electricity, and steam.</p></a>
+      <a href="#bms" class="sector-card reveal" data-delay="100" style="text-decoration:none;"><div class="sector-icon">🏢</div><h3>Building Management Systems</h3><p>Automated control of mechanical and electrical building operations.</p></a>
+      <a href="#scada" class="sector-card reveal" data-delay="150" style="text-decoration:none;"><div class="sector-icon">🖥️</div><h3>SCADA</h3><p>Centralized supervisory control and data acquisition for resource management.</p></a>
+      <a href="#service-repair" class="sector-card reveal" data-delay="200" style="text-decoration:none;"><div class="sector-icon">🔧</div><h3>Service & Repair</h3><p>Preventive maintenance and certified repair of instruments and controllers.</p></a>
+      <a href="#power" class="sector-card reveal" data-delay="250" style="text-decoration:none;"><div class="sector-icon">🔌</div><h3>Power Systems</h3><p>Diesel generators, UPS, and power & control systems cabinet fabrication.</p></a>
+    </div>
+  </div>
+</section>
+
+<!-- METERING -->
+<section class="sector-detail" id="metering">
+  <div class="container">
+    <div class="sector-detail-grid">
+      <div class="sector-img reveal-left">
+        <div data-cms-media="sector_government_image" style="position:relative; border-radius:var(--radius-lg); box-shadow:var(--shadow-lg); overflow:hidden; aspect-ratio:4/3;">
+          <img src="Images/Sectors/1" alt="Metering Solutions" style="width:100%; height:100%; object-fit:cover; display:block;">
+        </div>
+      </div>
+      <div class="sector-content reveal-right">
+        <span class="section-label" id="sec-government-label">Solution 01</span>
+        <h2 class="section-title" id="sec-government-title">Metering Solutions</h2>
+        <div class="gold-line"></div>
+        <p id="sec-government-description">Reliable custody transfer loading solutions and pipeline measuring systems for liquids and gases. Whether the operation involves a custody transfer measuring system in the oil & gas, chemicals, or food sector, we guarantee maximum accuracy in all loading processes — following international standards API MPMS, AGA, ANSI-ASME.</p>
+        <div class="use-cases" id="sec-government-usecases">
+          <div class="use-case"><i class="fa-solid fa-diamond"></i> Custody transfer loading metering skids</div>
+          <div class="use-case"><i class="fa-solid fa-diamond"></i> Liquid & gas pipeline measuring systems</div>
+          <div class="use-case"><i class="fa-solid fa-diamond"></i> Loading & offloading process support</div>
+          <div class="use-case"><i class="fa-solid fa-diamond"></i> Design, procurement, installation & commissioning</div>
+        </div>
+        <a href="contact.html" class="btn-dark"><i class="fa-solid fa-paper-plane"></i> Discuss Your Project</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TANK GAUGING -->
+<section class="sector-detail" id="tank-gauging">
+  <div class="container">
+    <div class="sector-detail-grid reverse">
+      <div class="sector-content reveal-left">
+        <span class="section-label" id="sec-agriculture-label">Solution 02</span>
+        <h2 class="section-title" id="sec-agriculture-title">Automatic Tank Gauging</h2>
+        <div class="gold-line"></div>
+        <p id="sec-agriculture-description">Controlling and monitoring the inventory of your tank with the highest accuracy level instrumentation. State-of-the-art level (radar and servo) and temperature measurement technologies meet NMi and PTB requirements, with local approvals according to OIML R85.</p>
+        <div class="use-cases" id="sec-agriculture-usecases">
+          <div class="use-case"><i class="fa-solid fa-diamond"></i> Tank farm monitoring & inventory management</div>
+          <div class="use-case"><i class="fa-solid fa-diamond"></i> Radar & servo level measurement</div>
+          <div class="use-case"><i class="fa-solid fa-diamond"></i> Web server access to tank data</div>
+          <div class="use-case"><i class="fa-solid fa-diamond"></i> Commissioning & inspection services</div>
+        </div>
+        <a href="contact.html" class="btn-dark"><i class="fa-solid fa-paper-plane"></i> Discuss Your Project</a>
+      </div>
+      <div class="sector-img reveal-right">
+        <div data-cms-media="sector_agriculture_image" style="position:relative; border-radius:var(--radius-lg); box-shadow:var(--shadow-lg); overflow:hidden; aspect-ratio:4/3;">
+          <img src="Images/Sectors/2.png" alt="Automatic Tank Gauging" style="width:100%; height:100%; object-fit:cover; display:block;">
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FIRE AND GAS -->
+<section class="sector-detail" id="fire-gas">
+  <div class="container">
+    <div class="sector-detail-grid">
+      <div class="sector-img reveal-left">
+        <div data-cms-media="sector_mining_image" style="position:relative; border-radius:var(--radius-lg); box-shadow:var(--shadow-lg); overflow:hidden; aspect-ratio:4/3;">
+          <img src="Images/Sectors/3" alt="Fire and Gas Safety Systems" style="width:100%; height:100%; object-fit:cover; display:block;">
+        </div>
+      </div>
+      <div class="sector-content reveal-right">
+        <span class="section-label" id="sec-mining-label">Solution 03</span>
+        <h2 class="section-title" id="sec-mining-title">Fire and Gas Safety Systems</h2>
+        <div class="gold-line"></div>
+        <p id="sec-mining-description">Safety is a key concern for all industrial applications. Automation Group is committed to creating a safe environment through the implementation of fully integrated F&G and safety systems for plants including refineries, production facilities, terminals, pipelines, and storage facilities.</p>
+        <div class="use-cases" id="sec-mining-usecases">
+          <div class="use-case"><i class="fa-solid fa-diamond"></i> Tailor-made solutions to required Safety Levels</div>
+          <div class="use-case"><i class="fa-solid fa-diamond"></i> Compliance with IEC, NFPA, and EN standards</div>
+          <div class="use-case"><i class="fa-solid fa-diamond"></i> Refinery, terminal & pipeline safety systems</div>
+          <div class="use-case"><i class="fa-solid fa-diamond"></i> Detector & control panel integration</div>
+        </div>
+        <a href="contact.html" class="btn-dark"><i class="fa-solid fa-paper-plane"></i> Discuss Your Project</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ENERGY -->
+<section class="sector-detail" id="energy">
+  <div class="container">
+    <div class="sector-detail-grid reverse">
+      <div class="sector-content reveal-left">
+        <span class="section-label" id="sec-urban-label">Solution 04</span>
+        <h2 class="section-title" id="sec-urban-title">Energy Solutions</h2>
+        <div class="gold-line"></div>
+        <p id="sec-urban-description">Reduce your energy costs from measured value to energy usage. Gas, steam, and water circuits that provide energy to the operating process incur ever-increasing costs — with constant system monitoring using meaningful KPIs, operators, supervisors and management stay informed and energy management becomes constructive.</p>
+        <div class="use-cases" id="sec-urban-usecases">
+          <div class="use-case"><i class="fa-solid fa-diamond"></i> Turnkey energy-cost reduction solutions</div>
+          <div class="use-case"><i class="fa-solid fa-diamond"></i> Water, compressed air, gas & steam metering</div>
+          <div class="use-case"><i class="fa-solid fa-diamond"></i> KPI-based energy monitoring dashboards</div>
+          <div class="use-case"><i class="fa-solid fa-diamond"></i> Consulting & service capabilities</div>
+        </div>
+        <a href="contact.html" class="btn-dark"><i class="fa-solid fa-paper-plane"></i> Discuss Your Project</a>
+      </div>
+      <div class="sector-img reveal-right">
+        <div data-cms-media="sector_urban_image" style="position:relative; border-radius:var(--radius-lg); box-shadow:var(--shadow-lg); overflow:hidden; aspect-ratio:4/3;">
+          <img src="Images/Sectors/4.png" alt="Energy Solutions" style="width:100%; height:100%; object-fit:cover; display:block;">
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BMS -->
+<section class="sector-detail" id="bms">
+  <div class="container">
+    <div class="sector-detail-grid reverse">
+      <div class="sector-content reveal-left">
+        <span class="section-label" id="sec-energy-label">Solution 05</span>
+        <h2 class="section-title" id="sec-energy-title">Building Management Systems</h2>
+        <div class="gold-line"></div>
+        <p id="sec-energy-description">All buildings have some form of mechanical and electrical services and operations to maintain a comfortable working environment. The purpose of a Building Management System is to automate and take control of these operations in the most efficient way possible — partnering with leading manufacturers and suppliers of BMS.</p>
+        <div class="use-cases" id="sec-energy-usecases">
+          <div class="use-case"><i class="fa-solid fa-diamond"></i> Access control & digital video surveillance</div>
+          <div class="use-case"><i class="fa-solid fa-diamond"></i> Smoke control & indoor air quality</div>
+          <div class="use-case"><i class="fa-solid fa-diamond"></i> Energy supply & load management</div>
+          <div class="use-case"><i class="fa-solid fa-diamond"></i> Enterprise systems integration</div>
+        </div>
+        <a href="contact.html" class="btn-dark"><i class="fa-solid fa-paper-plane"></i> Discuss Your Project</a>
+      </div>
+      <div class="sector-img reveal-right">
+        <div data-cms-media="sector_energy_image" style="position:relative; border-radius:var(--radius-lg); box-shadow:var(--shadow-lg); overflow:hidden; aspect-ratio:4/3;">
+          <img src="Images/Sectors/5.png" alt="Building Management Systems" style="width:100%; height:100%; object-fit:cover; display:block;">
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SCADA -->
+<section class="sector-detail" id="scada">
+  <div class="container">
+    <div class="sector-detail-grid reverse">
+      <div class="sector-content reveal-left">
+        <span class="section-label" id="sec-conservation-label">Solution 06</span>
+        <h2 class="section-title" id="sec-conservation-title">Supervisory Control & Data Acquisition (SCADA)</h2>
+        <div class="gold-line"></div>
+        <p id="sec-conservation-description">Over the past years, more and more organisations are realising the economics of SCADA. The real benefit of a centralized control system, beside its inherited control capability, is the ability to provide real and historical data — making it possible to achieve efficient resource management and optimized results, with reduced total investment costs and improved return on investment (ROI).</p>
+        <div class="use-cases" id="sec-conservation-usecases">
+          <div class="use-case"><i class="fa-solid fa-diamond"></i> Centralized supervisory control systems</div>
+          <div class="use-case"><i class="fa-solid fa-diamond"></i> Real-time & historical data acquisition</div>
+          <div class="use-case"><i class="fa-solid fa-diamond"></i> Resource management optimisation</div>
+          <div class="use-case"><i class="fa-solid fa-diamond"></i> Value-added services to reduce ROI</div>
+        </div>
+        <a href="contact.html" class="btn-dark"><i class="fa-solid fa-paper-plane"></i> Discuss Your Project</a>
+      </div>
+      <div class="sector-img reveal-right">
+        <div data-cms-media="sector_conservation_image" style="position:relative; border-radius:var(--radius-lg); box-shadow:var(--shadow-lg); overflow:hidden; aspect-ratio:4/3;">
+          <img src="Images/Sectors/5a.jpg" alt="SCADA control room" style="width:100%; height:100%; object-fit:cover; display:block;">
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICE & REPAIR -->
+<section class="sector-detail" id="service-repair">
+  <div class="container">
+    <div class="sector-detail-grid">
+      <div class="sector-img reveal-left">
+        <div data-cms-media="sector_humanitarian_image" style="position:relative; border-radius:var(--radius-lg); box-shadow:var(--shadow-lg); overflow:hidden; aspect-ratio:4/3;">
+          <img src="Images/Sectors/5b.jpg" alt="Service and Repair preventive maintenance" style="width:100%; height:100%; object-fit:cover; display:block;">
+        </div>
+      </div>
+      <div class="sector-content reveal-right">
+        <span class="section-label" id="sec-humanitarian-label">Solution 07</span>
+        <h2 class="section-title" id="sec-humanitarian-title">Service & Repair</h2>
+        <div class="gold-line"></div>
+        <p id="sec-humanitarian-description">We have an excellent, competent service team certified by leading manufacturers, allowing Automation Group to efficiently and reliably troubleshoot, diagnose, and repair damaged or faulty instruments and controllers — with a focus on preventive maintenance to avoid costly downtime.</p>
+        <div class="use-cases" id="sec-humanitarian-usecases">
+          <div class="use-case"><i class="fa-solid fa-diamond"></i> Preventive maintenance contracts</div>
+          <div class="use-case"><i class="fa-solid fa-diamond"></i> Manufacturer-certified repair teams</div>
+          <div class="use-case"><i class="fa-solid fa-diamond"></i> Rapid fault diagnosis & troubleshooting</div>
+          <div class="use-case"><i class="fa-solid fa-diamond"></i> Spare parts support</div>
+        </div>
+        <a href="contact.html" class="btn-dark"><i class="fa-solid fa-paper-plane"></i> Discuss Your Project</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- POWER SYSTEMS -->
+<section class="sector-detail" id="power">
+  <div class="container">
+    <div class="sector-detail-grid reverse">
+      <div class="sector-content reveal-left">
+        <span class="section-label" id="sec-finance-label">Solution 08</span>
+        <h2 class="section-title" id="sec-finance-title">Power Systems</h2>
+        <div class="gold-line"></div>
+        <p id="sec-finance-description">Our power systems line covers high-quality, reliable diesel generators with trusted components, Uninterruptible Power Supply (UPS) with the highest availability, and power & control systems cabinet fabrication — designed to operate in harsh conditions.</p>
+        <div class="use-cases" id="sec-finance-usecases">
+          <div class="use-case"><i class="fa-solid fa-diamond"></i> Diesel generators — robust design, best performance</div>
+          <div class="use-case"><i class="fa-solid fa-diamond"></i> UPS — triple-mode parallel bus & full bypass redundancy</div>
+          <div class="use-case"><i class="fa-solid fa-diamond"></i> Power & control systems cabinet fabrication</div>
+          <div class="use-case"><i class="fa-solid fa-diamond"></i> Hot-swappable modules, minimized human error</div>
+        </div>
+        <a href="contact.html" class="btn-dark"><i class="fa-solid fa-paper-plane"></i> Discuss Your Project</a>
+      </div>
+      <div class="sector-img reveal-right">
+        <div data-cms-media="sector_finance_image" style="position:relative; border-radius:var(--radius-lg); box-shadow:var(--shadow-lg); overflow:hidden; aspect-ratio:4/3;">
+          <img src="Images/Sectors/4b.jpg" alt="Power Systems generators and UPS" style="width:100%; height:100%; object-fit:cover; display:block;">
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-strip">
+  <div class="container">
+    <div class="cta-strip-inner">
+      <div class="reveal-left"><h2><span id="sectors-cta-heading">Don't see what you need?</span><br><em id="sectors-cta-emphasis">We can help anyway.</em></h2><p id="sectors-cta-paragraph">Our engineering expertise applies across all industrial sectors.</p></div>
+      <div class="cta-strip-actions reveal-right">
+        <a href="contact.html" class="btn-primary"><i class="fa-solid fa-calendar-check"></i> Schedule a Free Call</a>
+        <a href="services.html" class="btn-secondary"><i class="fa-solid fa-layer-group"></i> View All Services</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FOOTER ===================== -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="footer-logo">
+          <span class="diamond">◆</span>
+          <span class="footer-logo-name" data-cms-setting="company_name">AUTOMATION GROUP Ltd</span>
+        </div>
+        <p class="footer-desc" data-cms-setting="company_description">Automation Group Ltd is a professional systems integrator based in Kigali, Rwanda — delivering engineering, supply, installation, commissioning, and repair services for process & industrial automation, power systems, and safety solutions across East Africa.</p>
+        <div class="footer-social">
+          <a href="https://www.instagram.com/emmanuelnigaba" data-cms-setting-href="social_instagram" class="social-icon" aria-label="Instagram" target="_blank" rel="noopener"><i class="fa-brands fa-instagram"></i></a>
+          <a href="https://wa.me/250788881467" data-cms-setting-href="contact_whatsapp" class="social-icon" aria-label="WhatsApp" target="_blank" rel="noopener"><i class="fa-brands fa-whatsapp"></i></a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Solutions</h4>
+        <ul>
+          <li><a href="solutions.html#metering">Metering Solutions</a></li>
+          <li><a href="solutions.html#tank-gauging">Automatic Tank Gauging</a></li>
+          <li><a href="solutions.html#fire-gas">Fire & Gas Safety Systems</a></li>
+          <li><a href="solutions.html#energy">Energy Solutions</a></li>
+          <li><a href="solutions.html#bms">Building Management Systems</a></li>
+          <li><a href="solutions.html#scada">SCADA</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="about.html">About Us</a></li>
+          <li><a href="services.html">Services</a></li>
+          <li><a href="products.html">Products</a></li>
+          <li><a href="contact.html">Contact Us</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <div class="footer-contact-item"><i class="fa-solid fa-location-dot"></i><span data-cms-setting="contact_address">6B KG 738 St, Kigali, Rwanda</span></div>
+        <div class="footer-contact-item"><i class="fa-solid fa-envelope"></i><a href="mailto:info.automationgroup@gmail.com" data-cms-setting="contact_email">info.automationgroup@gmail.com</a></div>
+        <div class="footer-contact-item"><i class="fa-solid fa-phone"></i><a href="tel:+250788881467" data-cms-setting="contact_phone">+250 788 881 467</a></div>
+        <div class="footer-contact-item"><i class="fa-brands fa-whatsapp"></i><a href="https://wa.me/250788881467" data-cms-setting-href="contact_whatsapp">WhatsApp Us</a></div>
+        <h4 style="margin-top:1.5rem;">Newsletter</h4>
+        <form class="newsletter-form" onsubmit="return false;">
+          <input type="email" placeholder="Your email address">
+          <button type="submit">Subscribe</button>
+        </form>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 Automation Group Ltd. All rights reserved. Kigali, Rwanda.</p>
+      <div class="footer-legal">
+        <a href="Privacy Policy.html">Privacy Policy</a>
+        <a href="Terms of Service.html">Terms of Service</a>
+      </div>
+      <div style="text-align:center; margin-top: 1rem;">
+        <a href="https://admin.apexrmgroup.com" style="font-size:0.68rem; letter-spacing:0.1em; text-transform:uppercase; color:rgba(255,255,255,0.35); text-decoration:none;"><i class="fa-solid fa-lock"></i> Admin Portal</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<button id="scroll-top"><i class="fa-solid fa-chevron-up"></i></button>
+<a id="whatsapp-btn" href="https://wa.me/250788881467" target="_blank"><i class="fa-brands fa-whatsapp"></i></a>
+<script src="js/cms.js"></script>
+<script src="js/script.js"></script>
+<script src="js/cms-loader.js" data-api="https://admin.apexrmgroup.com" data-page="sectors"></script>
+<script src="js/sectors-cms.js"></script>
+</body>
+</html>

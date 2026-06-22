@@ -1,6 +1,6 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "apex-rm-group",
+  "name": "automation-group",
   "compatibility_date": "2026-05-30",
   "main": "worker.js",
   "observability": {
@@ -8,8 +8,7 @@
   },
   "assets": {
     "directory": ".",
-    "binding": "ASSETS",
-    "run_worker_first": ["/careers", "/careers.html"]
+    "binding": "ASSETS"
   },
   "compatibility_flags": [
     "nodejs_compat"

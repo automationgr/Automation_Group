@@ -1,6 +1,14 @@
 /* ============================================================
-   APEX R&M GROUP — cms.js  v3.0
+   AUTOMATION GROUP — cms.js  v3.0
    Shared CMS Data Layer — Admin ↔ Website Bridge
+
+   NOTE: ApexRenderer below is legacy/superseded by the Admin Portal's
+   cms-loader.js + per-page *-cms.js files, which are the active content
+   pipeline. Its init() referenced undefined variables and threw on every
+   page load; it has been neutralized (see init() below) but left in place
+   because APEX_CMS.load()/.save()/.addMessage() are still used by
+   messages.js as the localStorage fallback for the contact form when
+   Supabase isn't configured.
    ============================================================ */
 'use strict';
 
@@ -201,17 +209,9 @@ const APEX_CMS = {
 /* ── RENDERER ── */
 const ApexRenderer = {
   init() {
-    //const data = APEX_CMS.load();
-    //this.renderGlobal(data.global);
-    //const p = (window.location.pathname.split('/').pop()||'index.html');
-    if (!p||p==='index.html') this.renderHome(data.home);
-    else if (p==='about.html')    this.renderAbout(data.about);
-    else if (p==='services.html') this.renderServices(data.services);
-    else if (p==='projects.html') this.renderProjects(data.projects);
-    else if (p==='sectors.html')  this.renderSectors(data.sectors);
-    else if (p==='team.html')     this.renderTeam(data.team, data.advisors);
-    else if (p==='contact.html')  this.renderContact(data.contact);
-    this.wireContactForm();
+    // Disabled: superseded by cms-loader.js + the per-page *-cms.js files,
+    // which read live content from the Admin Portal API instead of this
+    // hardcoded local default data.
   },
 
   $: (sel) => document.querySelector(sel),

@@ -135,35 +135,59 @@ ul { list-style: none; }
 /* --- Loading Screen --- */
 #loader {
   position: fixed; inset: 0;
-  background: var(--navy);
+  background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 45%, #3a1f0d 100%);
+  background-size: 220% 220%;
+  animation: loaderDrift 6s ease-in-out infinite;
   display: flex; flex-direction: column;
   align-items: center; justify-content: center;
   z-index: 99999;
-  transition: opacity 1s ease, visibility 1s ease;
+  transition: opacity 0.7s ease, visibility 0.7s ease;
 }
 #loader.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+.loader-ring {
+  position: relative;
+  width: 84px; height: 84px;
+  margin-bottom: 1.4rem;
+  border-radius: 50%;
+  border: 3px solid rgba(201,168,76,0.18);
+  border-top-color: var(--gold);
+  border-right-color: var(--gold-light);
+  animation: spin 1.1s cubic-bezier(0.6,0.2,0.4,0.8) infinite;
+}
+.loader-ring::after {
+  content: '◆';
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.4rem; color: var(--gold);
+  animation: spin 1.1s linear infinite reverse;
+}
 .loader-logo {
   font-family: var(--font-heading);
-  font-size: 2rem;
-  color: var(--gold);
-  letter-spacing: 0.1em;
-  animation: pulseGold 1s ease infinite;
+  font-size: 1.7rem;
+  color: var(--gold-light);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  animation: pulseGold 1.4s ease infinite;
 }
-.loader-diamond { font-size: 2.5rem; color: var(--gold); animation: spin 1s linear infinite; display: inline-block; }
 .loader-bar {
   width: 200px; height: 2px;
   background: rgba(201,168,76,0.2);
-  margin-top: 20px; border-radius: 2px; overflow: hidden;
+  margin-top: 22px; border-radius: 2px; overflow: hidden;
 }
 .loader-bar::after {
   content: '';
   display: block; height: 100%; width: 0%;
-  background: var(--gold);
-  animation: loadBar 1s ease forwards;
+  background: linear-gradient(90deg, var(--gold), #e8702a);
+  animation: loadBar 1.6s ease forwards;
 }
 @keyframes loadBar { to { width: 100%; } }
 @keyframes spin { to { transform: rotate(360deg); } }
-@keyframes pulseGold { 0%,100%{opacity:1} 50%{opacity:0.6} }
+@keyframes pulseGold { 0%,100%{opacity:1} 50%{opacity:0.55} }
+@keyframes loaderDrift {
+  0%   { background-position: 0% 0%; }
+  50%  { background-position: 100% 60%; }
+  100% { background-position: 0% 0%; }
+}
 
 /* --- Navigation --- */
 #navbar {

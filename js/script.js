@@ -1,17 +1,26 @@
 /* ============================================================
-   APEX R&M GROUP — script.js
+   AUTOMATION GROUP — script.js
    Main JavaScript — All interactions, animations, UI
    ============================================================ */
 
 'use strict';
 
-/* --- Loading Screen --- */
-window.addEventListener('load', () => {
-  setTimeout(() => {
+/* --- Loading Screen ---
+   Hides on window 'load' + a short delay, same as before. Also carries a
+   hard fallback timer: if 'load' never fires (blocked external font/CDN
+   request, slow network, file:// quirks), the loader still gets dismissed
+   instead of hanging on screen forever. */
+(function () {
+  let hidden = false;
+  function hideLoader() {
+    if (hidden) return;
+    hidden = true;
     const loader = document.getElementById('loader');
     if (loader) loader.classList.add('hidden');
-  }, 1800);
-});
+  }
+  window.addEventListener('load', () => setTimeout(hideLoader, 1800));
+  setTimeout(hideLoader, 4000);
+})();
 
 /* --- Scroll Progress --- */
 function updateScrollProgress() {
@@ -128,6 +137,11 @@ function animateCounter(el) {
 /* --- Testimonials Carousel --- */
 function initCarousel(carouselEl) {
   if (!carouselEl) return;
+  // Re-entrant: if CMS-loaded content re-renders the slides/dots later and
+  // calls this again, stop the previous autoplay timer first so two timers
+  // never fight over the same transform.
+  if (carouselEl._autoplayInterval) clearInterval(carouselEl._autoplayInterval);
+
   const inner = carouselEl.querySelector('.testimonials-inner');
   const slides = carouselEl.querySelectorAll('.testimonial-slide');
   const dots = carouselEl.querySelectorAll('.carousel-dot');
@@ -149,8 +163,10 @@ function initCarousel(carouselEl) {
   function resetAuto() {
     clearInterval(autoplay);
     autoplay = setInterval(() => go(current + 1), 5000);
+    carouselEl._autoplayInterval = autoplay;
   }
   autoplay = setInterval(() => go(current + 1), 5000);
+  carouselEl._autoplayInterval = autoplay;
   go(0);
 }
 
@@ -299,7 +315,7 @@ function initMap(containerId, lat, lng, zoom) {
     iconAnchor: [8, 8]
   });
   L.marker([lat, lng], { icon }).addTo(map)
-    .bindPopup('<b style="font-family:Georgia">APEX R&M GROUP</b><br>Kamonyi District, Runda Sector, Ruyenzi Cell, Nyagacaca Village, Presto Plazza.<br><a href="mailto:info.apexrmgroup@gmail.com" style="color:#1A6B8A">info.apexrmgroup@gmail.com</a>')
+    .bindPopup('<b style="font-family:Georgia">AUTOMATION GROUP</b><br>6B KG 738 St, Kigali, Rwanda.<br><a href="mailto:info.automationgroup@gmail.com" style="color:#1A6B8A">info.automationgroup@gmail.com</a>')
     .openPopup();
 
   return map;
@@ -307,10 +323,10 @@ function initMap(containerId, lat, lng, zoom) {
 
 // Init HQ map on contact page
 if (document.getElementById('contact-map')) {
-  initMap('contact-map', -1.962408, 29.982405, 13);
+  initMap('contact-map', -1.949078, 30.058300, 13);
 }
 
-initProjectsMap();
+if (typeof initProjectsMap === 'function') initProjectsMap();
 
 /* --- Tooltip Init --- */
 document.querySelectorAll('[data-tooltip]').forEach(el => {
