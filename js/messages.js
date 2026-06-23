@@ -30,12 +30,12 @@
 'use strict';
 
 /* ── PASTE YOUR CREDENTIALS HERE ────────────────────────────── */
-const SUPABASE_URL = '';          // e.g. https://abcdef.supabase.co
-const SUPABASE_KEY = '';          // anon / public key
+const SUPABASE_URL = 'https://gvdzqwclzqdlubdusgem.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_--byWlzfvah4iHTYvqaDIw_ARgGL1mH';
 
-const EMAILJS_PUBLIC_KEY  = '';
-const EMAILJS_SERVICE_ID  = '';
-const EMAILJS_TEMPLATE_ID = '';
+const EMAILJS_PUBLIC_KEY  = 'DZGtXMBvL4RaGHyGG';
+const EMAILJS_SERVICE_ID  = 'service_459an5n';
+const EMAILJS_TEMPLATE_ID = 'template_alopfyu';
 
 const TBL_MESSAGES = 'contact_messages';
 /* ─────────────────────────────────────────────────────────────── */
