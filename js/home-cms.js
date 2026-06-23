@@ -63,6 +63,9 @@
     var grid = document.getElementById('client-logos-grid');
     if (!grid || !items || !items.length) return;
     grid.innerHTML = items.map(function (item) {
+      if (item.logoUrl) {
+        return '<div class="client-logo-item client-logo-item--image"><img src="' + escapeHtml(item.logoUrl) + '" alt="' + escapeHtml(item.name) + '" loading="lazy"></div>';
+      }
       return '<div class="client-logo-item">' + escapeHtml(item.name) + '</div>';
     }).join('');
   }
