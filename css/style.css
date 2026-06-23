@@ -965,8 +965,8 @@ section { padding: 6rem 0; }
   transition: transform var(--transition), box-shadow var(--transition);
 }
 .blog-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-md); }
-.blog-image { aspect-ratio: 16/9; overflow: hidden; }
-.blog-image img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease; }
+.blog-image { aspect-ratio: 16/9; overflow: hidden; background: var(--warm-white); }
+.blog-image img { width: 100%; height: 100%; object-fit: contain; transition: transform 0.4s ease; }
 .blog-card:hover .blog-image img { transform: scale(1.05); }
 .blog-body { padding: 1.4rem; }
 .blog-category {
