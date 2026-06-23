@@ -55,7 +55,7 @@ function hasSupabase() { return !!getSupabase(); }
    MESSAGES — contact form enquiries
    ════════════════════════════════════════════════════════════════ */
 
-async function apexSaveToSupabase(msg) {
+async function automationSaveToSupabase(msg) {
   const sb = getSupabase(); if (!sb) return false;
   try {
     const { error } = await sb.from(TBL_MESSAGES).insert({
@@ -69,7 +69,7 @@ async function apexSaveToSupabase(msg) {
   } catch(e) { console.error('[AUTOMATION] Supabase save failed:', e); return false; }
 }
 
-async function apexLoadFromSupabase() {
+async function automationLoadFromSupabase() {
   const sb = getSupabase(); if (!sb) return null;
   try {
     const { data, error } = await sb.from(TBL_MESSAGES)
@@ -78,27 +78,27 @@ async function apexLoadFromSupabase() {
   } catch(e) { return null; }
 }
 
-async function apexMarkReadSupabase(id) {
+async function automationMarkReadSupabase(id) {
   const sb = getSupabase(); if (!sb) return;
   try { await sb.from(TBL_MESSAGES).update({ read: true }).eq('id', id); } catch(e) {}
 }
 
-async function apexMarkAllReadSupabase() {
+async function automationMarkAllReadSupabase() {
   const sb = getSupabase(); if (!sb) return;
   try { await sb.from(TBL_MESSAGES).update({ read: true }).eq('read', false); } catch(e) {}
 }
 
-async function apexDeleteSupabase(id) {
+async function automationDeleteSupabase(id) {
   const sb = getSupabase(); if (!sb) return;
   try { await sb.from(TBL_MESSAGES).delete().eq('id', id); } catch(e) {}
 }
 
 /* ── Admin portal message refresh ── */
-window.apexLoadMessages = async function() {
+window.automationLoadMessages = async function() {
   if (hasSupabase()) {
-    const rows = await apexLoadFromSupabase();
-    if (rows !== null && typeof APEX_CMS !== 'undefined') {
-      const data = APEX_CMS.load();
+    const rows = await automationLoadFromSupabase();
+    if (rows !== null && typeof AUTOMATION_CMS !== 'undefined') {
+      const data = AUTOMATION_CMS.load();
       data.messages = rows.map(m => ({
         id:      m.id,
         name:    m.name,    org:     m.org,     email:   m.email,
@@ -110,7 +110,7 @@ window.apexLoadMessages = async function() {
           hour:'2-digit', minute:'2-digit'
         })
       }));
-      APEX_CMS.save(data);
+      AUTOMATION_CMS.save(data);
     }
   }
   if (typeof renderMsgs    === 'function') renderMsgs();
@@ -121,7 +121,7 @@ window.apexLoadMessages = async function() {
    EMAIL NOTIFICATIONS
    ════════════════════════════════════════════════════════════════ */
 
-async function apexSendEmail(params) {
+async function automationSendEmail(params) {
   if (typeof emailjs === 'undefined') { console.warn('[AUTOMATION] EmailJS not loaded'); return false; }
   if (!EMAILJS_SERVICE_ID || !EMAILJS_TEMPLATE_ID) { return false; }
   try {
@@ -146,17 +146,17 @@ async function apexSendEmail(params) {
    CONTACT FORM
    ════════════════════════════════════════════════════════════════ */
 
-function apexSaveToLocalStorage(msg) {
+function automationSaveToLocalStorage(msg) {
   try {
-    if (typeof APEX_CMS !== 'undefined' && typeof APEX_CMS.addMessage === 'function') {
-      APEX_CMS.addMessage(msg); return true;
+    if (typeof AUTOMATION_CMS !== 'undefined' && typeof AUTOMATION_CMS.addMessage === 'function') {
+      AUTOMATION_CMS.addMessage(msg); return true;
     }
   } catch(e) {}
   return false;
 }
 
 /* Forward the submission to the Admin Portal CMS inbox (fire-and-forget; never blocks the form). */
-function apexSaveToAdminPortal(msg) {
+function automationSaveToAdminPortal(msg) {
   try {
     const loaderScript = document.querySelector('script[src*="cms-loader.js"]');
     const apiBase = loaderScript ? (loaderScript.getAttribute('data-api') || '').replace(/\/$/, '') : '';
@@ -177,8 +177,8 @@ function apexSaveToAdminPortal(msg) {
   } catch (e) { /* never block the existing form flow */ }
 }
 
-function apexWireContactForm() {
-  const form = document.getElementById('apex-contact-form');
+function automationWireContactForm() {
+  const form = document.getElementById('automation-contact-form');
   if (!form) return;
   const fresh = form.cloneNode(true);
   form.parentNode.replaceChild(fresh, form);
@@ -210,17 +210,17 @@ function apexWireContactForm() {
 
     try {
       /* Save to Supabase (cross-device, primary) */
-      const sbOk = await apexSaveToSupabase(msg);
+      const sbOk = await automationSaveToSupabase(msg);
       /* Save to localStorage (same-device fallback if Supabase not set up yet) */
-      if (!sbOk) apexSaveToLocalStorage(msg);
+      if (!sbOk) automationSaveToLocalStorage(msg);
       /* Email notification */
-      const emailOk = await apexSendEmail({
+      const emailOk = await automationSendEmail({
         from_name: msg.name, from_email: msg.email, from_org: msg.org,
         phone: msg.phone, country: msg.country, service: msg.service,
         message: msg.message
       });
       /* Also record in the Admin Portal inbox so it shows up in the CMS dashboard */
-      apexSaveToAdminPortal(msg);
+      automationSaveToAdminPortal(msg);
 
       fresh.parentNode.innerHTML = `
         <div style="text-align:center;padding:3.5rem 2rem;">
@@ -242,9 +242,9 @@ function apexWireContactForm() {
 }
 
 function _showBanner(form, type, text) {
-  let b = form.querySelector('.apex-form-banner');
+  let b = form.querySelector('.automation-form-banner');
   if (!b) {
-    b = document.createElement('div'); b.className = 'apex-form-banner';
+    b = document.createElement('div'); b.className = 'automation-form-banner';
     const btn = form.querySelector('button[type="submit"]');
     if (btn) form.insertBefore(b, btn); else form.appendChild(b);
   }
@@ -266,6 +266,6 @@ function _esc(s) {
 (function() {
   document.addEventListener('DOMContentLoaded', () => {
     if (typeof emailjs !== 'undefined' && EMAILJS_PUBLIC_KEY) emailjs.init(EMAILJS_PUBLIC_KEY);
-    if (document.getElementById('apex-contact-form')) apexWireContactForm();
+    if (document.getElementById('automation-contact-form')) automationWireContactForm();
   });
 })();

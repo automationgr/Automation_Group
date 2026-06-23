@@ -1,7 +1,7 @@
 /**
  * cms-loader.js — connects this static site to the Admin Portal CMS.
  *
- * Usage: <script src="js/cms-loader.js" data-api="https://admin.apexrmgroup.com" data-page="index"></script>
+ * Usage: <script src="js/cms-loader.js" data-api="https://automation-group-admin.vercel.app" data-page="index"></script>
  *
  * Elements opt in to CMS control via attributes:
  *   data-cms="field_key"          -> sets textContent from /api/public/content

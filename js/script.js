@@ -332,7 +332,7 @@ if (typeof initProjectsMap === 'function') initProjectsMap();
 document.querySelectorAll('[data-tooltip]').forEach(el => {
   el.addEventListener('mouseenter', function () {
     const tip = document.createElement('div');
-    tip.className = 'apex-tooltip';
+    tip.className = 'automation-tooltip';
     tip.textContent = this.dataset.tooltip;
     tip.style.cssText = `
       position:absolute; background:var(--navy); color:var(--gold);

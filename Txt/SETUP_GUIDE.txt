@@ -12,11 +12,11 @@ Prisma application with its own database and authentication). If the API
 is unreachable, each page falls back to the static HTML already in the
 file — nothing on the public site ever goes blank.
 
-NOTE: js/cms.js's ApexRenderer/APEX_CMS localStorage system referenced in
-older versions of this guide has been retired — the Admin Portal is now
-the single source of truth for editable content. APEX_CMS.load()/.save()
-are still used internally as a local fallback for storing contact-form
-messages when Supabase isn't configured (see js/messages.js).
+NOTE: js/cms.js's AUTOMATION_CMS localStorage system is a minimal local
+fallback only — the Admin Portal is the single source of truth for
+editable content. AUTOMATION_CMS.load()/.save() are used internally as a
+local fallback for storing contact-form messages when Supabase isn't
+configured (see js/messages.js).
 
 ADMIN PORTAL ACCESS
 ────────────────────
