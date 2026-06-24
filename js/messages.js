@@ -121,6 +121,11 @@ window.automationLoadMessages = async function() {
    EMAIL NOTIFICATIONS
    ════════════════════════════════════════════════════════════════ */
 
+/* EmailJS hard-caps every template variable at 50KB. Messages longer than
+   this go to the Admin Portal dashboard only (it accepts up to 100,000
+   characters) instead of being sent to EmailJS at all. */
+const EMAILJS_CHAR_LIMIT = 40000;
+
 async function automationSendEmail(params) {
   if (typeof emailjs === 'undefined') { console.warn('[AUTOMATION] EmailJS not loaded'); return false; }
   if (!EMAILJS_SERVICE_ID || !EMAILJS_TEMPLATE_ID) { return false; }
@@ -161,6 +166,11 @@ function automationSaveToAdminPortal(msg) {
     const loaderScript = document.querySelector('script[src*="cms-loader.js"]');
     const apiBase = loaderScript ? (loaderScript.getAttribute('data-api') || '').replace(/\/$/, '') : '';
     if (!apiBase) return;
+    const prefix = `Organisation: ${msg.org}\nCountry: ${msg.country}\n\n`;
+    const maxBody = 100000 - prefix.length;
+    const body = (msg.message || '').length > maxBody
+      ? msg.message.slice(0, maxBody) + `\n\n[... truncated — ${msg.message.length.toLocaleString()} characters total, full text saved in Supabase ...]`
+      : (msg.message || '');
     fetch(apiBase + '/api/public/contact', {
       method: 'POST',
       mode: 'cors',
@@ -170,7 +180,7 @@ function automationSaveToAdminPortal(msg) {
         email: msg.email,
         phone: msg.phone,
         subject: msg.subject,
-        message: `Organisation: ${msg.org}\nCountry: ${msg.country}\n\n${msg.message}`,
+        message: prefix + body,
         category: 'project-inquiry',
       }),
     }).catch(() => {});
@@ -213,8 +223,12 @@ function automationWireContactForm() {
       const sbOk = await automationSaveToSupabase(msg);
       /* Save to localStorage (same-device fallback if Supabase not set up yet) */
       if (!sbOk) automationSaveToLocalStorage(msg);
-      /* Email notification */
-      const emailOk = await automationSendEmail({
+
+      /* Messages under the EmailJS size limit go to both EmailJS and the
+         Admin Portal. Larger messages (Admin Portal accepts up to 100,000
+         characters) skip EmailJS entirely and go to the Admin Portal only. */
+      const tooLargeForEmail = msg.message.length > EMAILJS_CHAR_LIMIT;
+      const emailOk = tooLargeForEmail ? null : await automationSendEmail({
         from_name: msg.name, from_email: msg.email, from_org: msg.org,
         phone: msg.phone, country: msg.country, service: msg.service,
         message: msg.message
@@ -230,7 +244,7 @@ function automationWireContactForm() {
             Thank you, <strong>${_esc(msg.name)}</strong>. We have received your enquiry
             and will respond within <strong>24 business hours</strong>.
           </p>
-          ${!emailOk ? '<p style="color:var(--gray);font-size:0.82rem;margin-top:0.75rem;">⚠️ Email confirmation may be delayed — your message has been recorded.</p>' : ''}
+          ${tooLargeForEmail ? '<p style="color:var(--gray);font-size:0.82rem;margin-top:0.75rem;">ℹ️ Your message was large, so it was delivered straight to our dashboard instead of email — it has been recorded and we will respond soon.</p>' : (!emailOk ? '<p style="color:var(--gray);font-size:0.82rem;margin-top:0.75rem;">⚠️ Email confirmation may be delayed — your message has been recorded.</p>' : '')}
           <div style="margin-top:1.5rem;"><a href="index.html" style="color:var(--teal);font-size:0.85rem;">← Back to Home</a></div>
         </div>`;
     } catch(err) {
