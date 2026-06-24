@@ -18,11 +18,10 @@
     government: '📊', agriculture: '🛢️', mining: '🔥', urban: '⚡',
     energy: '🏢', conservation: '🖥️', humanitarian: '🔧', finance: '🔌',
   };
-  var LEGACY_IMAGE_DEFAULTS = {
-    government: 'Images/Sectors/1', agriculture: 'Images/Sectors/2.png', mining: 'Images/Sectors/3',
-    urban: 'Images/Sectors/4.png', energy: 'Images/Sectors/5.png', conservation: 'Images/Sectors/5a.jpg',
-    humanitarian: 'Images/Sectors/5b.jpg', finance: 'Images/Sectors/4b.jpg',
-  };
+  // No local fallback images anymore — every solution photo now comes from
+  // the Admin Portal's media slots (Supabase Storage). If a slot has no
+  // photo uploaded yet, the photo area is simply left blank.
+  var LEGACY_IMAGE_DEFAULTS = {};
 
   function getApiBase() {
     var loaderScript = document.querySelector('script[src*="cms-loader.js"]');

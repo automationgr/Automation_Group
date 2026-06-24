@@ -10,19 +10,10 @@
 (function () {
   var LEGACY_KEYS = ['data_collection', 'gis', 'remote_sensing', 'land_admin', 'environment', 'infrastructure', 'capacity'];
 
-  // Most services never had an actual MediaSlot saved — they were just
-  // showing their original static <img> path all along. Without this, any
-  // service with no saved slot renders no photo at all instead of falling
-  // back to what was always there.
-  var LEGACY_IMAGE_DEFAULTS = {
-    data_collection: '/Images/Services/1.png',
-    gis: '/Images/Services/2.png',
-    remote_sensing: 'Images/Services/3.png',
-    land_admin: 'Images/Services/4.png',
-    environment: 'Images/Services/5.png',
-    infrastructure: '/Images/Services/6.png',
-    capacity: 'Images/Services/7.png',
-  };
+  // No local fallback images anymore — every service photo now comes from
+  // the Admin Portal's media slots (Supabase Storage). If a slot has no
+  // photo uploaded yet, the photo area is simply left blank.
+  var LEGACY_IMAGE_DEFAULTS = {};
 
   function getApiBase() {
     var loaderScript = document.querySelector('script[src*="cms-loader.js"]');
