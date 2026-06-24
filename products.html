@@ -73,6 +73,10 @@
   </div>
 </section>
 
+<!-- PRODUCT DETAIL SECTIONS — replaced wholesale by products-cms.js once it
+     loads; everything below is the static no-JS/API-down fallback. -->
+<div id="products-detail-list">
+
 <!-- DIESEL GENERATORS -->
 <section class="product-detail" id="generators">
   <div class="container">
@@ -135,6 +139,8 @@
     </div>
   </div>
 </section>
+
+</div><!-- /products-detail-list -->
 
 <!-- BRANDS -->
 <section style="background:var(--warm-white);">
@@ -235,5 +241,6 @@
 <script src="js/cms.js"></script>
 <script src="js/script.js"></script>
 <script src="js/cms-loader.js" data-api="https://automation-group-admin.vercel.app" data-page="team"></script>
+<script src="js/products-cms.js"></script>
 </body>
 </html>
