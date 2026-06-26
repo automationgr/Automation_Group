@@ -87,62 +87,62 @@
     <div class="contact-grid">
       <!-- LEFT: INFO -->
       <div class="reveal-left">
-        <span class="section-label">Reach Us</span>
-        <h2 class="section-title" style="font-size:1.8rem;">Contact Information</h2>
+        <span class="section-label" data-cms="info_label">Reach Us</span>
+        <h2 class="section-title" style="font-size:1.8rem;" data-cms="info_title">Contact Information</h2>
         <div class="gold-line"></div>
 
         <div class="contact-info-item">
           <div class="contact-info-icon"><i class="fa-solid fa-location-dot"></i></div>
           <div>
-            <h4>Rwanda Office</h4>
-            <p>6B KG 738 St, Kigali, Rwanda<br><span style="font-size:0.82rem;color:var(--gray);">135A KG 14 Ave, Gisozi, Kigali, Rwanda</span></p>
+            <h4 data-cms="office_title">Rwanda Office</h4>
+            <p data-cms-html="office_address_html">6B KG 738 St, Kigali, Rwanda<br><span style="font-size:0.82rem;color:var(--gray);">135A KG 14 Ave, Gisozi, Kigali, Rwanda</span></p>
           </div>
         </div>
 
         <div class="contact-info-item">
           <div class="contact-info-icon"><i class="fa-solid fa-envelope"></i></div>
           <div>
-            <h4>General Enquiries</h4>
-            <p><a href="mailto:info.automationgroup@gmail.com" style="color:var(--teal);">info.automationgroup@gmail.com</a></p>
+            <h4 data-cms="email_label">General Enquiries</h4>
+            <p><a href="mailto:info.automationgroup@gmail.com" style="color:var(--teal);" data-cms-setting="contact_email">info.automationgroup@gmail.com</a></p>
           </div>
         </div>
 
         <div class="contact-info-item">
           <div class="contact-info-icon"><i class="fa-solid fa-phone"></i></div>
           <div>
-            <h4>Phone</h4>
-            <p><a href="tel:+250788881467" style="color:var(--teal);">+250 788 881 467</a></p>
+            <h4 data-cms="phone_label">Phone</h4>
+            <p><a href="tel:+250788881467" style="color:var(--teal);" data-cms-setting="contact_phone">+250 788 881 467</a></p>
           </div>
         </div>
 
         <div class="contact-info-item">
           <div class="contact-info-icon" style="background:#25D366;"><i class="fa-brands fa-whatsapp" style="color:white;"></i></div>
           <div>
-            <h4>WhatsApp Business</h4>
-            <p><a href="https://wa.me/250788881467" target="_blank" style="color:#25D366;">Chat on WhatsApp</a><br>
-            <span style="font-size:0.8rem;color:var(--gray);">Mon–Fri, 8am–6pm EAT</span></p>
+            <h4 data-cms="whatsapp_label">WhatsApp Business</h4>
+            <p><a href="https://wa.me/250788881467" target="_blank" style="color:#25D366;" data-cms-setting-href="contact_whatsapp">Chat on WhatsApp</a><br>
+            <span style="font-size:0.8rem;color:var(--gray);" data-cms="whatsapp_hours">Mon–Fri, 8am–6pm EAT</span></p>
           </div>
         </div>
 
         <div class="contact-info-item" style="border:none;">
           <div class="contact-info-icon"><i class="fa-solid fa-language"></i></div>
           <div>
-            <h4>Languages</h4>
-            <p>English &bull; Français &bull; Ikinyarwanda</p>
+            <h4 data-cms="languages_label">Languages</h4>
+            <p data-cms="languages_value">English &bull; Français &bull; Ikinyarwanda</p>
           </div>
         </div>
 
         <div class="response-promise">
           <i class="fa-solid fa-clock-rotate-left"></i>
-          <p><strong>Response Commitment:</strong> We respond to all project enquiries within 24 business hours. For urgent matters, WhatsApp or call us directly.</p>
+          <p><strong>Response Commitment:</strong> <span data-cms="response_commitment">We respond to all project enquiries within 24 business hours. For urgent matters, WhatsApp or call us directly.</span></p>
         </div>
 
         <!-- Social Links -->
         <div style="margin-top:2rem;">
-          <div style="font-family:var(--font-ui);font-size:0.68rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:var(--gray);margin-bottom:0.8rem;">Follow Us</div>
+          <div style="font-family:var(--font-ui);font-size:0.68rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:var(--gray);margin-bottom:0.8rem;" data-cms="follow_us_label">Follow Us</div>
           <div class="social-contact-grid">
-            <a href="https://www.instagram.com/emmanuelnigaba" target="_blank" rel="noopener" class="social-contact-btn instagram"><i class="fa-brands fa-instagram"></i>Instagram</a>
-            <a href="https://wa.me/250788881467" target="_blank" rel="noopener" class="social-contact-btn whatsapp"><i class="fa-brands fa-whatsapp"></i>WhatsApp</a>
+            <a href="https://www.instagram.com/emmanuelnigaba" target="_blank" rel="noopener" class="social-contact-btn instagram" data-cms-setting-href="social_instagram"><i class="fa-brands fa-instagram"></i>Instagram</a>
+            <a href="https://wa.me/250788881467" target="_blank" rel="noopener" class="social-contact-btn whatsapp" data-cms-setting-href="contact_whatsapp"><i class="fa-brands fa-whatsapp"></i>WhatsApp</a>
           </div>
         </div>
       </div>
@@ -150,8 +150,8 @@
       <!-- RIGHT: FORM -->
       <div class="reveal-right">
         <div style="background:var(--warm-white);border-radius:var(--radius-lg);padding:2.5rem;">
-          <h3 style="font-family:var(--font-heading);font-size:1.4rem;color:var(--navy);margin-bottom:0.5rem;">Send Us a Message</h3>
-          <p style="font-size:0.84rem;color:var(--gray);margin-bottom:2rem;">Tell us about your project or challenge — the more detail the better.</p>
+          <h3 style="font-family:var(--font-heading);font-size:1.4rem;color:var(--navy);margin-bottom:0.5rem;" data-cms="form_title">Send Us a Message</h3>
+          <p style="font-size:0.84rem;color:var(--gray);margin-bottom:2rem;" data-cms="form_subtitle">Tell us about your project or challenge — the more detail the better.</p>
 
           <form class="contact-form" id="automation-contact-form">
             <div class="form-row">
@@ -212,12 +212,13 @@
 <section style="background:var(--warm-white);">
   <div class="container">
     <div class="section-header centered reveal">
-      <span class="section-label">Find Us</span>
-      <h2 class="section-title">Our Location — Kigali, Rwanda</h2>
-      <p class="section-subtitle">Headquarters is in Rwanda — East Africa's fastest-growing industrial hub.</p>
+      <span class="section-label" data-cms="map_label">Find Us</span>
+      <h2 class="section-title" data-cms="map_title">Our Location — Kigali, Rwanda</h2>
+      <p class="section-subtitle" data-cms="map_subtitle">Headquarters is in Rwanda — East Africa's fastest-growing industrial hub.</p>
     </div>
-    <div class="reveal" style="box-shadow:var(--shadow-md);border-radius:var(--radius-lg);overflow:hidden;border:1px solid rgba(10,22,40,0.1);">
+    <div class="reveal" style="box-shadow:var(--shadow-md);border-radius:var(--radius-lg);overflow:hidden;border:1px solid rgba(10,22,40,0.1);position:relative;">
       <div id="contact-map"></div>
+      <div id="contact-map-hint" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(10,22,40,0.45);color:white;font-family:var(--font-ui);font-size:0.85rem;font-weight:600;letter-spacing:0.02em;opacity:0;pointer-events:none;transition:opacity 0.15s;z-index:1000;">Use ctrl + scroll to zoom the map</div>
     </div>
   </div>
 </section>
@@ -226,29 +227,29 @@
 <section style="background:white;">
   <div class="container">
     <div class="section-header centered reveal">
-      <span class="section-label">FAQ</span>
-      <h2 class="section-title">Frequently Asked Questions</h2>
+      <span class="section-label" data-cms="faq_label">FAQ</span>
+      <h2 class="section-title" data-cms="faq_title">Frequently Asked Questions</h2>
     </div>
     <div class="faq-contact faq-list reveal">
       <div class="faq-item">
-        <button class="faq-question">How quickly can Automation Group mobilise for a project? <i class="fa-solid fa-plus"></i></button>
-        <div class="faq-answer">For most projects, we can mobilise within 2–4 weeks of contract signature. For urgent maintenance or repair support, we can deploy within days. We always align mobilisation timelines with client needs during the scoping phase.</div>
+        <button class="faq-question"><span data-cms="faq_1_question">How quickly can Automation Group mobilise for a project?</span> <i class="fa-solid fa-plus"></i></button>
+        <div class="faq-answer" data-cms="faq_1_answer">For most projects, we can mobilise within 2–4 weeks of contract signature. For urgent maintenance or repair support, we can deploy within days. We always align mobilisation timelines with client needs during the scoping phase.</div>
       </div>
       <div class="faq-item">
-        <button class="faq-question">Do you work outside of Rwanda? <i class="fa-solid fa-plus"></i></button>
-        <div class="faq-answer">Yes. While our core market is Rwanda, we serve clients across East Africa and have capacity to work anywhere on the continent.</div>
+        <button class="faq-question"><span data-cms="faq_2_question">Do you work outside of Rwanda?</span> <i class="fa-solid fa-plus"></i></button>
+        <div class="faq-answer" data-cms="faq_2_answer">Yes. While our core market is Rwanda, we serve clients across East Africa and have capacity to work anywhere on the continent.</div>
       </div>
       <div class="faq-item">
-        <button class="faq-question">Which standards do you design and calibrate to? <i class="fa-solid fa-plus"></i></button>
-        <div class="faq-answer">Our team works to international standards including API MPMS, AGA, ANSI-ASME, IEC, NFPA, EN, OIML R85, NMi, and PTB — depending on the system and client requirements.</div>
+        <button class="faq-question"><span data-cms="faq_3_question">Which standards do you design and calibrate to?</span> <i class="fa-solid fa-plus"></i></button>
+        <div class="faq-answer" data-cms="faq_3_answer">Our team works to international standards including API MPMS, AGA, ANSI-ASME, IEC, NFPA, EN, OIML R85, NMi, and PTB — depending on the system and client requirements.</div>
       </div>
       <div class="faq-item">
-        <button class="faq-question">How do you price your services? <i class="fa-solid fa-plus"></i></button>
-        <div class="faq-answer">Our pricing is project-based and depends on scope, duration, team size, and technical complexity. We provide detailed proposals and cost breakdowns following an initial scoping conversation.</div>
+        <button class="faq-question"><span data-cms="faq_4_question">How do you price your services?</span> <i class="fa-solid fa-plus"></i></button>
+        <div class="faq-answer" data-cms="faq_4_answer">Our pricing is project-based and depends on scope, duration, team size, and technical complexity. We provide detailed proposals and cost breakdowns following an initial scoping conversation.</div>
       </div>
       <div class="faq-item">
-        <button class="faq-question">Do you offer ongoing maintenance contracts? <i class="fa-solid fa-plus"></i></button>
-        <div class="faq-answer">Yes. We offer preventive maintenance contracts and certified service & repair support to keep your instruments, controllers, and power systems running reliably.</div>
+        <button class="faq-question"><span data-cms="faq_5_question">Do you offer ongoing maintenance contracts?</span> <i class="fa-solid fa-plus"></i></button>
+        <div class="faq-answer" data-cms="faq_5_answer">Yes. We offer preventive maintenance contracts and certified service & repair support to keep your instruments, controllers, and power systems running reliably.</div>
       </div>
     </div>
   </div>
@@ -328,5 +329,6 @@
 <script src="js/messages.js"></script>
 <script src="js/script.js"></script>
 <script src="js/cms-loader.js" data-api="https://automation-group-admin.vercel.app" data-page="contact"></script>
+<script src="js/contact-map-cms.js"></script>
 </body>
 </html>

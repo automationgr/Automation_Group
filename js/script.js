@@ -300,9 +300,9 @@ function highlightNav() {
 highlightNav();
 
 /* --- Leaflet Map Init (Projects / Contact) --- */
-function initMap(containerId, lat, lng, zoom) {
+function initMap(containerId, lat, lng, zoom, popupHtml) {
   if (typeof L === 'undefined' || !document.getElementById(containerId)) return;
-  const map = L.map(containerId, { zoomControl: true }).setView([lat, lng], zoom);
+  const map = L.map(containerId, { zoomControl: true, scrollWheelZoom: false }).setView([lat, lng], zoom);
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '© OpenStreetMap contributors'
   }).addTo(map);
@@ -315,15 +315,29 @@ function initMap(containerId, lat, lng, zoom) {
     iconAnchor: [8, 8]
   });
   L.marker([lat, lng], { icon }).addTo(map)
-    .bindPopup('<b style="font-family:Georgia">AUTOMATION GROUP</b><br>6B KG 738 St, Kigali, Rwanda.<br><a href="mailto:info.automationgroup@gmail.com" style="color:#1A6B8A">info.automationgroup@gmail.com</a>')
+    .bindPopup(popupHtml || '<b style="font-family:Georgia">AUTOMATION GROUP</b><br>6B KG 738 St, Kigali, Rwanda.<br><a href="mailto:info.automationgroup@gmail.com" style="color:#1A6B8A">info.automationgroup@gmail.com</a>')
     .openPopup();
 
-  return map;
-}
+  /* Require Ctrl/Cmd + scroll to zoom on desktop (mouse wheel) — leaves normal
+     page scrolling alone, and doesn't affect touch pinch-zoom (handled
+     separately by Leaflet's touchZoom, always on). */
+  const hint = document.getElementById(containerId + '-hint');
+  const container = map.getContainer();
+  container.addEventListener('wheel', function (e) {
+    if (e.ctrlKey || e.metaKey) {
+      e.preventDefault();
+      map.scrollWheelZoom.enable();
+    } else {
+      map.scrollWheelZoom.disable();
+      if (hint) {
+        hint.style.opacity = '1';
+        clearTimeout(container._hintTimer);
+        container._hintTimer = setTimeout(function () { hint.style.opacity = '0'; }, 900);
+      }
+    }
+  }, { passive: false });
 
-// Init HQ map on contact page
-if (document.getElementById('contact-map')) {
-  initMap('contact-map', -1.949078, 30.058300, 13);
+  return map;
 }
 
 if (typeof initProjectsMap === 'function') initProjectsMap();
