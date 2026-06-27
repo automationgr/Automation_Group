@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Request a Service | AUTOMATION GROUP Ltd</title>
+  <meta name="description" content="Request a service from Automation Group — industrial automation and engineering solutions firm based in Kigali, Rwanda.">
+  <meta name="robots" content="noindex">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" type="image/jpeg" data-cms-setting-href="favicon_url">
+  <style>
+    .inner-hero {
+      background: linear-gradient(135deg, var(--navy-deep), var(--teal));
+      padding: 160px 0 70px;
+      color: white;
+    }
+    .inner-hero .section-label { color: var(--gold); }
+    .inner-hero h2 { color: white !important; }
+    .inner-hero p { color: rgba(255,255,255,0.85) !important; }
+  </style>
+</head>
+<body>
+<div id="scroll-progress"></div>
+
+<nav id="navbar">
+  <a href="index.html" class="nav-logo">
+    <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="AUTOMATION GROUP Logo" class="site-logo" data-cms-setting-src="logo_url">
+  <span class="diamond">◆</span><div class="nav-logo-text"><span class="nav-logo-name">AUTOMATION GROUP</span><span class="nav-logo-tagline">Industrial Automation & Engineering Solutions</span></div></a>
+  <ul class="nav-links"><li><a href="index.html">Home</a></li><li><a href="about.html">About</a></li><li><a href="services.html">Services</a></li><li><a href="solutions.html">Solutions</a></li><li><a href="products.html">Products</a></li><li><a href="contact.html" class="nav-cta">Contact</a></li></ul>
+  <button class="nav-toggle"><span></span><span></span><span></span></button>
+</nav>
+<div class="nav-backdrop"></div>
+<div class="nav-mobile">
+  <div class="nav-mobile-body">
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="services.html">Services</a>
+    <a href="solutions.html">Solutions</a>
+    <a href="products.html">Products</a>
+    <a href="contact.html" class="mobile-cta">Contact</a>
+  </div>
+  <div class="nav-mobile-footer">
+    <i class="fa-solid fa-location-dot"></i>
+    <span>Kigali, Rwanda &bull; East Africa</span>
+  </div>
+</div>
+
+<!-- HEADER -->
+<div class="inner-hero">
+  <div class="container" style="max-width:1100px;">
+    <span class="section-label">Get In Touch</span>
+    <h2 id="request-heading" style="font-family:var(--font-heading);font-weight:800;font-size:2.4rem;margin:0.6rem 0 1.2rem;">Request This Service</h2>
+    <p id="request-subtitle" style="font-size:1.02rem;line-height:1.7;max-width:760px;">Tell us a bit about your project and we will be in touch within 24 business hours.</p>
+  </div>
+</div>
+
+<!-- REQUEST SERVICE FORM -->
+<section style="background:white;">
+  <div class="container" style="max-width:1100px;">
+    <p style="font-size:0.78rem;color:var(--gray);margin-bottom:1.5rem;padding-top:2.5rem;">&quot;*&quot; indicates required fields</p>
+    <div class="reveal">
+      <form class="contact-form" id="automation-contact-form">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="full-name">Full Name *</label>
+            <input type="text" id="full-name" placeholder="Your full name" required>
+          </div>
+          <div class="form-group">
+            <label for="organisation">Organisation *</label>
+            <input type="text" id="organisation" placeholder="Your organisation" required>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="email">Email Address *</label>
+            <input type="email" id="email" placeholder="your@email.com" required>
+          </div>
+          <div class="form-group">
+            <label for="phone">Phone Number</label>
+            <input type="tel" id="phone" placeholder="+250 78...">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="country">Country</label>
+            <select id="country">
+              <option value="">Select your country...</option>
+              <option>Rwanda</option>
+              <option>Kenya</option>
+              <option>Uganda</option>
+              <option>Tanzania</option>
+              <option>DR Congo</option>
+              <option>Other East African Country</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="service">Solution of Interest</label>
+            <input type="text" id="service" placeholder="e.g. Sewage System, SCADA, Power Systems...">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="brief">Project Brief *</label>
+          <textarea id="brief" placeholder="Describe your project, challenge, or enquiry. Include location, timeline, and any specific requirements..." required maxlength="100000" oninput="document.getElementById('brief-counter').textContent = this.value.length.toLocaleString() + ' / 100,000 characters'"></textarea>
+          <div id="brief-counter" style="text-align:right;font-size:0.72rem;color:var(--gray);margin-top:0.3rem;">0 / 100,000 characters</div>
+        </div>
+        <button type="submit" class="btn-primary" style="width:100%;justify-content:center;padding:1rem;font-size:1.6rem;">
+          <i class="fa-solid fa-paper-plane"></i> Submit
+        </button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FOOTER ===================== -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="footer-logo">
+          <span class="diamond">◆</span>
+          <span class="footer-logo-name" data-cms-setting="company_name">AUTOMATION GROUP Ltd</span>
+        </div>
+        <p class="footer-desc" data-cms-setting="company_description">Automation Group Ltd is a professional systems integrator based in Kigali, Rwanda — delivering engineering, supply, installation, commissioning, and repair services for process & industrial automation, power systems, and safety solutions across East Africa.</p>
+        <div class="footer-social">
+          <a href="https://www.instagram.com/emmanuelnigaba" data-cms-setting-href="social_instagram" class="social-icon" aria-label="Instagram" target="_blank" rel="noopener"><i class="fa-brands fa-instagram"></i></a>
+          <a href="https://wa.me/250788881467" data-cms-setting-href="contact_whatsapp" class="social-icon" aria-label="WhatsApp" target="_blank" rel="noopener"><i class="fa-brands fa-whatsapp"></i></a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Solutions</h4>
+        <ul>
+          <li><a href="solutions.html#metering">Metering Solutions</a></li>
+          <li><a href="solutions.html#tank-gauging">Automatic Tank Gauging</a></li>
+          <li><a href="solutions.html#fire-gas">Fire & Gas Safety Systems</a></li>
+          <li><a href="solutions.html#energy">Energy Solutions</a></li>
+          <li><a href="solutions.html#bms">Building Management Systems</a></li>
+          <li><a href="solutions.html#scada">SCADA</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="about.html">About Us</a></li>
+          <li><a href="services.html">Services</a></li>
+          <li><a href="products.html">Products</a></li>
+          <li><a href="contact.html">Contact Us</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <div class="footer-contact-item"><i class="fa-solid fa-location-dot"></i><span data-cms-setting="contact_address">6B KG 738 St, Kigali, Rwanda (HQ)</span></div>
+        <div class="footer-contact-item"><i class="fa-solid fa-envelope"></i><a href="mailto:info.automationgroup@gmail.com" data-cms-setting="contact_email">info.automationgroup@gmail.com</a></div>
+        <div class="footer-contact-item"><i class="fa-solid fa-phone"></i><a href="tel:+250788881467" data-cms-setting="contact_phone">+250 788 881 467</a></div>
+        <div class="footer-contact-item"><i class="fa-brands fa-whatsapp"></i><a href="https://wa.me/250788881467" data-cms-setting-href="contact_whatsapp">WhatsApp Us</a></div>
+        <h4 style="margin-top:1.5rem;">Newsletter</h4>
+        <form class="newsletter-form" onsubmit="return false;">
+          <input type="email" placeholder="Your email address">
+          <button type="submit">Subscribe</button>
+        </form>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 Automation Group Ltd. All rights reserved. Kigali, Rwanda.</p>
+      <div class="footer-legal">
+        <a href="Privacy Policy.html">Privacy Policy</a>
+        <a href="Terms of Service.html">Terms of Service</a>
+      </div>
+      <div style="text-align:center; margin-top: 1rem;">
+        <a href="https://automation-group-admin.vercel.app" style="font-size:0.68rem; letter-spacing:0.1em; text-transform:uppercase; color:rgba(255,255,255,0.35); text-decoration:none;"><i class="fa-solid fa-lock"></i> Admin Portal</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<button id="scroll-top"><i class="fa-solid fa-chevron-up"></i></button>
+<a id="whatsapp-btn" href="https://wa.me/250788881467" target="_blank"><i class="fa-brands fa-whatsapp"></i></a>
+
+<!-- Supabase SDK (persistent message storage) -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<!-- EmailJS SDK (email notification on form submit) -->
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script src="js/cms.js"></script>
+<!-- Message Integration: Supabase + EmailJS — LOAD AFTER cms.js -->
+<script src="js/messages.js"></script>
+<script src="js/script.js"></script>
+<script src="js/cms-loader.js" data-api="https://automation-group-admin.vercel.app" data-page="request-service"></script>
+<script>
+  /* Registered after messages.js's own DOMContentLoaded listener (which
+     clones/replaces the form on load) — listeners fire in registration
+     order, so this runs after the clone and prefills the live element,
+     not a soon-to-be-discarded one. */
+  document.addEventListener('DOMContentLoaded', function () {
+    var params = new URLSearchParams(window.location.search);
+    var service = params.get('service');
+    if (!service) return;
+    document.title = 'Request: ' + service + ' | AUTOMATION GROUP Ltd';
+    document.getElementById('request-heading').textContent = 'Request: ' + service;
+    document.getElementById('request-subtitle').textContent = 'Tell us a bit about your "' + service + '" project and we will be in touch within 24 business hours.';
+    var serviceField = document.getElementById('service');
+    if (serviceField) serviceField.value = service;
+  });
+</script>
+</body>
+</html>

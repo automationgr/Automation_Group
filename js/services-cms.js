@@ -143,7 +143,7 @@
             '<h4 style="font-family:var(--font-ui);font-size:0.72rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--navy);margin-bottom:0.6rem;">Industries Served</h4>' +
             '<div class="industries-served">' + industries + '</div>'
           ) : '') +
-          '<a href="contact.html" class="btn-primary"><i class="fa-solid fa-paper-plane"></i> Request This Service</a>' +
+          '<a href="request-service.html?service=' + encodeURIComponent(item.title) + '" class="btn-primary"><i class="fa-solid fa-paper-plane"></i> Request This Service</a>' +
         '</div>'
       );
       var img = '<div class="service-detail-img reveal-right">' + photo + '</div>';
