@@ -81,129 +81,64 @@
   </div>
 </div>
 
-<!-- CONTACT SECTION -->
+<!-- SEND A MESSAGE -->
 <section style="background:white;">
   <div class="container">
-    <div class="contact-grid">
-      <!-- LEFT: INFO -->
-      <div class="reveal-left">
-        <span class="section-label" data-cms="info_label">Reach Us</span>
-        <h2 class="section-title" style="font-size:1.8rem;" data-cms="info_title">Contact Information</h2>
-        <div class="gold-line"></div>
-
-        <div class="contact-info-item">
-          <div class="contact-info-icon"><i class="fa-solid fa-location-dot"></i></div>
-          <div>
-            <h4 data-cms="office_title">Rwanda Office</h4>
-            <p data-cms-html="office_address_html">6B KG 738 St, Kigali, Rwanda<br><span style="font-size:0.82rem;color:var(--gray);">135A KG 14 Ave, Gisozi, Kigali, Rwanda</span></p>
+    <div class="section-header centered reveal">
+      <span class="section-label" data-cms="form_label">Get In Touch</span>
+      <h2 class="section-title" data-cms="form_title">Send Us a Message</h2>
+      <p class="section-subtitle" data-cms="form_subtitle">Tell us about your project or challenge — the more detail the better.</p>
+    </div>
+    <div class="reveal" style="max-width:760px;margin:0 auto;background:var(--warm-white);border-radius:var(--radius-lg);padding:2.5rem;">
+      <form class="contact-form" id="automation-contact-form">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="full-name">Full Name *</label>
+            <input type="text" id="full-name" placeholder="Your full name" required>
+          </div>
+          <div class="form-group">
+            <label for="organisation">Organisation *</label>
+            <input type="text" id="organisation" placeholder="Your organisation" required>
           </div>
         </div>
-
-        <div class="contact-info-item">
-          <div class="contact-info-icon"><i class="fa-solid fa-envelope"></i></div>
-          <div>
-            <h4 data-cms="email_label">General Enquiries</h4>
-            <p><a href="mailto:info.automationgroup@gmail.com" style="color:var(--teal);" data-cms-setting="contact_email">info.automationgroup@gmail.com</a></p>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="email">Email Address *</label>
+            <input type="email" id="email" placeholder="your@email.com" required>
+          </div>
+          <div class="form-group">
+            <label for="phone">Phone Number</label>
+            <input type="tel" id="phone" placeholder="+250 78...">
           </div>
         </div>
-
-        <div class="contact-info-item">
-          <div class="contact-info-icon"><i class="fa-solid fa-phone"></i></div>
-          <div>
-            <h4 data-cms="phone_label">Phone</h4>
-            <p><a href="tel:+250788881467" style="color:var(--teal);" data-cms-setting="contact_phone">+250 788 881 467</a></p>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="country">Country</label>
+            <select id="country">
+              <option value="">Select your country...</option>
+              <option>Rwanda</option>
+              <option>Kenya</option>
+              <option>Uganda</option>
+              <option>Tanzania</option>
+              <option>DR Congo</option>
+              <option>Other East African Country</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="service">Solution of Interest</label>
+            <input type="text" id="service" placeholder="e.g. Sewage System, SCADA, Power Systems...">
           </div>
         </div>
-
-        <div class="contact-info-item">
-          <div class="contact-info-icon" style="background:#25D366;"><i class="fa-brands fa-whatsapp" style="color:white;"></i></div>
-          <div>
-            <h4 data-cms="whatsapp_label">WhatsApp Business</h4>
-            <p><a href="https://wa.me/250788881467" target="_blank" style="color:#25D366;" data-cms-setting-href="contact_whatsapp">Chat on WhatsApp</a><br>
-            <span style="font-size:0.8rem;color:var(--gray);" data-cms="whatsapp_hours">Mon–Fri, 8am–6pm EAT</span></p>
-          </div>
+        <div class="form-group">
+          <label for="brief">Project Brief *</label>
+          <textarea id="brief" placeholder="Describe your project, challenge, or enquiry. Include location, timeline, and any specific requirements..." required maxlength="100000" oninput="document.getElementById('brief-counter').textContent = this.value.length.toLocaleString() + ' / 100,000 characters'"></textarea>
+          <div id="brief-counter" style="text-align:right;font-size:0.72rem;color:var(--gray);margin-top:0.3rem;">0 / 100,000 characters</div>
         </div>
-
-        <div class="contact-info-item" style="border:none;">
-          <div class="contact-info-icon"><i class="fa-solid fa-language"></i></div>
-          <div>
-            <h4 data-cms="languages_label">Languages</h4>
-            <p data-cms="languages_value">English &bull; Français &bull; Ikinyarwanda</p>
-          </div>
-        </div>
-
-        <div class="response-promise">
-          <i class="fa-solid fa-clock-rotate-left"></i>
-          <p><strong>Response Commitment:</strong> <span data-cms="response_commitment">We respond to all project enquiries within 24 business hours. For urgent matters, WhatsApp or call us directly.</span></p>
-        </div>
-
-        <!-- Social Links -->
-        <div style="margin-top:2rem;">
-          <div style="font-family:var(--font-ui);font-size:0.68rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:var(--gray);margin-bottom:0.8rem;" data-cms="follow_us_label">Follow Us</div>
-          <div class="social-contact-grid">
-            <a href="https://www.instagram.com/emmanuelnigaba" target="_blank" rel="noopener" class="social-contact-btn instagram" data-cms-setting-href="social_instagram"><i class="fa-brands fa-instagram"></i>Instagram</a>
-            <a href="https://wa.me/250788881467" target="_blank" rel="noopener" class="social-contact-btn whatsapp" data-cms-setting-href="contact_whatsapp"><i class="fa-brands fa-whatsapp"></i>WhatsApp</a>
-          </div>
-        </div>
-      </div>
-
-      <!-- RIGHT: FORM -->
-      <div class="reveal-right">
-        <div style="background:var(--warm-white);border-radius:var(--radius-lg);padding:2.5rem;">
-          <h3 style="font-family:var(--font-heading);font-size:1.4rem;color:var(--navy);margin-bottom:0.5rem;" data-cms="form_title">Send Us a Message</h3>
-          <p style="font-size:0.84rem;color:var(--gray);margin-bottom:2rem;" data-cms="form_subtitle">Tell us about your project or challenge — the more detail the better.</p>
-
-          <form class="contact-form" id="automation-contact-form">
-            <div class="form-row">
-              <div class="form-group">
-                <label for="full-name">Full Name *</label>
-                <input type="text" id="full-name" placeholder="Your full name" required>
-              </div>
-              <div class="form-group">
-                <label for="organisation">Organisation *</label>
-                <input type="text" id="organisation" placeholder="Your organisation" required>
-              </div>
-            </div>
-            <div class="form-row">
-              <div class="form-group">
-                <label for="email">Email Address *</label>
-                <input type="email" id="email" placeholder="your@email.com" required>
-              </div>
-              <div class="form-group">
-                <label for="phone">Phone Number</label>
-                <input type="tel" id="phone" placeholder="+250 78...">
-              </div>
-            </div>
-            <div class="form-row">
-              <div class="form-group">
-                <label for="country">Country</label>
-                <select id="country">
-                  <option value="">Select your country...</option>
-                  <option>Rwanda</option>
-                  <option>Kenya</option>
-                  <option>Uganda</option>
-                  <option>Tanzania</option>
-                  <option>DR Congo</option>
-                  <option>Other East African Country</option>
-                  <option>Other</option>
-                </select>
-              </div>
-              <div class="form-group">
-                <label for="service">Solution of Interest</label>
-                <input type="text" id="service" placeholder="e.g. Sewage System, SCADA, Power Systems...">
-              </div>
-            </div>
-            <div class="form-group">
-              <label for="brief">Project Brief *</label>
-              <textarea id="brief" placeholder="Describe your project, challenge, or enquiry. Include location, timeline, and any specific requirements..." required maxlength="100000" oninput="document.getElementById('brief-counter').textContent = this.value.length.toLocaleString() + ' / 100,000 characters'"></textarea>
-              <div id="brief-counter" style="text-align:right;font-size:0.72rem;color:var(--gray);margin-top:0.3rem;">0 / 100,000 characters</div>
-            </div>
-            <button type="submit" class="btn-primary" style="width:100%;justify-content:center;padding:1rem;">
-              <i class="fa-solid fa-paper-plane"></i> Send Message
-            </button>
-          </form>
-        </div>
-      </div>
+        <button type="submit" class="btn-primary" style="width:100%;justify-content:center;padding:1rem;">
+          <i class="fa-solid fa-paper-plane"></i> Send Message
+        </button>
+      </form>
     </div>
   </div>
 </section>
@@ -219,6 +154,73 @@
     <div class="reveal" style="box-shadow:var(--shadow-md);border-radius:var(--radius-lg);overflow:hidden;border:1px solid rgba(10,22,40,0.1);position:relative;">
       <div id="contact-map"></div>
       <div id="contact-map-hint" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(10,22,40,0.45);color:white;font-family:var(--font-ui);font-size:0.85rem;font-weight:600;letter-spacing:0.02em;opacity:0;pointer-events:none;transition:opacity 0.15s;z-index:1000;">Use ctrl + scroll to zoom the map</div>
+    </div>
+  </div>
+</section>
+
+<!-- REACH US -->
+<section style="background:white;">
+  <div class="container">
+    <div class="section-header centered reveal">
+      <span class="section-label" data-cms="info_label">Reach Us</span>
+      <h2 class="section-title" data-cms="info_title">Contact Information</h2>
+    </div>
+
+    <div class="reveal" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:2rem;max-width:1000px;margin:0 auto;">
+      <div class="contact-info-item" style="border:none;">
+        <div class="contact-info-icon"><i class="fa-solid fa-location-dot"></i></div>
+        <div>
+          <h4 data-cms="office_title">Rwanda Office</h4>
+          <p data-cms-html="office_address_html">6B KG 738 St, Kigali, Rwanda<br><span style="font-size:0.82rem;color:var(--gray);">135A KG 14 Ave, Gisozi, Kigali, Rwanda</span></p>
+        </div>
+      </div>
+
+      <div class="contact-info-item" style="border:none;">
+        <div class="contact-info-icon"><i class="fa-solid fa-envelope"></i></div>
+        <div>
+          <h4 data-cms="email_label">General Enquiries</h4>
+          <p><a href="mailto:info.automationgroup@gmail.com" style="color:var(--teal);" data-cms-setting="contact_email">info.automationgroup@gmail.com</a></p>
+        </div>
+      </div>
+
+      <div class="contact-info-item" style="border:none;">
+        <div class="contact-info-icon"><i class="fa-solid fa-phone"></i></div>
+        <div>
+          <h4 data-cms="phone_label">Phone</h4>
+          <p><a href="tel:+250788881467" style="color:var(--teal);" data-cms-setting="contact_phone">+250 788 881 467</a></p>
+        </div>
+      </div>
+
+      <div class="contact-info-item" style="border:none;">
+        <div class="contact-info-icon" style="background:#25D366;"><i class="fa-brands fa-whatsapp" style="color:white;"></i></div>
+        <div>
+          <h4 data-cms="whatsapp_label">WhatsApp Business</h4>
+          <p><a href="https://wa.me/250788881467" target="_blank" style="color:#25D366;" data-cms-setting-href="contact_whatsapp">Chat on WhatsApp</a><br>
+          <span style="font-size:0.8rem;color:var(--gray);" data-cms="whatsapp_hours">Mon–Fri, 8am–6pm EAT</span></p>
+        </div>
+      </div>
+
+      <div class="contact-info-item" style="border:none;">
+        <div class="contact-info-icon"><i class="fa-solid fa-language"></i></div>
+        <div>
+          <h4 data-cms="languages_label">Languages</h4>
+          <p data-cms="languages_value">English &bull; Français &bull; Ikinyarwanda</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="response-promise reveal" style="max-width:760px;margin:2.5rem auto 0;">
+      <i class="fa-solid fa-clock-rotate-left"></i>
+      <p><strong>Response Commitment:</strong> <span data-cms="response_commitment">We respond to all project enquiries within 24 business hours. For urgent matters, WhatsApp or call us directly.</span></p>
+    </div>
+
+    <!-- Social Links -->
+    <div class="reveal" style="margin-top:2.5rem;text-align:center;">
+      <div style="font-family:var(--font-ui);font-size:0.68rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:var(--gray);margin-bottom:0.8rem;" data-cms="follow_us_label">Follow Us</div>
+      <div class="social-contact-grid" style="margin:0 auto;">
+        <a href="https://www.instagram.com/emmanuelnigaba" target="_blank" rel="noopener" class="social-contact-btn instagram" data-cms-setting-href="social_instagram"><i class="fa-brands fa-instagram"></i>Instagram</a>
+        <a href="https://wa.me/250788881467" target="_blank" rel="noopener" class="social-contact-btn whatsapp" data-cms-setting-href="contact_whatsapp"><i class="fa-brands fa-whatsapp"></i>WhatsApp</a>
+      </div>
     </div>
   </div>
 </section>
