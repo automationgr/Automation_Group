@@ -20,6 +20,13 @@
     .inner-hero .section-label { color: var(--gold); }
     .inner-hero h2 { color: white !important; }
     .inner-hero p { color: rgba(255,255,255,0.85) !important; }
+
+    /* Bigger, easier-to-read form text on this page only */
+    #automation-contact-form .form-group label { font-size: 0.85rem; }
+    #automation-contact-form .form-group input,
+    #automation-contact-form .form-group select,
+    #automation-contact-form .form-group textarea { font-size: 1.1rem; padding: 1rem 1.1rem; }
+    #automation-contact-form ::placeholder { font-size: 1.1rem; }
   </style>
 </head>
 <body>
@@ -60,7 +67,7 @@
 <!-- REQUEST SERVICE FORM -->
 <section style="background:white;">
   <div class="container" style="max-width:1100px;">
-    <p style="font-size:0.78rem;color:var(--gray);margin-bottom:1.5rem;padding-top:2.5rem;">&quot;*&quot; indicates required fields</p>
+    <p style="font-size:0.92rem;color:var(--gray);margin-bottom:1.5rem;padding-top:2.5rem;">&quot;*&quot; indicates required fields</p>
     <div class="reveal">
       <form class="contact-form" id="automation-contact-form">
         <div class="form-row">
@@ -105,7 +112,7 @@
         <div class="form-group">
           <label for="brief">Project Brief *</label>
           <textarea id="brief" placeholder="Describe your project, challenge, or enquiry. Include location, timeline, and any specific requirements..." required maxlength="100000" oninput="document.getElementById('brief-counter').textContent = this.value.length.toLocaleString() + ' / 100,000 characters'"></textarea>
-          <div id="brief-counter" style="text-align:right;font-size:0.72rem;color:var(--gray);margin-top:0.3rem;">0 / 100,000 characters</div>
+          <div id="brief-counter" style="text-align:right;font-size:0.85rem;color:var(--gray);margin-top:0.3rem;">0 / 100,000 characters</div>
         </div>
         <button type="submit" class="btn-primary" style="width:100%;justify-content:center;padding:1rem;font-size:1.6rem;">
           <i class="fa-solid fa-paper-plane"></i> Submit
