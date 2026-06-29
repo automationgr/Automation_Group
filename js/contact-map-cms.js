@@ -33,8 +33,8 @@
         var zoom = parseInt(settings.contact_map_zoom, 10);
         var popupHtml = '<b style="font-family:Georgia">AUTOMATION GROUP</b><br>' +
           (settings.contact_address || '6B KG 738 St, Kigali, Rwanda.').replace(/\n/g, '<br>') +
-          '<br><a href="mailto:' + (settings.contact_email || 'info.automationgroup@gmail.com') + '" style="color:#1A6B8A">' +
-          (settings.contact_email || 'info.automationgroup@gmail.com') + '</a>';
+          '<br><a href="mailto:' + (settings.contact_email || 'info@automationgroup.tech') + '" style="color:#1A6B8A">' +
+          (settings.contact_email || 'info@automationgroup.tech') + '</a>';
 
         initMap(
           'contact-map',

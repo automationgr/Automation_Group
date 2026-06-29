@@ -250,7 +250,7 @@ function automationWireContactForm() {
     } catch(err) {
       console.error('[AUTOMATION] Form error:', err);
       if (btn) { btn.disabled = false; btn.innerHTML = orig; }
-      _showBanner(fresh, 'error', 'Something went wrong. Please email us directly at info.automationgroup@gmail.com');
+      _showBanner(fresh, 'error', 'Something went wrong. Please email us directly at info@automationgroup.tech');
     }
   });
 }

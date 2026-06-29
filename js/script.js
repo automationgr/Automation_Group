@@ -315,7 +315,7 @@ function initMap(containerId, lat, lng, zoom, popupHtml) {
     iconAnchor: [8, 8]
   });
   L.marker([lat, lng], { icon }).addTo(map)
-    .bindPopup(popupHtml || '<b style="font-family:Georgia">AUTOMATION GROUP</b><br>6B KG 738 St, Kigali, Rwanda.<br><a href="mailto:info.automationgroup@gmail.com" style="color:#1A6B8A">info.automationgroup@gmail.com</a>')
+    .bindPopup(popupHtml || '<b style="font-family:Georgia">AUTOMATION GROUP</b><br>6B KG 738 St, Kigali, Rwanda.<br><a href="mailto:info@automationgroup.tech" style="color:#1A6B8A">info@automationgroup.tech</a>')
     .openPopup();
 
   /* Require Ctrl/Cmd + scroll to zoom on desktop (mouse wheel) — leaves normal
