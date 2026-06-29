@@ -1443,7 +1443,9 @@ footer {
   display: flex; align-items: flex-start; gap: 1rem;
   padding: 1.2rem 0;
   border-bottom: 1px solid rgba(10,22,40,0.08);
+  min-width: 0;
 }
+.contact-info-item > div { min-width: 0; }
 .contact-info-icon {
   width: 44px; height: 44px; flex-shrink: 0;
   background: var(--navy);
@@ -1452,7 +1454,7 @@ footer {
   color: var(--white); font-size: 1rem;
 }
 .contact-info-item h4 { font-family: var(--font-ui); font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gray); margin-bottom: 0.3rem; }
-.contact-info-item p { font-size: 0.9rem; color: var(--navy); font-weight: 500; }
+.contact-info-item p { font-size: 0.9rem; color: var(--navy); font-weight: 500; overflow-wrap: anywhere; word-break: break-word; }
 .contact-info-item a { color: var(--teal); }
 
 .form-group { margin-bottom: 1.3rem; }
