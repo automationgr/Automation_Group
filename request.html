@@ -58,16 +58,16 @@
 <!-- HEADER -->
 <div class="inner-hero">
   <div class="container" style="max-width:1100px;">
-    <span class="section-label">Get In Touch</span>
-    <h2 id="request-heading" style="font-family:var(--font-heading);font-weight:800;font-size:2.4rem;margin:0.6rem 0 1.2rem;">Request This Service</h2>
-    <p id="request-subtitle" style="font-size:1.02rem;line-height:1.7;max-width:760px;">Tell us a bit about your project and we will be in touch within 24 business hours.</p>
+    <span class="section-label" data-cms="request_label">Get In Touch</span>
+    <h2 id="request-heading" data-cms="request_heading" style="font-family:var(--font-heading);font-weight:800;font-size:2.4rem;margin:0.6rem 0 1.2rem;">Request This Service</h2>
+    <p id="request-subtitle" data-cms="request_subtitle" style="font-size:1.02rem;line-height:1.7;max-width:760px;">Tell us a bit about your project and we will be in touch within 24 business hours.</p>
   </div>
 </div>
 
 <!-- REQUEST SERVICE FORM -->
 <section style="background:white;">
   <div class="container" style="max-width:1100px;">
-    <p style="font-size:0.92rem;color:var(--gray);margin-bottom:1.5rem;padding-top:2.5rem;">&quot;*&quot; indicates required fields</p>
+    <p data-cms="request_required_note" style="font-size:0.92rem;color:var(--gray);margin-bottom:1.5rem;padding-top:2.5rem;">&quot;*&quot; indicates required fields</p>
     <div class="reveal">
       <form class="contact-form" id="automation-contact-form">
         <div class="form-row">
@@ -115,7 +115,7 @@
           <div id="brief-counter" style="text-align:right;font-size:0.85rem;color:var(--gray);margin-top:0.3rem;">0 / 100,000 characters</div>
         </div>
         <button type="submit" class="btn-primary" style="width:100%;justify-content:center;padding:1rem;font-size:1.6rem;">
-          <i class="fa-solid fa-paper-plane"></i> Submit
+          <i class="fa-solid fa-paper-plane"></i> <span data-cms="request_submit_label">Submit</span>
         </button>
       </form>
     </div>
